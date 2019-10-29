@@ -328,8 +328,21 @@
 	function generateGuid() {
 		var textArea = document.getElementById("value");
 		textArea.value = uuidv4();
+		copyToClipboard();
 	}
 	
+	function copyToClipboard() {
+	  /* Get the text field */
+	  var textArea = document.getElementById("value");
+
+	  /* Select the text field */
+	  textArea.select();
+	  textArea.setSelectionRange(0, 99999); /*For mobile devices*/
+
+	  /* Copy the text inside the text field */
+	  document.execCommand("copy");
+	}
+
 	</script>
   </head>
   <body>
