@@ -342,6 +342,16 @@
 	  /* Copy the text inside the text field */
 	  document.execCommand("copy");
 	}
+		
+	function toUpperCaseButtonClick() {
+		var textArea = document.getElementById("value");
+		textArea.value = textArea.value.toUpperCase();
+	}
+		
+	function toLowerCaseButtonClick() {
+		var textArea = document.getElementById("value");
+		textArea.value = textArea.value.toLowerCase();
+	}
 
 	</script>
   </head>
@@ -382,6 +392,11 @@
 		<div class="buttonGroup">
 			<input type="button" value="Url Token Encode" onclick="urlTokenEncodeButtonClick();" /><br/>
 			<input type="button" value="Url Token Decode" onclick="urlTokenDecodeButtonClick();" />
+		</div>
+		
+		<div class="buttonGroup">
+			<input type="button" value="To Upper Case" onclick="toUpperCaseButtonClick();" /><br/>
+			<input type="button" value="To Lower Case" onclick="toLowerCaseButtonClick();" />
 		</div>
 		
 	</div>
