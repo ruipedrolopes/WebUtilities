@@ -250,7 +250,7 @@
 		
         function JavaCSharp_StringUnescape() {
 		var textArea = document.getElementById("value");
-		textArea.value = eval("new String(\"" + textArea.value + "\")");
+		textArea.value = eval("new String('" + textArea.value + "')");
 	}
 	
 	function formatXml(xml) {
