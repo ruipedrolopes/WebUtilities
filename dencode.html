@@ -247,7 +247,11 @@
 		
 		textArea.value=escaped;
 	}
-	
+		
+        function JavaCSharp_StringUnescape() {
+		var textArea = document.getElementById("value");
+		textArea.value = eval("new String(\"" + textArea.value + "\")");
+	}
 	
 	function formatXml(xml) {
 		var formatted = '';
@@ -383,7 +387,10 @@
 			<input type="button" value="HEX Decode" onclick="hexdecode();" />
 		</div>
 		
-		<input type="button" value="Java/C# String Escape" onclick="JavaCSharp_StringEscape();" />
+		<div class="buttonGroup">
+			<input type="button" value="Java/C# String Escape" onclick="JavaCSharp_StringEscape();" />
+			<input type="button" value="Java/C# String Unescape" onclick="JavaCSharp_StringUnescape();" />
+		</div>
 		
 		<input type="button" value="Pretty Print XML" onclick="prettyPrintXml();" />
 		
