@@ -295,7 +295,12 @@
 		var textArea = document.getElementById("value");
 		textArea.value = JSON.stringify(JSON.parse(textArea.value), null, '\t');
 	}
-	
+		
+	function minifyJSON() {
+		var textArea = document.getElementById("value");
+		textArea.value = JSON.stringify(JSON.parse(textArea.value));
+	}
+		
 	function encodeUrlToken(input) {
 		var ret = input.replace(/\+/g, "-").replace(/\//g, "_");
 		if (ret.length == 0)
@@ -394,7 +399,10 @@
 		
 		<input type="button" value="Pretty Print XML" onclick="prettyPrintXml();" />
 		
-		<input type="button" value="Pretty Print JSON" onclick="prettyPrintJSON();" />
+		<div class="buttonGroup">
+			<input type="button" value="Pretty Print JSON" onclick="prettyPrintJSON();" />
+			<input type="button" value="Minify JSON" onclick="minifyJSON();" />
+		</div>
 		
 		<div class="buttonGroup">
 			<input type="button" value="Url Token Encode" onclick="urlTokenEncodeButtonClick();" /><br/>
