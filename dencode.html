@@ -362,11 +362,53 @@
 		textArea.value = textArea.value.toLowerCase();
 	}
 
+		
+	function getCursorPos(input) {
+	    if ("selectionStart" in input && document.activeElement == input) {
+		return {
+		    start: input.selectionStart,
+		    end: input.selectionEnd
+		};
+	    }
+	    else if (input.createTextRange) {
+		var sel = document.selection.createRange();
+		if (sel.parentElement() === input) {
+		    var rng = input.createTextRange();
+		    rng.moveToBookmark(sel.getBookmark());
+		    for (var len = 0;
+			     rng.compareEndPoints("EndToStart", rng) > 0;
+			     rng.moveEnd("character", -1)) {
+			len++;
+		    }
+		    rng.setEndPoint("StartToStart", input.createTextRange());
+		    for (var pos = { start: 0, end: len };
+			     rng.compareEndPoints("EndToStart", rng) > 0;
+			     rng.moveEnd("character", -1)) {
+			pos.start++;
+			pos.end++;
+		    }
+		    return pos;
+		}
+	    }
+	    return {
+		    start: -1,
+		    end: -1
+		};
+	}
+		
+	function fetchPos() {
+		var pos = getCursorPos(document.getElementById("value"));
+		
+		document.getElementById("start").innerHtml = pos.start;
+		document.getElementById("end").innerHtml = pos.end;
+		
+	}	
+	
 	</script>
   </head>
   <body>
-  
-    <textarea id="value" value="" style="width: 100%; height: 300px;" placeholder="text goes here..." ></textarea>
+	<textarea id="value" value="" style="width: 100%; height: 300px;" placeholder="text goes here..." onmouseup="fetchPos", onkeyup="fetchPos" ontouchend="fecthPos"></textarea>
+	  <div style="float: right;position: relative;"><span id="start"></span><span id="end" style="margin-left: 12px;"></span></div>
 	<div>
 		<div class="buttonGroup">
 			<input type="button" value="URL Encode" onclick="urlencode();" /><br/>
