@@ -2,9 +2,11 @@
   <head>
     <title>DENCODER</title>
 	<style>
-	input { margin: 10px 10px 0 0; }
-	body { margin: 20px; font-family: sans-serif; }
-	.buttonGroup, .checkAlign { display: inline-block; vertical-align: top; }
+		body { margin: 20px; font-family: sans-serif; background-color: #353535; color: silver; }
+		input { margin: 10px 10px 0 0; background-color: darkgray; border-radius: 4pt }
+		textarea { width: 100%; height: 300px; max-width: 100%; background-color: rgb(36, 36, 36); color: silver; }
+		textarea::selection { color: #101010; background-color: darkgray; }
+		.buttonGroup, .checkAlign { display: inline-block; vertical-align: top; }
 	</style>
 	<script type="text/javascript">
 	
@@ -428,7 +430,7 @@
 	</script>
   </head>
   <body>
-	<textarea id="value" value="" style="width: 100%; height: 300px;" placeholder="text goes here..." onmouseup="fetchData();", onkeyup="fetchData();" ontouchend="fecthData();"></textarea>
+	<textarea id="value" value="" placeholder="Text goes here..." onmouseup="fetchData();", onkeyup="fetchData();" ontouchend="fecthData();"></textarea>
 	  <div style="float: right;position: relative;font-size: small;">line: <span id="line"></span><span style="margin-left: 10px;">column: </span><span id="col" style=""></span></div>
 	  <div style="float: right;clear: right;position: relative;font-size: small;">start: <span id="start"></span><span style="margin-left: 10px;">end: </span><span id="end" style=""></span><span style="margin-left: 10px;">length: </span><span id="length"></span></div>
 	<div>
