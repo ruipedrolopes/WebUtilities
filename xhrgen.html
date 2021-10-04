@@ -1,0 +1,133 @@
+<html>
+  <head>
+    <title>XHR Gen</title>
+	<style>
+		body { margin: 20px; font-family: sans-serif; background-color: #353535; color: silver; }
+		input[type=button] { margin: 10px 10px 0 0; background-color: darkgray; border-radius: 4pt }
+		input[type=text], textarea, select { background-color: rgb(36, 36, 36); color: silver; }
+		textarea { width: 100%; height: 300px; max-width: 100%; }
+		textarea::selection, input[type=text]::selection { color: #101010; background-color: darkgray; }
+		.buttonGroup, .checkAlign { display: inline-block; vertical-align: top; }
+	</style>
+	<script type="text/javascript">
+	
+	function addHeader(name, value) {
+		var headers = document.getElementById("headers");
+		headers.appendChild(newHeader(name, value));
+	}
+
+	function newHeader(name, value) {
+		var envelope = document.createElement("div");
+		var name = document.createElement("input");
+		name.setAttribute("type", "text");
+		name.setAttribute("placeholder", "Name");
+		if(name) {
+			name.setAttribute("value", name);
+		}
+
+		var value = document.createElement("input");
+		value.setAttribute("type", "text");
+		value.setAttribute("placeholder", "Value");
+		if(value) {
+			value.setAttribute("value", value);
+		}
+
+		var remove = document.createElement("input");
+		remove.setAttribute("type", "button");
+		remove.setAttribute("value", "-");
+		remove.setAttribute("onclick", "removeHeader(this)");
+
+		envelope.appendChild(name);
+		envelope.appendChild(value);
+		envelope.appendChild(remove);
+
+		return envelope;
+	}
+
+	function removeHeader(elem) {
+		var parent = elem.parentNode;
+		parent.parentNode.removeChild(parent);
+	}
+
+	function generate() {
+
+		var xhrRequest = "var xhr = new XMLHttpRequest();\n"
+		+ "xhr.open(\"" + document.getElementById("method").value + "\", '" + document.getElementById("url").value +  "', true);\n"
+
+
+		for(var i = 0; i < document.getElementById("headers").children.length; i++) {
+
+			var child = document.getElementById("headers").children[i];
+			var name = child.children[0].value;
+			var value = child.children[1].value;
+
+			if(name !== "" && value !== "") {
+				xhrRequest += "xhr.setRequestHeader(\"" + name + "\", \"" + value + "\");\n";
+			}
+		}
+
+
+        xhrRequest +=
+        "xhr.onreadystatechange = function() {\n"
+		+ "   if (this.readyState === XMLHttpRequest.DONE) {\n"
+		+ "       console.log(\"Status: \" + this.status);\n"
+		+ "       console.log(\"Headers: \" + this.getAllResponseHeaders());\n"
+		+ "       console.log(\"Response text: \" + this.responseText);\n"
+		+ "   }\n"
+		+ "}\n"
+		+ (hasRequestBody(document.getElementById("method").value) === true? "xhr.send(\"" + document.getElementById("body").value + "\");\n": "xhr.send();\n");
+
+		document.getElementById("result").value = xhrRequest;
+
+	}
+
+	function hasRequestBody(method) {
+		switch(method) {
+			case 'GET':
+			case 'HEAD':
+			case 'CONNECT':
+			case 'OPTIONS':
+			case 'TRACE':
+				return false;
+			default:
+				return true;
+		}
+	}
+	
+	</script>
+  </head>
+  	<body>
+		<div>
+			Method
+			<select id="method" onchange="">
+				<option selected>GET</option>
+				<option>POST</option>
+				<option>PUT</option>
+				<option>PATCH</option>
+				<option>DELETE</option>
+				<option>OPTIONS</option>
+				<option>HEAD</option>
+				<option>TRACE</option>
+				<option>CONNECT</option>
+			</select>
+			<input id="url" type="text" placeholder="URL / Path">
+		</div>
+		<div>
+			Headers
+			<input type="button" value="+" onclick="addHeader()"/>
+			<div id="headers">
+				<div>
+					<input type="text" placeholder="Name"/><input type="text" placeholder="Value"/><input type="button" value="-" />
+				</div>
+			</div>
+		</div>
+		<div>
+			<textarea id="body" placeholder="Request body"></textarea>
+		</div>
+		<input type="button" value="Generate" onclick="generate()">
+		<hr/>
+		<div>
+			<textarea id="result" readonly></textarea>
+		</div>
+	</body>
+</html>
