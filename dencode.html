@@ -258,6 +258,7 @@
 	function formatXml(xml) {
 		var formatted = '';
 		var reg = /(>)(<)(\/*)/g;
+		var paddingStr = formatWhitepacePadding();
 		xml = xml.replace(reg, '$1\r\n$2$3');
 		var pad = 0;
 		var lines = xml.split('\r\n');
@@ -278,7 +279,7 @@
 
 			var padding = '';
 			for (var i = 0; i < pad; i++) {
-				padding += '  ';
+				padding += paddingStr;
 			}
 
 			formatted += padding + node + '\r\n';
@@ -287,7 +288,10 @@
 		return formatted;
 	}
 	
-	
+	function formatWhitepacePadding() {
+		return document.getElementById("useTabs").checked == true? '\t': '  ';
+	}
+		
 	function prettyPrintXml() {
 		var textArea = document.getElementById("value");
 		textArea.value = formatXml(textArea.value);
@@ -295,7 +299,7 @@
 	
 	function prettyPrintJSON() {
 		var textArea = document.getElementById("value");
-		textArea.value = JSON.stringify(JSON.parse(textArea.value), null, '\t');
+		textArea.value = JSON.stringify(JSON.parse(textArea.value), null, formatWhitepacePadding());
 	}
 		
 	function minifyJSON() {
@@ -463,11 +467,15 @@
 			<input type="button" value="Java/C# String Unescape" onclick="JavaCSharp_StringUnescape();" />
 		</div>
 		
-		<input type="button" value="Pretty Print XML" onclick="prettyPrintXml();" />
+		<div class="checkAlign">
+			<input type="button" value="Pretty Print XML" onclick="prettyPrintXml();">
 		
-		<div class="buttonGroup">
-			<input type="button" value="Pretty Print JSON" onclick="prettyPrintJSON();" /><br/>
-			<input type="button" value="Minify JSON" onclick="minifyJSON();" />
+			<div class="buttonGroup">
+				<input type="button" value="Pretty Print JSON" onclick="prettyPrintJSON();"><br>
+				<input type="button" value="Minify JSON" onclick="minifyJSON();">
+			</div>
+                	<br/>
+			<input type="checkbox" id="useTabs">Use padding tabs
 		</div>
 		
 		<div class="buttonGroup">
