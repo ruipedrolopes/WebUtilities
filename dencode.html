@@ -252,7 +252,9 @@
 		
         function JavaCSharp_StringUnescape() {
 		var textArea = document.getElementById("value");
-		textArea.value = eval('new String(\'' + textArea.value + '\')');
+                var replacement = `##TEMP##${uuidv4()}##`;
+		var temp = eval(`new String(\'${textArea.value.replaceAll("'", replacement)}\')`);
+                textArea.value = temp.replaceAll(replacement, "'");
 	}
 	
 	function formatXml(xml) {
