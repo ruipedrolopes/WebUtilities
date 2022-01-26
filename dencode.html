@@ -446,7 +446,7 @@
 		
 		
         function info(text, delay) {
-		document.getElementById("messageType").innerText = "Info";
+		document.getElementById("messageType").innerHTML = "&#8505;&nbsp;Info";
 		document.getElementById("messageText").innerText = text;
 		
 		document.getElementById("message").style.background = "aliceblue";
@@ -457,7 +457,7 @@
 	}
 	
 	function warn(text, delay) {
-		document.getElementById("messageType").innerText = "Warning";
+		document.getElementById("messageType").innerHTML = "&#9888;&nbsp;Warning";
 		document.getElementById("messageText").innerText = text;
 		
 		document.getElementById("message").style.background = "blanchedalmond";
@@ -468,7 +468,7 @@
 	}
 		
 	function error(text, delay) {
-		document.getElementById("messageType").innerText = "Error";
+		document.getElementById("messageType").innerHTML = "&#9888;&nbsp;Error";
 		document.getElementById("messageText").innerText = text;
 		
 		document.getElementById("message").style.background = "coral";
