@@ -256,9 +256,14 @@
 		
         function JavaCSharp_StringUnescape() {
 		var textArea = document.getElementById("value");
-                var replacement = `##TEMP##${uuidv4()}##`;
-		var temp = eval(`new String(\'${textArea.value.replaceAll("'", replacement)}\')`);
-                textArea.value = temp.replaceAll(replacement, "'");
+                try {
+		  var replacement = `##TEMP##${uuidv4()}##`;
+		  var temp = eval(`new String(\'${textArea.value.replaceAll("'", replacement)}\')`);
+                  textArea.value = temp.replaceAll(replacement, "'");
+		} catch (error) {
+		  console.error(error);
+		  warn("Could not unescape. Check if you have any invalid character in an escaped string like line breaks.", 5000);
+		}
 	}
 	
 	function formatXml(xml) {
@@ -362,6 +367,8 @@
 
 	  /* Copy the text inside the text field */
 	  document.execCommand("copy");
+	  
+	  info("Copied new GUID to clipboard!");
 	}
 		
 	function toUpperCaseButtonClick() {
@@ -435,7 +442,41 @@
 		
 		document.getElementById("line").innerHTML = pos.line;
 		document.getElementById("col").innerHTML = pos.column;
-	}	
+	}
+		
+		
+        function info(text, delay) {
+		document.getElementById("messageType").innerText = "Info";
+		document.getElementById("messageText").innerText = text;
+		
+		document.getElementById("message").style.background = "aliceblue";
+		document.getElementById("message").style.color = "#7070A0";
+		
+		document.getElementById("message").style.display = "flex";
+		window.setTimeout(function() { document.getElementById("message").style.display = "none"; }, typeof delay == "number"? delay: 2000);
+	}
+	
+	function warn(text, delay) {
+		document.getElementById("messageType").innerText = "Warning";
+		document.getElementById("messageText").innerText = text;
+		
+		document.getElementById("message").style.background = "blanchedalmond";
+		document.getElementById("message").style.color = "#808040";
+		
+		document.getElementById("message").style.display = "flex";
+		window.setTimeout(function() { document.getElementById("message").style.display = "none"; }, typeof delay == "number"? delay: 2000);
+	}
+		
+	function error(text, delay) {
+		document.getElementById("messageType").innerText = "Error";
+		document.getElementById("messageText").innerText = text;
+		
+		document.getElementById("message").style.background = "coral";
+		document.getElementById("message").style.color = "#905050";
+		
+		document.getElementById("message").style.display = "flex";
+		window.setTimeout(function() { document.getElementById("message").style.display = "none"; }, typeof delay == "number"? delay: 2000);
+	}
 	
 	</script>
   </head>
@@ -496,8 +537,13 @@
 		
 	</div>
 	<hr/>
-	  <div>
-		  <input type="button" value="New GUID" onclick="generateGuid();" />
-	  </div>
+	<div>
+	  <input type="button" value="New GUID" onclick="generateGuid();" />
+	</div>
+	  
+	<div id="message" style="position: absolute;left: 10px;bottom: 10px;right: 10px;z-index: 1000;background: blanchedalmond;color: #909090;display: none;align-items: center;">
+          <strong id="messageType" style="padding: 10px;float: left;">Info</strong>
+	  <span id="messageText" style="padding: 3px;">.</span>
+        </div>
    </body>
 </html>
