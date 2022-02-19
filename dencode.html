@@ -10,473 +10,483 @@
 	</style>
 	<script type="text/javascript">
 		
-	window.onload = function() {
-		document.getElementById("value").focus();
-	}
-	
-	function urlencode() {
-		var textArea = document.getElementById("value");
-		textArea.value = encodeURIComponent(textArea.value);
-	}
-	
-	function urldecode() {
-		var textArea = document.getElementById("value");
-		try {
-			textArea.value = decodeURIComponent(textArea.value);
-		}
-		catch (e) {}
-	}
-	
-	function htmlencode() {
-		var textArea = document.getElementById("value");
-		textArea.value = document.createElement( 'a' ).appendChild( 
-			document.createTextNode( textArea.value ) ).parentNode.innerHTML;
-	}
-	
-	function htmlencode2() {
-		var textArea = document.getElementById("value");
-		
-		var result = "";
-		
-		for(var i = 0; i < textArea.value.length; i++) {
-			result += escapeHtmlChar(textArea.value[i], document.getElementById("xmlSafe").checked);
-		}
-		
-		textArea.value = result;
-	}
-	
-	function escapeHtmlChar(original, xmlSafe) {
-		var found=true;
-		
-		var thechar=original.charCodeAt(0);
-		
-		switch(thechar) {
-			case 60:return "&lt;"; break; //<
-			case 62:return "&gt;"; break; //>
-			case 34:return "&quot;"; break; //"
-			
-			case 38:return "&amp;"; break; //&
-			default: found = false; break;
-		}
-
-		if(!xmlSafe) {
-			switch(thechar) {
-				case 198:return "&AElig;"; break;
-				case 193:return "&Aacute;"; break;
-				case 194:return "&Acirc;"; break; 
-				case 192:return "&Agrave;"; break; 
-				case 197:return "&Aring;"; break; 
-				case 195:return "&Atilde;"; break; 
-				case 196:return "&Auml;"; break; 
-				case 199:return "&Ccedil;"; break; 
-				case 208:return "&ETH;"; break;
-				case 201:return "&Eacute;"; break; 
-				case 202:return "&Ecirc;"; break; 
-				case 200:return "&Egrave;"; break; 
-				case 203:return "&Euml;"; break;
-				case 205:return "&Iacute;"; break;
-				case 206:return "&Icirc;"; break; 
-				case 204:return "&Igrave;"; break; 
-				case 207:return "&Iuml;"; break;
-				case 209:return "&Ntilde;"; break; 
-				case 211:return "&Oacute;"; break;
-				case 212:return "&Ocirc;"; break; 
-				case 210:return "&Ograve;"; break; 
-				case 216:return "&Oslash;"; break; 
-				case 213:return "&Otilde;"; break; 
-				case 214:return "&Ouml;"; break;
-				case 222:return "&THORN;"; break; 
-				case 218:return "&Uacute;"; break; 
-				case 219:return "&Ucirc;"; break; 
-				case 217:return "&Ugrave;"; break; 
-				case 220:return "&Uuml;"; break; 
-				case 221:return "&Yacute;"; break;
-				case 225:return "&aacute;"; break; 
-				case 226:return "&acirc;"; break; 
-				case 230:return "&aelig;"; break; 
-				case 224:return "&agrave;"; break; 
-				case 229:return "&aring;"; break; 
-				case 227:return "&atilde;"; break; 
-				case 228:return "&auml;"; break; 
-				case 231:return "&ccedil;"; break; 
-				case 233:return "&eacute;"; break;
-				case 234:return "&ecirc;"; break; 
-				case 232:return "&egrave;"; break; 
-				case 240:return "&eth;"; break; 
-				case 235:return "&euml;"; break; 
-				case 237:return "&iacute;"; break; 
-				case 238:return "&icirc;"; break; 
-				case 236:return "&igrave;"; break; 
-				case 239:return "&iuml;"; break; 
-				case 241:return "&ntilde;"; break; 
-				case 243:return "&oacute;"; break;
-				case 244:return "&ocirc;"; break; 
-				case 242:return "&ograve;"; break; 
-				case 248:return "&oslash;"; break; 
-				case 245:return "&otilde;"; break;
-				case 246:return "&ouml;"; break; 
-				case 223:return "&szlig;"; break; 
-				case 254:return "&thorn;"; break; 
-				case 250:return "&uacute;"; break; 
-				case 251:return "&ucirc;"; break; 
-				case 249:return "&ugrave;"; break; 
-				case 252:return "&uuml;"; break; 
-				case 253:return "&yacute;"; break; 
-				case 255:return "&yuml;"; break;
-				case 162:return "&cent;"; break; 
-				default:
-					found=false;
-					break;
-			}
-		}
-		
-		if(!found)
-		{
-			var hex=new Array('0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f');
-			if(thechar>127) {
-				var c=thechar;
-				var a4=c%16;
-				c=Math.floor(c/16); 
-				var a3=c%16;
-				c=Math.floor(c/16);
-				var a2=c%16;
-				c=Math.floor(c/16);
-				var a1=c%16;
-			//	alert(a1);
-				return "&#x"+hex[a1]+hex[a2]+hex[a3]+hex[a4]+";";		
-			}
-			else
-			{
-				return original;
-			}
-		}
-	}
-
-	
-	function htmldecode() {
-		var textArea = document.getElementById("value");
-		var a = document.createElement( 'a' ); a.innerHTML = textArea.value;
-		textArea.value = a.textContent;
-	}
-	
-	function base64encode() {
-		var textArea = document.getElementById("value");
-		textArea.value = window.btoa( unescape( encodeURIComponent( textArea.value ) ) );
-	}
-	
-	function base64decode() {
-		var textArea = document.getElementById("value");
-		try {
-			textArea.value = decodeURIComponent( escape( window.atob( textArea.value ) ) );
-		}
-		catch (e) {}
-	}
-	
-	function hexencode() {
-		var textArea = document.getElementById("value");
-		var str = textArea.value;
-		var hex = "";
-		for(var i=0;i<str.length;i++) {
-			hex += ''+str.charCodeAt(i).toString(16);
-		}
-
-		textArea.value = hex;
-	}
-	
-	function hexdecode() {
-		var textArea = document.getElementById("value");
-		var hex  = textArea.value;
-		var str = "";
-		for (var i = 0; i < hex.length; i += 2){
-			str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-		}
-
-		textArea.value = str;
-	}
-	
-	
-	function encodeChar(original, skipNewLine) {
-		if(skipNewLine && original=='\n') return; 
- 	   	var found=true;
- 	   	var thecharchar=original.charAt(0);
-  	   	var thechar=original.charCodeAt(0);
-		switch(thecharchar) {
-				case '\n': return "\\n"; break; //newline
-				case '\r': return "\\r"; break; //Carriage return
-				case '\'': return "\\'"; break;
-				case '"': return "\\\""; break;
-				case '\\': return "\\\\"; break;
-				case '\t': return "\\t"; break;
-				case '\b': return "\\b"; break;
-				case '\f': return "\\f"; break;
-
-				default:
-					found=false; 
-					break;
-			}
-			if(!found)
-			{
-				var hex=new Array('0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f');
-				
-				if(thechar>127) {
-					var c=thechar;
-					var a4=c%16;
-					c=Math.floor(c/16); 
-					var a3=c%16;
-					c=Math.floor(c/16);
-					var a2=c%16;
-					c=Math.floor(c/16);
-					var a1=c%16;
-				//	alert(a1);
-					return "\\u"+hex[a1]+hex[a2]+hex[a3]+hex[a4]+"";		
-				}
-				else
-				{
-					return original;
-				}
-			}
-
-		
-	}
-	
-	function JavaCSharp_StringEscape() {
-		var textArea = document.getElementById("value");
-		
-		var preescape="" + textArea.value;
-		var escaped="";
-		
-		var i=0;
-		for(i=0;i<preescape.length;i++)
-		{
-			escaped=escaped+encodeChar(preescape.charAt(i),false);
-		}
-		
-		textArea.value=escaped;
-	}
-		
-        function JavaCSharp_StringUnescape() {
-		var textArea = document.getElementById("value");
+        window.onload = function() {
+            document.getElementById("value").focus();
+        }
+        
+        function transform(transformer, params) {
+            if(typeof transformer != "function") {
+                console.warn("Transformer is not a function.");
+                return;
+            }
+            
+            var value = document.getElementById("value").value;
+            
+            var result = transformer(value, params);
+            
+            if(typeof result != "string") {
+                console.warn("Transformer returned an invalid value.");
+                return;
+            }
+            
+            document.getElementById("value").value = result;
+        }
+        
+        var trs = {
+            urlencode: function(value) {
+                return encodeURIComponent(value);
+            },
+            
+            urldecode: function(value) {
                 try {
-		  var replacement = `##TEMP##${uuidv4()}##`;
-		  var temp = eval(`new String(\'${textArea.value.replaceAll("'", replacement)}\')`);
-                  textArea.value = temp.replaceAll(replacement, "'");
-		} catch (error) {
-		  console.error(error);
-		  warn("Could not unescape. Check if you have any invalid character in an escaped string like line breaks.", 5000);
-		}
-	}
-	
-	function formatXml(xml) {
-		var formatted = '';
-		var reg = /(>)(<)(\/*)/g;
-		var paddingStr = formatWhitepacePadding();
-		xml = xml.replace(reg, '$1\r\n$2$3');
-		var pad = 0;
-		var lines = xml.split('\r\n');
-		for (var index = 0; index < lines.length; index++) {
-			var node = lines[index];
-			var indent = 0;
-			if (node.match( /.+<\/\w[^>]*>$/ )) {
-				indent = 0;
-			} else if (node.match( /^<\/\w/ )) {
-				if (pad != 0) {
-					pad -= 1;
-				}
-			} else if (node.match( /^<\w[^>]*[^\/]>.*$/ )) {
-				indent = 1;
-			} else {
-				indent = 0;
-			}
+                    return decodeURIComponent(value);
+                }
+                catch (e) {
+                    // TODO show error
+                    return value;
+                }
+            },
 
-			var padding = '';
-			for (var i = 0; i < pad; i++) {
-				padding += paddingStr;
-			}
+            htmlencode: function(value) {
+                return document.createElement('a').appendChild( 
+                    document.createTextNode(value)).parentNode.innerHTML;
+            },
 
-			formatted += padding + node + '\r\n';
-			pad += indent;
-		}
-		return formatted;
-	}
-	
-	function formatWhitepacePadding() {
-		return document.getElementById("useTabs").checked == true? '\t': '  ';
-	}
-		
-	function prettyPrintXml() {
-		var textArea = document.getElementById("value");
-		textArea.value = formatXml(textArea.value);
-	}
-	
-	function prettyPrintJSON() {
-		var textArea = document.getElementById("value");
-		textArea.value = JSON.stringify(JSON.parse(textArea.value), null, formatWhitepacePadding());
-	}
-		
-	function minifyJSON() {
-		var textArea = document.getElementById("value");
-		textArea.value = JSON.stringify(JSON.parse(textArea.value));
-	}
-		
-	function encodeUrlToken(input) {
-		var ret = input.replace(/\+/g, "-").replace(/\//g, "_");
-		if (ret.length == 0)
-			return "";
-		var noPadding = ret.replace(/=+$/, ""); 
-		return noPadding + (ret.length - noPadding.length).toString();
-	}
-	function decodeUrlToken(input) {
-		var ec = parseInt(input.substring(input.length - 1));
-		var temp = input.replace(/\-/g, "+").replace(/\_/g, "/");
-		temp = temp.substring(0, temp.length - 1); 
-		return temp + "===".substring(0, ec);
-	}
-	
-	function urlTokenDecodeButtonClick() {
-		var textArea = document.getElementById("value");
-		textArea.value = decodeUrlToken(textArea.value);
-		base64decode();
-	}
-	
-	function urlTokenEncodeButtonClick() {
-		base64encode();
-		var textArea = document.getElementById("value");
-		textArea.value = encodeUrlToken(textArea.value);
-		
-	}
-	
+            htmlencode2: function(value, params) {
+                var result = "";
+                var xmlSafe = params.xmlSafe() == true;
+
+                for(var i = 0; i < value.length; i++) {
+                    result += escapeHtmlChar(value[i], xmlSafe);
+                }
+
+                return result;
+            },
+            
+            htmldecode: function(value) {
+                var a = document.createElement( 'a' ); a.innerHTML = value;
+                return a.textContent;
+            },
+            
+            base64encode: function(value) {
+                return window.btoa(unescape(encodeURIComponent(value)));
+            },
+
+            base64decode: function(value) {
+                try {
+                    return decodeURIComponent(escape(window.atob(value)));
+                }
+                catch (e) {
+                    // TODO show error
+                    return value;
+                }
+            },
+
+            hexencode: function(value) {
+                var hex = "";
+                for(var i=0; i < value.length; i++) {
+                    hex += '' + value.charCodeAt(i).toString(16);
+                }
+
+                return hex;
+            },
+
+            hexdecode: function(value) {
+                var hex = value;
+                var str = "";
+                for (var i = 0; i < hex.length; i += 2){
+                    str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+                }
+
+                return str;
+            },
+            
+            JavaCSharp_StringEscape: function(value) {
+                var preescape = "" + value;
+                var escaped = "";
+
+                var i = 0;
+                for(i = 0; i < preescape.length; i++)
+                {
+                    escaped = escaped + encodeChar(preescape.charAt(i), false);
+                }
+
+                return escaped;
+            },
+
+            JavaCSharp_StringUnescape: function(value) {
+                try {
+                    var replacement = `##TEMP##${uuidv4()}##`;
+                    var temp = eval(`new String(\'${value.replaceAll("'", replacement)}\')`);
+                    return temp.replaceAll(replacement, "'");
+                } catch (error) {
+                    console.error(error);
+                    warn("Could not unescape. Make sure you have no invalid characters like line breaks.", 5000);
+                    return value;
+                }
+            },
+
+            prettyPrintXml: function(value, params) {
+                var padding = params.getPadding();
+                return formatXml(value, padding);
+            },
+
+            prettyPrintJSON: function(value, params) {
+                var padding = params.getPadding();
+                return JSON.stringify(JSON.parse(value), null, padding);
+            },
+
+            minifyJSON: function(value) {
+                return JSON.stringify(JSON.parse(value));
+            },
+            
+            toUpperCase: function(value) {
+                return value.toUpperCase();
+            },
+
+            toLowerCase: function (value) {
+                return value.toLowerCase();
+            },
+            
+            generateGuid: function() {
+                return uuidv4();
+            },
+            
+            urlTokenDecode: function(value) {
+                var intermediate = decodeUrlToken(value);
+                return trs.base64decode(intermediate);
+            },
+
+            urlTokenEncode: function(value) {
+                var intermediate = base64encode(value);
+                return trs.encodeUrlToken(value);
+            }
+        }
+        
+        function xmlSafe() {
+             return document.getElementById("xmlSafe").checked;
+        }
+
+        function escapeHtmlChar(original, xmlSafe) {
+            var found=true;
+
+            var thechar=original.charCodeAt(0);
+
+            switch(thechar) {
+                case 60:return "&lt;"; break; //<
+                case 62:return "&gt;"; break; //>
+                case 34:return "&quot;"; break; //"
+
+                case 38:return "&amp;"; break; //&
+                default: found = false; break;
+            }
+
+            if(!xmlSafe) {
+                switch(thechar) {
+                    case 198:return "&AElig;"; break;
+                    case 193:return "&Aacute;"; break;
+                    case 194:return "&Acirc;"; break; 
+                    case 192:return "&Agrave;"; break; 
+                    case 197:return "&Aring;"; break; 
+                    case 195:return "&Atilde;"; break; 
+                    case 196:return "&Auml;"; break; 
+                    case 199:return "&Ccedil;"; break; 
+                    case 208:return "&ETH;"; break;
+                    case 201:return "&Eacute;"; break; 
+                    case 202:return "&Ecirc;"; break; 
+                    case 200:return "&Egrave;"; break; 
+                    case 203:return "&Euml;"; break;
+                    case 205:return "&Iacute;"; break;
+                    case 206:return "&Icirc;"; break; 
+                    case 204:return "&Igrave;"; break; 
+                    case 207:return "&Iuml;"; break;
+                    case 209:return "&Ntilde;"; break; 
+                    case 211:return "&Oacute;"; break;
+                    case 212:return "&Ocirc;"; break; 
+                    case 210:return "&Ograve;"; break; 
+                    case 216:return "&Oslash;"; break; 
+                    case 213:return "&Otilde;"; break; 
+                    case 214:return "&Ouml;"; break;
+                    case 222:return "&THORN;"; break; 
+                    case 218:return "&Uacute;"; break; 
+                    case 219:return "&Ucirc;"; break; 
+                    case 217:return "&Ugrave;"; break; 
+                    case 220:return "&Uuml;"; break; 
+                    case 221:return "&Yacute;"; break;
+                    case 225:return "&aacute;"; break; 
+                    case 226:return "&acirc;"; break; 
+                    case 230:return "&aelig;"; break; 
+                    case 224:return "&agrave;"; break; 
+                    case 229:return "&aring;"; break; 
+                    case 227:return "&atilde;"; break; 
+                    case 228:return "&auml;"; break; 
+                    case 231:return "&ccedil;"; break; 
+                    case 233:return "&eacute;"; break;
+                    case 234:return "&ecirc;"; break; 
+                    case 232:return "&egrave;"; break; 
+                    case 240:return "&eth;"; break; 
+                    case 235:return "&euml;"; break; 
+                    case 237:return "&iacute;"; break; 
+                    case 238:return "&icirc;"; break; 
+                    case 236:return "&igrave;"; break; 
+                    case 239:return "&iuml;"; break; 
+                    case 241:return "&ntilde;"; break; 
+                    case 243:return "&oacute;"; break;
+                    case 244:return "&ocirc;"; break; 
+                    case 242:return "&ograve;"; break; 
+                    case 248:return "&oslash;"; break; 
+                    case 245:return "&otilde;"; break;
+                    case 246:return "&ouml;"; break; 
+                    case 223:return "&szlig;"; break; 
+                    case 254:return "&thorn;"; break; 
+                    case 250:return "&uacute;"; break; 
+                    case 251:return "&ucirc;"; break; 
+                    case 249:return "&ugrave;"; break; 
+                    case 252:return "&uuml;"; break; 
+                    case 253:return "&yacute;"; break; 
+                    case 255:return "&yuml;"; break;
+                    case 162:return "&cent;"; break; 
+                    default:
+                        found=false;
+                        break;
+                }
+            }
+
+            if(!found)
+            {
+                var hex=new Array('0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f');
+                if(thechar>127) {
+                    var c=thechar;
+                    var a4=c%16;
+                    c=Math.floor(c/16); 
+                    var a3=c%16;
+                    c=Math.floor(c/16);
+                    var a2=c%16;
+                    c=Math.floor(c/16);
+                    var a1=c%16;
+                //	alert(a1);
+                    return "&#x"+hex[a1]+hex[a2]+hex[a3]+hex[a4]+";";		
+                }
+                else
+                {
+                    return original;
+                }
+            }
+        }
+
+        function encodeChar(original, skipNewLine) {
+            if(skipNewLine && original=='\n') return; 
+            var found=true;
+            var thecharchar=original.charAt(0);
+            var thechar=original.charCodeAt(0);
+            switch(thecharchar) {
+                    case '\n': return "\\n"; break; //newline
+                    case '\r': return "\\r"; break; //Carriage return
+                    case '\'': return "\\'"; break;
+                    case '"': return "\\\""; break;
+                    case '\\': return "\\\\"; break;
+                    case '\t': return "\\t"; break;
+                    case '\b': return "\\b"; break;
+                    case '\f': return "\\f"; break;
+
+                    default:
+                        found=false; 
+                        break;
+                }
+                if(!found)
+                {
+                    var hex=new Array('0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f');
+
+                    if(thechar>127) {
+                        var c=thechar;
+                        var a4=c%16;
+                        c=Math.floor(c/16); 
+                        var a3=c%16;
+                        c=Math.floor(c/16);
+                        var a2=c%16;
+                        c=Math.floor(c/16);
+                        var a1=c%16;
+                    //	alert(a1);
+                        return "\\u"+hex[a1]+hex[a2]+hex[a3]+hex[a4]+"";		
+                    }
+                    else
+                    {
+                        return original;
+                    }
+                }
+
+
+        }
+
+        
+        function formatXml(xml, padding) {
+            var formatted = '';
+            var reg = /(>)(<)(\/*)/g;
+            var paddingStr = padding;
+            xml = xml.replace(reg, '$1\r\n$2$3');
+            var pad = 0;
+            var lines = xml.split('\r\n');
+            for (var index = 0; index < lines.length; index++) {
+                var node = lines[index];
+                var indent = 0;
+                if (node.match( /.+<\/\w[^>]*>$/ )) {
+                    indent = 0;
+                } else if (node.match( /^<\/\w/ )) {
+                    if (pad != 0) {
+                        pad -= 1;
+                    }
+                } else if (node.match( /^<\w[^>]*[^\/]>.*$/ )) {
+                    indent = 1;
+                } else {
+                    indent = 0;
+                }
+
+                var padding = '';
+                for (var i = 0; i < pad; i++) {
+                    padding += paddingStr;
+                }
+
+                formatted += padding + node + '\r\n';
+                pad += indent;
+            }
+            return formatted;
+        }
+
+        function formatWhitepacePadding() {
+            return document.getElementById("useTabs").checked == true? '\t': '  ';
+        }
+
+        function encodeUrlToken(input) {
+            var ret = input.replace(/\+/g, "-").replace(/\//g, "_");
+            if (ret.length == 0)
+                return "";
+            var noPadding = ret.replace(/=+$/, ""); 
+            return noPadding + (ret.length - noPadding.length).toString();
+        }
+        function decodeUrlToken(input) {
+            var ec = parseInt(input.substring(input.length - 1));
+            var temp = input.replace(/\-/g, "+").replace(/\_/g, "/");
+            temp = temp.substring(0, temp.length - 1); 
+            return temp + "===".substring(0, ec);
+        }
+
+        
+
         function uuidv4() {
-	   return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-		(c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-	   );
-	}
-	
-	function generateGuid() {
-		var textArea = document.getElementById("value");
-		textArea.value = uuidv4();
-		copyToClipboard();
-	}
-	
-	function copyToClipboard() {
-	  /* Get the text field */
-	  var textArea = document.getElementById("value");
+           return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+                (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+           );
+        }
 
-	  /* Select the text field */
-	  textArea.select();
-	  textArea.setSelectionRange(0, 99999); /*For mobile devices*/
+        function copyToClipboard() {
+          /* Get the text field */
+          var textArea = document.getElementById("value");
 
-	  /* Copy the text inside the text field */
-	  document.execCommand("copy");
-	  
-	  info("Copied new GUID to clipboard!");
-	}
-		
-	function toUpperCaseButtonClick() {
-		var textArea = document.getElementById("value");
-		textArea.value = textArea.value.toUpperCase();
-	}
-		
-	function toLowerCaseButtonClick() {
-		var textArea = document.getElementById("value");
-		textArea.value = textArea.value.toLowerCase();
-	}
+          /* Select the text field */
+          textArea.select();
+          textArea.setSelectionRange(0, 99999); /*For mobile devices*/
 
-		
-	function getCursorPos(input) {
-	    if ("selectionStart" in input && document.activeElement == input) {
-		return {
-		    start: input.selectionStart,
-		    end: input.selectionEnd,
-		    line: input.value.substr(0, input.selectionStart).split(/\r?\n|\r/).length,
-		    column: getCol(input, input.selectionStart)
-		};
-	    }
-	    else if (input.createTextRange) {
-		var sel = document.selection.createRange();
-		if (sel.parentElement() === input) {
-		    var rng = input.createTextRange();
-		    rng.moveToBookmark(sel.getBookmark());
-		    for (var len = 0;
-			     rng.compareEndPoints("EndToStart", rng) > 0;
-			     rng.moveEnd("character", -1)) {
-			len++;
-		    }
-		    rng.setEndPoint("StartToStart", input.createTextRange());
-		    for (var pos = { start: 0, end: len };
-			     rng.compareEndPoints("EndToStart", rng) > 0;
-			     rng.moveEnd("character", -1)) {
-			pos.start++;
-			pos.end++;
-		    }
-			
-		    pos.line = input.value.substr(0, input.selectionStart).split(/\r?\n|\r/).length;
-		    pos.column = getCol(input, input.selectionStart);
-		    return pos;
-		}
-	    }
-	    return {
-		    start: -1,
-		    end: -1,
-		    line: -1,
-		    column: -1
-		};
-	}
-		
-		
-	function getCol(value, start) {
-		var index = start;
-		var char = '\n';
-		do {
-			char = value.value[-1 + index--];
-		} while(char != '\n' && char != '\r' && index >= 0);
-		return start - index - 1;
-	}
-	
-	function fetchData() {
-		var value = document.getElementById("value");
-		var pos = getCursorPos(value);
-		
-		document.getElementById("start").innerHTML = pos.start;
-		document.getElementById("end").innerHTML = pos.end;
-		document.getElementById("length").innerHTML = value.value.length;
-		
-		document.getElementById("line").innerHTML = pos.line;
-		document.getElementById("col").innerHTML = pos.column;
-	}
-		
-		
+          /* Copy the text inside the text field */
+          document.execCommand("copy");
+
+          info("Copied new GUID to clipboard!");
+        }
+
+        function getCursorPos(input) {
+            if ("selectionStart" in input && document.activeElement == input) {
+            return {
+                start: input.selectionStart,
+                end: input.selectionEnd,
+                line: input.value.substr(0, input.selectionStart).split(/\r?\n|\r/).length,
+                column: getCol(input, input.selectionStart)
+            };
+            }
+            else if (input.createTextRange) {
+            var sel = document.selection.createRange();
+            if (sel.parentElement() === input) {
+                var rng = input.createTextRange();
+                rng.moveToBookmark(sel.getBookmark());
+                for (var len = 0;
+                     rng.compareEndPoints("EndToStart", rng) > 0;
+                     rng.moveEnd("character", -1)) {
+                len++;
+                }
+                rng.setEndPoint("StartToStart", input.createTextRange());
+                for (var pos = { start: 0, end: len };
+                     rng.compareEndPoints("EndToStart", rng) > 0;
+                     rng.moveEnd("character", -1)) {
+                pos.start++;
+                pos.end++;
+                }
+
+                pos.line = input.value.substr(0, input.selectionStart).split(/\r?\n|\r/).length;
+                pos.column = getCol(input, input.selectionStart);
+                return pos;
+            }
+            }
+            return {
+                start: -1,
+                end: -1,
+                line: -1,
+                column: -1
+            };
+        }
+
+
+        function getCol(value, start) {
+            var index = start;
+            var char = '\n';
+            do {
+                char = value.value[-1 + index--];
+            } while(char != '\n' && char != '\r' && index >= 0);
+            return start - index - 1;
+        }
+
+        function fetchData() {
+            var value = document.getElementById("value");
+            var pos = getCursorPos(value);
+
+            document.getElementById("start").innerHTML = pos.start;
+            document.getElementById("end").innerHTML = pos.end;
+            document.getElementById("length").innerHTML = value.value.length;
+
+            document.getElementById("line").innerHTML = pos.line;
+            document.getElementById("col").innerHTML = pos.column;
+        }
+
+
         function info(text, delay) {
-		document.getElementById("messageType").innerHTML = "&#8505;&nbsp;Info";
-		document.getElementById("messageText").innerText = text;
-		
-		document.getElementById("message").style.background = "aliceblue";
-		document.getElementById("message").style.color = "#7070A0";
-		
-		document.getElementById("message").style.display = "flex";
-		window.setTimeout(function() { document.getElementById("message").style.display = "none"; }, typeof delay == "number"? delay: 2000);
-	}
-	
-	function warn(text, delay) {
-		document.getElementById("messageType").innerHTML = "&#9888;&nbsp;Warning";
-		document.getElementById("messageText").innerText = text;
-		
-		document.getElementById("message").style.background = "blanchedalmond";
-		document.getElementById("message").style.color = "#806640";
-		
-		document.getElementById("message").style.display = "flex";
-		window.setTimeout(function() { document.getElementById("message").style.display = "none"; }, typeof delay == "number"? delay: 2000);
-	}
-		
-	function error(text, delay) {
-		document.getElementById("messageType").innerHTML = "&#9888;&nbsp;Error";
-		document.getElementById("messageText").innerText = text;
-		
-		document.getElementById("message").style.background = "coral";
-		document.getElementById("message").style.color = "#905050";
-		
-		document.getElementById("message").style.display = "flex";
-		window.setTimeout(function() { document.getElementById("message").style.display = "none"; }, typeof delay == "number"? delay: 2000);
-	}
+            document.getElementById("messageType").innerHTML = "&#8505;&nbsp;Info";
+            document.getElementById("messageText").innerText = text;
+
+            document.getElementById("message").style.background = "aliceblue";
+            document.getElementById("message").style.color = "#7070A0";
+
+            document.getElementById("message").style.display = "flex";
+            window.setTimeout(function() { document.getElementById("message").style.display = "none"; }, typeof delay == "number"? delay: 2000);
+        }
+
+        function warn(text, delay) {
+            document.getElementById("messageType").innerHTML = "&#9888;&nbsp;Warning";
+            document.getElementById("messageText").innerText = text;
+
+            document.getElementById("message").style.background = "blanchedalmond";
+            document.getElementById("message").style.color = "#806640";
+
+            document.getElementById("message").style.display = "flex";
+            window.setTimeout(function() { document.getElementById("message").style.display = "none"; }, typeof delay == "number"? delay: 2000);
+        }
+
+        function error(text, delay) {
+            document.getElementById("messageType").innerHTML = "&#9888;&nbsp;Error";
+            document.getElementById("messageText").innerText = text;
+
+            document.getElementById("message").style.background = "coral";
+            document.getElementById("message").style.color = "#905050";
+
+            document.getElementById("message").style.display = "flex";
+            window.setTimeout(function() { document.getElementById("message").style.display = "none"; }, typeof delay == "number"? delay: 2000);
+        }
 	
 	</script>
   </head>
@@ -486,59 +496,59 @@
 	  <div style="float: right;clear: right;position: relative;font-size: small;">start: <span id="start"></span><span style="margin-left: 10px;">end: </span><span id="end" style=""></span><span style="margin-left: 10px;">length: </span><span id="length"></span></div>
 	<div>
 		<div class="buttonGroup">
-			<input type="button" value="URL Encode" onclick="urlencode();" /><br/>
-			<input type="button" value="URL Decode" onclick="urldecode();" />
+			<input type="button" value="URL Encode" onclick="transform(trs.urlencode);" /><br/>
+			<input type="button" value="URL Decode" onclick="transform(trs.urldecode);" />
 		</div>
 		<div class="buttonGroup">
 			<div class="checkAlign">
-				<input type="button" value="HTML Encode" onclick="htmlencode2();" />
+				<input type="button" value="HTML Encode" onclick="transform(trs.htmlencode2, {'xmlSafe': xmlSafe});" />
 				<br/>
 				<input type="checkbox" checked="checked" id="xmlSafe" />XML safe?
 			</div>
 			<br/>
-			<input type="button" value="HTML Decode" onclick="htmldecode();" />
+			<input type="button" value="HTML Decode" onclick="transform(trs.htmldecode);" />
 		</div>
 		
 		<div class="buttonGroup">
-			<input type="button" value="Base64 Encode" onclick="base64encode();" /><br/>
-			<input type="button" value="Base64 Decode" onclick="base64decode();" />
+			<input type="button" value="Base64 Encode" onclick="transform(trs.base64encode);" /><br/>
+			<input type="button" value="Base64 Decode" onclick="transform(trs.base64decode);" />
 		</div>
 		
 		<div class="buttonGroup">
-			<input type="button" value="HEX Encode" onclick="hexencode();" /><br/>
-			<input type="button" value="HEX Decode" onclick="hexdecode();" />
+			<input type="button" value="HEX Encode" onclick="transform(trs.hexencode);" /><br/>
+			<input type="button" value="HEX Decode" onclick="transform(trs.hexdecode);" />
 		</div>
 		
 		<div class="buttonGroup">
-			<input type="button" value="Java/C# String Escape" onclick="JavaCSharp_StringEscape();" /><br/>
-			<input type="button" value="Java/C# String Unescape" onclick="JavaCSharp_StringUnescape();" />
+			<input type="button" value="Java/C# String Escape" onclick="transform(trs.JavaCSharp_StringEscape);" /><br/>
+			<input type="button" value="Java/C# String Unescape" onclick="transform(trs.JavaCSharp_StringUnescape);" />
 		</div>
 		
 		<div class="checkAlign">
-			<input type="button" value="Pretty Print XML" onclick="prettyPrintXml();">
+			<input type="button" value="Pretty Print XML" onclick="transform(trs.prettyPrintXml, { 'getPadding': formatWhitepacePadding });">
 		
 			<div class="buttonGroup">
-				<input type="button" value="Pretty Print JSON" onclick="prettyPrintJSON();"><br>
-				<input type="button" value="Minify JSON" onclick="minifyJSON();">
+				<input type="button" value="Pretty Print JSON" onclick="transform(trs.prettyPrintJSON, { 'getPadding': formatWhitepacePadding });"><br/>
+				<input type="button" value="Minify JSON" onclick="transform(trs.minifyJSON);">
 			</div>
-                	<br/>
+            <br/>
 			<input type="checkbox" id="useTabs">Use padding tabs
 		</div>
 		
 		<div class="buttonGroup">
-			<input type="button" value="Url Token Encode" onclick="urlTokenEncodeButtonClick();" /><br/>
-			<input type="button" value="Url Token Decode" onclick="urlTokenDecodeButtonClick();" />
+			<input type="button" value="Url Token Encode" onclick="transform(trs.urlTokenEncode);" /><br/>
+			<input type="button" value="Url Token Decode" onclick="transform(trs.urlTokenDecode);" />
 		</div>
 		
 		<div class="buttonGroup">
-			<input type="button" value="To Upper Case" onclick="toUpperCaseButtonClick();" /><br/>
-			<input type="button" value="To Lower Case" onclick="toLowerCaseButtonClick();" />
+			<input type="button" value="To Upper Case" onclick="transform(trs.toUpperCase);" /><br/>
+			<input type="button" value="To Lower Case" onclick="transform(trs.toLowerCase);" />
 		</div>
 		
 	</div>
 	<hr/>
 	<div>
-	  <input type="button" value="New GUID" onclick="generateGuid();" />
+	  <input type="button" value="New GUID" onclick="transform(trs.generateGuid);" />
 	</div>
 	  
 	<div id="message" style="position: absolute;left: 10px;bottom: 10px;right: 10px;z-index: 1000;background: blanchedalmond;color: #909090;display: none;align-items: center;">
