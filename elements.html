@@ -107,6 +107,37 @@
 
     /* End - Toggle  */
 
+    /* Dots */
+    .dot {
+      height: 7px;
+      width: 7px;
+      background-color: rgb(194, 194, 194);
+      background-color: white;
+      border-radius: 50%;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .dot-spacing {
+      margin: 6px;
+    }
+
+    .dot-shadow {
+      box-shadow: 2px 2px 5px rgb(66, 66, 66);
+    }
+
+    .dot-gradient {
+      background: radial-gradient(circle, rgb(192, 192, 192) 10%, rgb(216, 216, 216) 50%, rgb(255, 255, 255) 100%);
+    }
+    .dot-selected {
+      height: 12px;
+      width: 12px;
+      border-style: solid;
+      border-width: 2px;
+      border-color: #858585;
+    }
+    /* End - Dots */
+
   </style>
 </head>
 
@@ -143,9 +174,40 @@
       <input type="checkbox" checked>
       <span class="slider round slider-hello"></span>
     </label>
-
+    <hr />
+    <h1>Dots</h1>
+    <div style="user-select: none;background-color: white; /*position: fixed;width: 100%;z-index: 10;bottom: 0px;*/">
+      using text<br/>
+      <span style="font-size: 16px;color: white;vertical-align: middle;line-height: 16px;display: inline-block;margin: 5px; text-shadow: 2px 2px 5px black;">●</span>
+      <span style="font-size:20px;color: white;vertical-align: middle;line-height: 20px;display: inline-block;margin: 5px; text-shadow: 2px 2px 5px black;">●</span>
+      <span style="font-size: 16px;color: white;vertical-align: middle;line-height: 16px;display: inline-block;margin: 5px; text-shadow: 2px 2px 5px black;">●</span>
+      <br/>
+      not using text<br/>
+      <span class="dot dot-spacing dot-shadow"></span>
+      <span class="dot dot-spacing dot-shadow dot-selected"></span>
+      <span class="dot dot-spacing dot-shadow"></span>
+      <br/>
+      <span class="dot dot-spacing dot-shadow dot-gradient"></span>
+      <span class="dot dot-spacing dot-shadow dot-gradient dot-selected"></span>
+      <span class="dot dot-spacing dot-shadow dot-gradient"></span>
+    </div>
+    <div style="user-select: none;background-color: black; /*position: fixed;width: 100%;z-index: 10;bottom: 0px;*/">
+      using text<br/>
+      <span style="font-size: 16px;color: white;vertical-align: middle;line-height: 16px;display: inline-block;margin: 5px;text-shadow: 2px 2px 5px black;">●</span>
+      <span style="font-size:20px;color: white;vertical-align: middle;line-height: 20px;display: inline-block;margin: 5px;text-shadow: 2px 2px 5px black;">●</span>
+      <span style="font-size: 16px;color: white;vertical-align: middle;line-height: 16px;display: inline-block;margin: 5px;text-shadow: 2px 2px 5px black;">●</span>
+      <br/>
+      not using text<br/>
+      <span class="dot dot-spacing dot-shadow"></span>
+      <span class="dot dot-spacing dot-shadow dot-selected"></span>
+      <span class="dot dot-spacing dot-shadow"></span>
+      <br/>
+      <span class="dot dot-spacing dot-shadow dot-gradient"></span>
+      <span class="dot dot-spacing dot-shadow dot-gradient dot-selected"></span>
+      <span class="dot dot-spacing dot-shadow dot-gradient"></span>
+    </div>
   </div>
-  <hr />
+  
 </body>
 
 </html>
