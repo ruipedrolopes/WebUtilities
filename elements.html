@@ -107,6 +107,78 @@
       border-radius: 50%;
     }
 
+    .off-on {
+      width: 40px;
+      height: 20px;
+      position: relative;
+      display: inline-block;
+      margin: 5px 0;
+    }
+
+    .off-on-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+    .off-on input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      margin-top: 16px;
+    }
+    .off-on-slider:after {
+      line-height: 20px;
+    }
+    .off-on-slider:before {
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+      box-shadow: 1px 1px 3px 1px #434343ba
+    }
+
+    input:checked+.off-on-slider {
+      background-color: #2196F3;
+    }
+
+    input:focus+.off-on-slider {
+      box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked+.off-on-slider:before {
+      -webkit-transform: translateX(20px);
+      -ms-transform: translateX(20px);
+      transform: translateX(20px);
+    }
+
+    .off-on-slider.round {
+      border-radius: 10px;
+    }
+
+    .off-on-slider.round:before {
+      border-radius: 50%;
+    }
+
+    .off-on+label {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .off-on+label:before {
+      content: " ";
+    }
+
     /* End - Toggle  */
 
     /* Dots */
@@ -229,6 +301,29 @@
       <input type="checkbox" checked>
       <span class="slider round slider-hello"></span>
     </label>
+    <hr />
+
+    <input id="cb1" type="checkbox" checked=""><label for="cb1">hello</label>
+
+    <label class="off-on">
+      <input type="checkbox"/>
+      <span class="off-on-slider round"></span>
+    </label>
+    <label class="off-on">
+      <input id="cb2" type="checkbox" checked/>
+      <span class="off-on-slider round"></span>
+    </label><label for="cb2">hello</label>
+    <br/>
+    <label class="off-on">
+      <input id="cb3" type="checkbox" checked/>
+      <span class="off-on-slider round"></span>
+    </label><label for="cb3">hello</label>
+    <br/>
+    <label class="off-on">
+      <input id="cb3" type="checkbox" checked/>
+      <span class="off-on-slider round"></span>
+    </label><label for="cb3">hello</label>
+
     <hr />
     <h1>CSS Buttons</h1>
     <button class="button button-xsmall">Hello</button><br/>

@@ -38,7 +38,17 @@
             vertical-align: top;
         }
 
-        .buttonGroup > label { user-select: none; }
+        .settingsGroup {
+            padding-left: 5px;
+        }
+        
+        .settingsGroup>label {
+            line-height: 30px;
+        }
+
+        .buttonGroup>label {
+            user-select: none;
+        }
 
         input[type=checkbox] {
             margin: revert;
@@ -50,7 +60,7 @@
             color: silver;
             margin: revert;
         }
-        
+
         input[type=range] {
             margin: revert;
         }
@@ -174,11 +184,89 @@
             padding: 2px 12px;
             font-size: 14px;
         }
+
+
+        .off-on {
+            width: 40px;
+            height: 20px;
+            position: relative;
+            display: inline-block;
+            margin: 5px 0;
+        }
+
+        .off-on-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .off-on input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            margin-top: 16px;
+        }
+
+        .off-on-slider:after {
+            line-height: 20px;
+        }
+
+        .off-on-slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+            box-shadow: 1px 1px 3px 1px #434343ba
+        }
+
+        input:checked+.off-on-slider {
+            background-color: #2196F3;
+        }
+
+        input:focus+.off-on-slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked+.off-on-slider:before {
+            -webkit-transform: translateX(20px);
+            -ms-transform: translateX(20px);
+            transform: translateX(20px);
+        }
+
+        .off-on-slider.round {
+            border-radius: 10px;
+        }
+
+        .off-on-slider.round:before {
+            border-radius: 50%;
+        }
+
+        .off-on+label {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .off-on+label:before {
+            content: " ";
+        }
     </style>
     <script type="text/javascript">
 
         window.onload = function () {
             document.getElementById("value").focus();
+
+            document.getElementById("rndSpecialChars").onkeydown = preventInvalidSpecialChars;
         }
 
         //TODO add full text/selection transform mode
@@ -240,7 +328,7 @@
             uuidv4: function () {
                 try {
                     return crypto.randomUUID();
-                } catch(e) {
+                } catch (e) {
                     //fallback in case of insecure context being used or unavailable
                     console.error(e);
                     return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
@@ -248,7 +336,7 @@
                     );
                 }
 
-                
+
             }
         };
 
@@ -264,30 +352,30 @@
                     return auxiliary.uuidv4();
                 },
 
-                clear: function() {
+                clear: function () {
                     return "";
                 },
 
-                randomString: function(params) {
+                randomString: function (params) {
                     var rndStringParams = params.loadParams();
                     var length = rndStringParams.length;
 
                     var validTypes = [];
 
-                    if(rndStringParams.lower == true) {
-                        validTypes.push(function(r) { return String.fromCharCode(r % 26 + 97); })
+                    if (rndStringParams.lower == true) {
+                        validTypes.push(function (r) { return String.fromCharCode(r % 26 + 97); })
                     }
 
-                    if(rndStringParams.upper == true) {
-                        validTypes.push(function(r) { return String.fromCharCode(r % 26 + 65); })
+                    if (rndStringParams.upper == true) {
+                        validTypes.push(function (r) { return String.fromCharCode(r % 26 + 65); })
                     }
 
-                    if(rndStringParams.digits == true) {
-                        validTypes.push(function(r) { return String.fromCharCode(r % 10 + 48); })
+                    if (rndStringParams.digits == true) {
+                        validTypes.push(function (r) { return String.fromCharCode(r % 10 + 48); })
                     }
-                    
-                    if(rndStringParams.special == true && rndStringParams.specialChars.length > 0) {
-                        validTypes.push(function(r) {
+
+                    if (rndStringParams.special == true && rndStringParams.specialChars.length > 0) {
+                        validTypes.push(function (r) {
                             var chars = rndStringParams.specialChars;
                             return chars[r % chars.length];
                         })
@@ -296,31 +384,31 @@
                     //[\]^_!"#$%&'()*+,-./`:;<=>?{|}~
                     // escaped: "[\\]^_!\"#$%&\'()*+,-./`:;<=>?{|}~"
                     // pattern: [\[\\\]\^_!"#\$%&'\(\)\*\+,-\.\/`:;<=>\?\{\|\}~]+
-                    
+
                     var result = "";
 
-                    if(validTypes.length > 0) {
+                    if (validTypes.length > 0) {
                         var types = crypto.getRandomValues(new Uint8Array(length));
                         var chars = crypto.getRandomValues(new Uint8Array(length));
 
-                        for(var i = 0; i < length; i++) {
+                        for (var i = 0; i < length; i++) {
                             var type = types[i] % validTypes.length;
                             result += validTypes[type](chars[i]);
                         }
                     }
-                    
+
                     return result;
                 }
             }
         })();
-        
-        
+
+
         //Transformers
         var trs = (function () {
 
             //private functions
 
-            
+
 
             function escapeHtmlChar(original, xmlSafe) {
                 var found = true;
@@ -644,7 +732,7 @@
                     return trs.encodeUrlToken(value);
                 },
 
-                replicate: function(value) {
+                replicate: function (value) {
                     return value + value;
                 }
 
@@ -718,7 +806,7 @@
         function formatWhitepacePadding() {
             return document.getElementById("useTabs").checked == true ? '\t' : '  ';
         }
-        
+
         function xmlSafe() {
             return document.getElementById("xmlSafe").checked;
         }
@@ -746,21 +834,21 @@
         }
 
         function rndSpecialChanged(event) {
-            if(event.target.checked == false) {
+            if (event.target.checked == false) {
                 document.getElementById('rndSpecialChars').setAttribute("disabled", "");
             } else {
                 document.getElementById('rndSpecialChars').removeAttribute("disabled");
             }
         }
-        
+
         var stopRndChangeEvent = false;
-        
+
         function rndStringLengthChanged(event) {
             document.getElementById("rndStringLengthLabel").innerText = document.getElementById("rndStringLength").value;
         }
 
         function preventInvalidSpecialChars(event) {
-            if(event.keyCode < 32) {
+            if (event.keyCode < 32) {
                 return true;
             }
             var pattern = new RegExp(event.target.pattern);
@@ -775,7 +863,7 @@
                 upper: document.getElementById("rndUpper").checked,
                 digits: document.getElementById("rndDigits").checked,
                 special: document.getElementById("rndSpecial").checked,
-                specialChars: document.getElementById("rndSpecial").checked == true? document.getElementById("rndSpecialChars").value: ""
+                specialChars: document.getElementById("rndSpecial").checked == true ? document.getElementById("rndSpecialChars").value : ""
             };
         }
 
@@ -791,7 +879,7 @@
 
             var id = auxiliary.uuidv4();
             messageId = id;
-            window.setTimeout(function () { if(id != messageId) { return; } document.getElementById("message").style.display = "none"; }, typeof delay == "number" ? delay : 2000);
+            window.setTimeout(function () { if (id != messageId) { return; } document.getElementById("message").style.display = "none"; }, typeof delay == "number" ? delay : 2000);
         }
 
         function warn(text, delay) {
@@ -805,7 +893,7 @@
 
             var id = auxiliary.uuidv4();
             messageId = id;
-            window.setTimeout(function () { if(id != messageId) { return; } document.getElementById("message").style.display = "none"; }, typeof delay == "number" ? delay : 2000);
+            window.setTimeout(function () { if (id != messageId) { return; } document.getElementById("message").style.display = "none"; }, typeof delay == "number" ? delay : 2000);
         }
 
         function error(text, delay) {
@@ -819,7 +907,7 @@
 
             var id = auxiliary.uuidv4();
             messageId = id;
-            window.setTimeout(function () { if(id != messageId) { return; } document.getElementById("message").style.display = "none"; }, typeof delay == "number" ? delay : 2000);
+            window.setTimeout(function () { if (id != messageId) { return; } document.getElementById("message").style.display = "none"; }, typeof delay == "number" ? delay : 2000);
         }
 
     </script>
@@ -831,36 +919,46 @@
     <div style="float: right;position: relative;font-size: small;">Line: <span id="line"></span><span
             style="margin-left: 10px;">Column: </span><span id="col"></span></div>
     <div style="float: right;clear: right;position: relative;font-size: small;">Start: <span id="start"></span><span
-            style="margin-left: 10px;">End: </span><span id="end"></span><span
-            style="margin-left: 10px;">Length: </span><span id="length"></span></div>
+            style="margin-left: 10px;">End: </span><span id="end"></span><span style="margin-left: 10px;">Length:
+        </span><span id="length"></span></div>
     <div>
         <!--TODO review/improve url and html encoders-->
         <div class="buttonGroup">
-            <input type="button" class="button button-xsmall" value="URL Encode" onclick="transform(trs.urlencode);" /><br />
+            <input type="button" class="button button-xsmall" value="URL Encode"
+                onclick="transform(trs.urlencode);" /><br />
             <input type="button" class="button button-xsmall" value="URL Decode" onclick="transform(trs.urldecode);" />
         </div>
         <div class="buttonGroup">
-            <input type="button" class="button button-xsmall" value="HTML Encode" onclick="transform(trs.htmlencode2, {'xmlSafe': xmlSafe});" />
+            <input type="button" class="button button-xsmall" value="HTML Encode"
+                onclick="transform(trs.htmlencode2, {'xmlSafe': xmlSafe});" />
             <br />
-            <input type="checkbox" checked="checked" id="xmlSafe" /><label for="xmlSafe">XML safe?</label>
+            <label class="off-on">
+                <input id="xmlSafe" type="checkbox" checked />
+                <span class="off-on-slider round"></span>
+            </label><label for="xmlSafe">XML safe?</label>
             <br />
-            <input type="button" class="button button-xsmall" value="HTML Decode" onclick="transform(trs.htmldecode);" />
+            <input type="button" class="button button-xsmall" value="HTML Decode"
+                onclick="transform(trs.htmldecode);" />
         </div>
 
         <div class="buttonGroup">
-            <input type="button" class="button button-xsmall" value="Base64 Encode" onclick="transform(trs.base64encode);" /><br />
-            <input type="button" class="button button-xsmall" value="Base64 Decode" onclick="transform(trs.base64decode);" />
+            <input type="button" class="button button-xsmall" value="Base64 Encode"
+                onclick="transform(trs.base64encode);" /><br />
+            <input type="button" class="button button-xsmall" value="Base64 Decode"
+                onclick="transform(trs.base64decode);" />
         </div>
 
         <div class="buttonGroup">
-            <input type="button" class="button button-xsmall" value="HEX Encode" onclick="transform(trs.hexencode);" /><br />
+            <input type="button" class="button button-xsmall" value="HEX Encode"
+                onclick="transform(trs.hexencode);" /><br />
             <input type="button" class="button button-xsmall" value="HEX Decode" onclick="transform(trs.hexdecode);" />
         </div>
 
         <div class="buttonGroup">
             <input type="button" class="button button-xsmall" value="Java/C# String Escape"
                 onclick="transform(trs.JavaCSharp_StringEscape);" /><br />
-            <input type="button" class="button button-xsmall" value="Java/C# String Unescape" onclick="transform(trs.JavaCSharp_StringUnescape);" />
+            <input type="button" class="button button-xsmall" value="Java/C# String Unescape"
+                onclick="transform(trs.JavaCSharp_StringUnescape);" />
         </div>
 
         <div class="checkAlign">
@@ -871,7 +969,8 @@
             <div class="buttonGroup">
                 <input type="button" class="button button-xsmall" value="Pretty Print JSON"
                     onclick="transform(trs.prettyPrintJSON, { 'getPadding': formatWhitepacePadding });"><br />
-                <input type="button" class="button button-xsmall" value="Minify JSON" onclick="transform(trs.minifyJSON);">
+                <input type="button" class="button button-xsmall" value="Minify JSON"
+                    onclick="transform(trs.minifyJSON);">
             </div>
             <br />
             <hr />
@@ -883,42 +982,73 @@
         </div>
 
         <div class="buttonGroup">
-            <input type="button" class="button button-xsmall" value="Url Token Encode" onclick="transform(trs.urlTokenEncode);" /><br />
-            <input type="button" class="button button-xsmall" value="Url Token Decode" onclick="transform(trs.urlTokenDecode);" />
+            <input type="button" class="button button-xsmall" value="Url Token Encode"
+                onclick="transform(trs.urlTokenEncode);" /><br />
+            <input type="button" class="button button-xsmall" value="Url Token Decode"
+                onclick="transform(trs.urlTokenDecode);" />
         </div>
 
         <div class="buttonGroup">
-            <input type="button" class="button button-xsmall" value="To Upper Case" onclick="transform(trs.toUpperCase);" /><br />
-            <input type="button" class="button button-xsmall" value="To Lower Case" onclick="transform(trs.toLowerCase);" />
+            <input type="button" class="button button-xsmall" value="To UPPERCASE"
+                onclick="transform(trs.toUpperCase);" /><br />
+            <input type="button" class="button button-xsmall" value="To lowercase"
+                onclick="transform(trs.toLowerCase);" />
+            <!--TODO: to consider: camelCase, kebab-case, snake_case-->
         </div>
 
         <div class="buttonGroup">
-            <input type="button" class="button button-xsmall" value="Replicate" onclick="transform(trs.replicate);" />
+            <input type="button" class="button button-xsmall" value="Replicate"
+                onclick="transform(trs.replicate);" />
         </div>
 
     </div>
     <hr />
     <div>
         <div class="buttonGroup">
-            <input type="button" class="button button-xsmall" value="Clear" onclick="generate(gens.clear);" />
+            <input type="button" class="button button-xsmall" value="Clear"
+                onclick="generate(gens.clear);" />
         </div>
         <div class="buttonGroup">
-            <input type="button" class="button button-xsmall" value="New GUID" onclick="generate(gens.generateGuid);" />
+            <input type="button" class="button button-xsmall" value="New GUID"
+                onclick="generate(gens.generateGuid);" />
         </div>
-        
-        <div class="buttonGroup" >
-            Random String<br/>
-            <input id="rndStringLength" type="range" min="1" max="256" value="10" style="width: 350px; vertical-align: bottom;"
+
+        <div class="buttonGroup settingsGroup">
+            <label>Random string</label><br />
+            <input id="rndStringLength" type="range" min="1" max="256" value="10"
+                style="width: 350px; vertical-align: bottom;"
                 oninput="stopRndChangeEvent = true; rndStringLengthChanged(event); generate(gens.randomString, { loadParams: getRandomStringParams });"
                 onclick="if(stopRndChangeEvent == true) { stopRndChangeEvent = false; } else { generate(gens.randomString, { loadParams: getRandomStringParams }); }" />
-                <span style="border-style: solid; border-radius: 4px; padding: 2px;" id="rndStringLengthLabel">10</span><br/>
-            <input id="rndLower" type="checkbox" checked onchange="generate(gens.randomString, { loadParams: getRandomStringParams });"><label for="rndLower">Alpha lowercase</label><br/>
-            <input id="rndUpper" type="checkbox" checked onchange="generate(gens.randomString, { loadParams: getRandomStringParams });"><label for="rndUpper">Alpha UPPERCASE</label><br/>
-            <input id="rndDigits" type="checkbox" checked onchange="generate(gens.randomString, { loadParams: getRandomStringParams });"><label for="rndDigits">Digits</label><br/>
-            <input id="rndSpecial" type="checkbox" onchange="rndSpecialChanged(event); generate(gens.randomString, { loadParams: getRandomStringParams });"><label for="rndSpecial">Special</label>&nbsp;
+            <span style="border-style: solid; border-radius: 4px; padding: 2px;"
+                id="rndStringLengthLabel">10</span><br />
+            <label class="off-on">
+                <input id="rndLower" type="checkbox" checked
+                onchange="generate(gens.randomString, { loadParams: getRandomStringParams });"/>
+                <span class="off-on-slider round"></span>
+            </label><label for="rndLower">Alpha lowercase</label><br />
+
+            <label class="off-on">
+                <input id="rndUpper" type="checkbox" checked
+                onchange="generate(gens.randomString, { loadParams: getRandomStringParams });"/>
+                <span class="off-on-slider round"></span>
+            </label><label for="rndUpper">Alpha UPPERCASE</label><br />
+            
+            <label class="off-on">
+                <input id="rndDigits" type="checkbox" checked
+                onchange="generate(gens.randomString, { loadParams: getRandomStringParams });"/>
+                <span class="off-on-slider round"></span>
+            </label><label for="rndDigits">Digits</label><br />
+
+            <label class="off-on">
+                <input id="rndSpecial" type="checkbox"
+                onchange="rndSpecialChanged(event); generate(gens.randomString, { loadParams: getRandomStringParams });"/>
+                <span class="off-on-slider round"></span>
+            </label><label for="rndSpecial">Special</label>&nbsp;
             <input id="rndSpecialChars" type="text" value="[\]^_!&quot;#$%&amp;'()*+,-./`:;&lt;=&gt;?{|}~"
-                pattern="[\[\\\]\^_!&quot;#\$%&amp;'\(\)\*\+,-\.\/`:;&lt;=&gt;\?\{\|\}~]+" size="31" placeholder="Special chars" disabled
-                onkeydown="return preventInvalidSpecialChars(event);" onchange="generate(gens.randomString, { loadParams: getRandomStringParams });"/>
+                pattern="[\[\\\]\^_!&quot;#\$%&amp;'\(\)\*\+,-\.\/`:;&lt;=&gt;\?\{\|\}~]+" size="31"
+                placeholder="Special chars" disabled
+                onchange="generate(gens.randomString, { loadParams: getRandomStringParams });" />
+            <!--onkeyup for rndSpecialChars defined on page load-->
         </div>
     </div>
     <hr />
