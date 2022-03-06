@@ -54,6 +54,7 @@
     .slider-enabled:after {
       content: "Disabled";
     }
+
     .slider-hello:after {
       content: "Hello";
     }
@@ -80,6 +81,7 @@
       background-color: white;
       -webkit-transition: .4s;
       transition: .4s;
+      box-shadow: 2px 2px 8px 1px #434343ba
     }
 
     input:checked+.slider {
@@ -129,6 +131,7 @@
     .dot-gradient {
       background: radial-gradient(circle, rgb(192, 192, 192) 10%, rgb(216, 216, 216) 50%, rgb(255, 255, 255) 100%);
     }
+
     .dot-selected {
       height: 12px;
       width: 12px;
@@ -136,8 +139,60 @@
       border-width: 2px;
       border-color: #858585;
     }
+
     /* End - Dots */
 
+    /* CSS Buttons */
+
+    .button {
+      background-color: #ccc;
+      border: 2px solid #7c7c7c;
+      color: #000000;
+      padding: 6px 22px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      transition-duration: 0.4s;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+
+    .button:hover {
+      background-color: #4d4d4d;
+      border: 2px solid #c5c5c5;
+      color: white;
+    }
+
+    .button:active {
+      background-color: #2196F3;
+      border: 2px solid #7c7c7c;
+      color: #000000;
+    }
+
+    .button-large {
+      padding: 16px 32px;
+    }
+
+    .button-small {
+      padding: 3px 16px;
+    }
+
+    .button-xsmall {
+      padding: 2px 12px;
+      font-size: 14px;
+    }
+
+    .button-shadow {
+      box-shadow: 2px 2px 5px white;
+    }
+
+    .button-shadow:active {
+      box-shadow: none;
+    }
+    
+    /* End - CSS Buttons*/
   </style>
 </head>
 
@@ -149,17 +204,17 @@
       <input type="checkbox">
       <span class="slider slider-enabled"></span>
     </label>
-    
+
     <label class="switch">
       <input type="checkbox" checked>
       <span class="slider slider-enabled"></span>
     </label><br><br>
-    
+
     <label class="switch">
       <input type="checkbox">
       <span class="slider round slider-enabled"></span>
     </label>
-    
+
     <label class="switch">
       <input type="checkbox" checked>
       <span class="slider round slider-enabled"></span>
@@ -169,45 +224,59 @@
       <input type="checkbox">
       <span class="slider round slider-hello"></span>
     </label>
-    
+
     <label class="switch">
       <input type="checkbox" checked>
       <span class="slider round slider-hello"></span>
     </label>
     <hr />
+    <h1>CSS Buttons</h1>
+    <button class="button button-xsmall">Hello</button><br/>
+    <button class="button button-small">Hello</button><br/>
+    <button class="button">Hello</button><br/>
+    <button class="button button-shadow">Hello</button><br/>
+    <button class="button button-large">Hello</button>
+    
+    <hr />
     <h1>Dots</h1>
     <div style="user-select: none;background-color: white; /*position: fixed;width: 100%;z-index: 10;bottom: 0px;*/">
-      using text<br/>
-      <span style="font-size: 16px;color: white;vertical-align: middle;line-height: 16px;display: inline-block;margin: 5px; text-shadow: 2px 2px 5px black;">●</span>
-      <span style="font-size:20px;color: white;vertical-align: middle;line-height: 20px;display: inline-block;margin: 5px; text-shadow: 2px 2px 5px black;">●</span>
-      <span style="font-size: 16px;color: white;vertical-align: middle;line-height: 16px;display: inline-block;margin: 5px; text-shadow: 2px 2px 5px black;">●</span>
-      <br/>
-      not using text<br/>
+      using text<br />
+      <span
+        style="font-size: 16px;color: white;vertical-align: middle;line-height: 16px;display: inline-block;margin: 5px; text-shadow: 2px 2px 5px black;">●</span>
+      <span
+        style="font-size:20px;color: white;vertical-align: middle;line-height: 20px;display: inline-block;margin: 5px; text-shadow: 2px 2px 5px black;">●</span>
+      <span
+        style="font-size: 16px;color: white;vertical-align: middle;line-height: 16px;display: inline-block;margin: 5px; text-shadow: 2px 2px 5px black;">●</span>
+      <br />
+      not using text<br />
       <span class="dot dot-spacing dot-shadow"></span>
       <span class="dot dot-spacing dot-shadow dot-selected"></span>
       <span class="dot dot-spacing dot-shadow"></span>
-      <br/>
+      <br />
       <span class="dot dot-spacing dot-shadow dot-gradient"></span>
       <span class="dot dot-spacing dot-shadow dot-gradient dot-selected"></span>
       <span class="dot dot-spacing dot-shadow dot-gradient"></span>
     </div>
     <div style="user-select: none;background-color: black; /*position: fixed;width: 100%;z-index: 10;bottom: 0px;*/">
-      using text<br/>
-      <span style="font-size: 16px;color: white;vertical-align: middle;line-height: 16px;display: inline-block;margin: 5px;text-shadow: 2px 2px 5px black;">●</span>
-      <span style="font-size:20px;color: white;vertical-align: middle;line-height: 20px;display: inline-block;margin: 5px;text-shadow: 2px 2px 5px black;">●</span>
-      <span style="font-size: 16px;color: white;vertical-align: middle;line-height: 16px;display: inline-block;margin: 5px;text-shadow: 2px 2px 5px black;">●</span>
-      <br/>
-      not using text<br/>
+      using text<br />
+      <span
+        style="font-size: 16px;color: white;vertical-align: middle;line-height: 16px;display: inline-block;margin: 5px;text-shadow: 2px 2px 5px black;">●</span>
+      <span
+        style="font-size:20px;color: white;vertical-align: middle;line-height: 20px;display: inline-block;margin: 5px;text-shadow: 2px 2px 5px black;">●</span>
+      <span
+        style="font-size: 16px;color: white;vertical-align: middle;line-height: 16px;display: inline-block;margin: 5px;text-shadow: 2px 2px 5px black;">●</span>
+      <br />
+      not using text<br />
       <span class="dot dot-spacing dot-shadow"></span>
       <span class="dot dot-spacing dot-shadow dot-selected"></span>
       <span class="dot dot-spacing dot-shadow"></span>
-      <br/>
+      <br />
       <span class="dot dot-spacing dot-shadow dot-gradient"></span>
       <span class="dot dot-spacing dot-shadow dot-gradient dot-selected"></span>
       <span class="dot dot-spacing dot-shadow dot-gradient"></span>
     </div>
   </div>
-  
+
 </body>
 
 </html>
