@@ -25,6 +25,7 @@
             max-width: 100%;
             background-color: rgb(36, 36, 36);
             color: silver;
+            caret-color: orange;
         }
 
         textarea::selection {
@@ -119,6 +120,14 @@
 
         input:checked+.slider-selection:after {
             content: "Selection";
+        }
+        
+        .slider-sort:after {
+            content: "Asc.";
+        }
+
+        input:checked+.slider-sort:after {
+            content: "Desc.";
         }
 
         .slider:after {
@@ -421,11 +430,18 @@
                     }
 
                     return result;
-                }
+                },
 
+
+                isoDateTime: function() {
+                    return new Date().toISOString();
+                },
+
+                epoch: function() {
+                    return new Date().valueOf().toString();
+                }
+                
                 //Add more generators here.
-                //TODO: ISO DateTime
-                //TODO: Epoch
 
             }
         })();
@@ -435,8 +451,6 @@
         var trs = (function () {
 
             //private functions
-
-
 
             function escapeHtmlChar(original, xmlSafe) {
                 var found = true;
@@ -585,8 +599,66 @@
 
             }
 
+                function xslTransform(source, xslTransformer) {
+                    var xmlDoc = new DOMParser().parseFromString(source, 'application/xml');
+                    var xsltDoc = new DOMParser().parseFromString(xslTransformer, 'application/xml');
+                    var xsltProcessor = new XSLTProcessor();    
+                    xsltProcessor.importStylesheet(xsltDoc);
+                    var resultDoc = xsltProcessor.transformToDocument(xmlDoc);
+                    var result = new XMLSerializer().serializeToString(resultDoc);
 
-            function formatXml(xml, paddingChars) {
+                    //check for errors
+                    var resultParser = new DOMParser();
+                    resultDoc = resultParser.parseFromString(result, "application/xml");
+
+                    var errorElem = xmlDoc.getElementsByTagName("parsererror");
+                    if(errorElem.length > 0) {
+                        error("Error parsing value: " + errorElem[0].getElementsByTagName("div")[0].innerHTML, 5000);
+                        return source;
+                    }
+                    return result;
+                }
+
+            var prettifyXml = function(sourceXml, pretty, paddingChars) {
+
+                var resultXml = xslTransform(sourceXml, [
+                    // describes how we want to modify the XML - indent everything
+                    '<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform">',
+                    '  <xsl:strip-space elements="*"/>',
+                    '  <xsl:template match="para[content-style][not(text())]">', // change to just text() to strip space in text nodes
+                    '    <xsl:value-of select="normalize-space(.)"/>',
+                    '  </xsl:template>',
+                    '  <xsl:template match="node()|@*">',
+                    '    <xsl:copy><xsl:apply-templates select="node()|@*"/></xsl:copy>',
+                    '  </xsl:template>',
+                    '  <xsl:output indent="' + (pretty? 'yes': 'no') + '"/>',
+                    '</xsl:stylesheet>',
+                ].join('\n'));
+
+                if(pretty == true) {
+                    // Replace indentation 2 spaces with padding chars
+
+                    if(paddingChars !== "  ") {
+
+                        function replacer(match, p1, offset, string) {
+                            return match.replaceAll("  ", paddingChars);
+                        }
+                        resultXml = resultXml.replace(/>\n(\s\s)+</g, replacer);
+                    }
+                }
+
+                return resultXml;
+            };
+
+            function formatXml(xml, pretty, paddingChars) {
+
+                try {
+                    return prettifyXml(xml, pretty, paddingChars)
+                } catch (e) {
+                    console.warn(e);
+                    // use fallback code bellow in case of exception
+                }
+
                 var formatted = '';
                 var reg = /(>)(<)(\/*)/g;
                 var paddingStr = paddingChars;
@@ -729,13 +801,17 @@
                 },
 
                 prettyPrintXml: function (value, params) {
-                    var padding = params.getPadding();
-                    return formatXml(value, padding);
+                    var p1 = params.getPadding();
+                    return formatXml(value, true, p1);
+                },
+
+                minifyXml: function (value, params) {
+                    return formatXml(value, false);
                 },
 
                 prettyPrintJSON: function (value, params) {
-                    var padding = params.getPadding();
-                    return JSON.stringify(JSON.parse(value), null, padding);
+                    var p2 = params.getPadding();
+                    return JSON.stringify(JSON.parse(value), null, p2);
                 },
 
                 minifyJSON: function (value) {
@@ -762,10 +838,43 @@
 
                 replicate: function (value) {
                     return value + value;
+                },
+
+                sort: function(value, params) {
+                    return params.isAscending()?
+                        value.split("\n").sort().join("\n") :
+                        value.split("\n").sort().reverse().join("\n");
+                },
+
+                JavaCSharp_Stringify: function(value) {
+                    var lines = value.split("\n");
+                    var result = "";
+                    for(var i = 0; i < lines.length; i++) {
+                        result += (i == 0? "": "+ ")
+                        + "\"" + trs.JavaCSharp_StringEscape(lines[i])
+                        + (i == lines.length - 1? "\"": "\\n\"" + "\n");
+                    }
+                    return result;
+                },
+
+                JavaCSharp_Unstringify: function(value) {
+                    var lines = value.split(/\s*\n\s*\+\s*/);
+                    var result = "";
+                    for(var i = 0; i < lines.length; i++) {
+                        if(lines[i].match(/^".*"$/) == null) {
+                            warn("Could not unstringify. Make sure you have valid Java/C# strings.", 5000);
+                            return value;
+                        }
+                        result += trs.JavaCSharp_StringUnescape(lines[i].substr(1, lines[i].length - 2));
+                    }
+                    return result;
+                },
+
+                xmlToJson: function(value) {
+                    return xmlToJsonAux(value);
                 }
 
-                //Add more transformers here.
-                //TODO
+                // TODO: add more transformers here
 
             };
         })();
@@ -855,13 +964,16 @@
         }
 
         function formatWhitepacePadding() {
-            return document.getElementById("useTabs").checked == true ? '\t' : '  ';
+            return (document.getElementById("useTabs").checked == true) ? '\t' : '  ';
         }
 
         function xmlSafe() {
             return document.getElementById("xmlSafe").checked;
         }
 
+        function sortIsAscending() {
+            return !document.getElementById("sortDescending").checked;
+        }
 
         function getCol(value, start) {
             var index = start;
@@ -977,6 +1089,11 @@
             <input type="button" class="button button-xsmall" value="URL Encode"
                 onclick="transform(trs.urlencode);" /><br />
             <input type="button" class="button button-xsmall" value="URL Decode" onclick="transform(trs.urldecode);" />
+            <hr/>
+            <input type="button" class="button button-xsmall" value="Url Token Encode"
+                onclick="transform(trs.urlTokenEncode);" /><br />
+            <input type="button" class="button button-xsmall" value="Url Token Decode"
+                onclick="transform(trs.urlTokenDecode);" />
         </div>
         <div class="buttonGroup">
             <input type="button" class="button button-xsmall" value="HTML Encode"
@@ -996,25 +1113,30 @@
                 onclick="transform(trs.base64encode);" /><br />
             <input type="button" class="button button-xsmall" value="Base64 Decode"
                 onclick="transform(trs.base64decode);" />
-        </div>
-
-        <div class="buttonGroup">
+            <hr/>
             <input type="button" class="button button-xsmall" value="HEX Encode"
                 onclick="transform(trs.hexencode);" /><br />
-            <input type="button" class="button button-xsmall" value="HEX Decode" onclick="transform(trs.hexdecode);" />
+            <input type="button" class="button button-xsmall" value="HEX Decode"
+                onclick="transform(trs.hexdecode);" />
         </div>
 
         <div class="buttonGroup">
             <input type="button" class="button button-xsmall" value="Java/C# String Escape"
                 onclick="transform(trs.JavaCSharp_StringEscape);" /><br />
             <input type="button" class="button button-xsmall" value="Java/C# String Unescape"
-                onclick="transform(trs.JavaCSharp_StringUnescape);" />
+                onclick="transform(trs.JavaCSharp_StringUnescape);" /><br />
+            <input type="button" class="button button-xsmall" value="Java/C# Stringify"
+                onclick="transform(trs.JavaCSharp_Stringify);" /><br />
+            <input type="button" class="button button-xsmall" value="Java/C# Unstringify"
+                onclick="transform(trs.JavaCSharp_Unstringify);" />
         </div>
 
         <div class="checkAlign">
             <div class="buttonGroup">
                 <input type="button" class="button button-xsmall" value="Pretty Print XML"
-                    onclick="transform(trs.prettyPrintXml, { 'getPadding': formatWhitepacePadding });">
+                    onclick="transform(trs.prettyPrintXml, { 'getPadding': formatWhitepacePadding });"><br />
+                <input type="button" class="button button-xsmall" value="Minify XML"
+                    onclick="transform(trs.minifyXml);">
             </div>
             <div class="buttonGroup">
                 <input type="button" class="button button-xsmall" value="Pretty Print JSON"
@@ -1032,13 +1154,6 @@
         </div>
 
         <div class="buttonGroup">
-            <input type="button" class="button button-xsmall" value="Url Token Encode"
-                onclick="transform(trs.urlTokenEncode);" /><br />
-            <input type="button" class="button button-xsmall" value="Url Token Decode"
-                onclick="transform(trs.urlTokenDecode);" />
-        </div>
-
-        <div class="buttonGroup">
             <input type="button" class="button button-xsmall" value="To UPPERCASE"
                 onclick="transform(trs.toUpperCase);" /><br />
             <input type="button" class="button button-xsmall" value="To lowercase"
@@ -1050,7 +1165,15 @@
             <input type="button" class="button button-xsmall" value="Replicate"
                 onclick="transform(trs.replicate);" />
         </div>
-
+        <div class="buttonGroup">
+            <input type="button" class="button button-xsmall" value="Sort lines"
+                onclick="transform(trs.sort, {'isAscending': sortIsAscending });" />
+            <br/>
+            <label class="switch">
+                <input type="checkbox" id="sortDescending">
+                <span class="slider round slider-sort"></span>
+            </label>
+        </div>
     </div>
     <hr />
     <div>
@@ -1062,7 +1185,11 @@
         </div>
         <div class="buttonGroup">
             <input type="button" class="button button-xsmall" value="New GUID"
-                onclick="generate(gens.generateGuid);" />
+                onclick="generate(gens.generateGuid);" /><br/>
+            <input type="button" class="button button-xsmall" value="ISO DateTime"
+                onclick="generate(gens.isoDateTime);" /><br/>
+            <input type="button" class="button button-xsmall" value="Epoch"
+                onclick="generate(gens.epoch);" />
         </div>
 
         <div class="buttonGroup settingsGroup">
