@@ -290,9 +290,10 @@
             valueTextArea.onselectionchange =
             valueTextArea.oninput =
             valueTextArea.onmouseleave = fetchData;
-            valueTextArea.focus();
-
+            
             document.getElementById("rndSpecialChars").onkeydown = preventInvalidSpecialChars;
+
+            initHistory();
         }
 
         function transform(transformer, params) {
@@ -313,6 +314,8 @@
                 return;
             }
 
+            addToHistory();
+
             displayResult(result);
         }
 
@@ -329,12 +332,43 @@
                 return;
             }
 
+            addToHistory();
+
             displayResult(result);
+        }
+
+        function addToHistory() {
+            var value = document.getElementById("value").value;
+            if(value.length == 0) {
+                return;
+            }
+            var history = JSON.parse(sessionStorage.getItem("history"));
+            if(history.length > 32) {
+                history = history.sort((a, b) => a.t - b.t).splice(1);
+            }
+            history.push(
+                {
+                    "v": value,
+                    "t": new Date().valueOf()
+                });
+            sessionStorage.setItem("history", JSON.stringify(history));
+        }
+
+        function initHistory() {
+            sessionStorage.setItem("history", JSON.stringify([]));
+        }
+
+        function isSelectionMode() {
+            return document.getElementById("cbSelection").checked;
+        }
+
+        function isCopyMode() {
+            return document.getElementById("cbCopy").checked;
         }
 
         function displayResult(result) {
             var valueTextArea = document.getElementById("value");
-            if (document.getElementById("cbCopy").checked) {
+            if (isCopyMode()) {
                 //flash value
                 var color = valueTextArea.style.backgroundColor;
                 valueTextArea.style.backgroundColor = "gray";
@@ -342,16 +376,22 @@
 
                 copyToClipboard(result);
             } else {
-                if (document.getElementById("cbSelection").checked) {
+                if (isSelectionMode()) {
                     var currentValue = document.getElementById("value").value;
                     var value = currentValue.substr(0, cursorPos.start) + result + currentValue.substr(cursorPos.end, currentValue.length - cursorPos.end);
 
                     valueTextArea.value = value;
 
+                    valueTextArea.selectionStart = valueTextArea.selectionEnd = cursorPos.start
+
+                    //preventing scroll to bottom on large texts
+                    valueTextArea.blur();
                     valueTextArea.focus();
-                    
                     cursorPos.end = cursorPos.start + result.length;
+                    
                     valueTextArea.setSelectionRange(cursorPos.start, cursorPos.end);
+
+                    valueTextArea.focus();
 
                 } else {
                     valueTextArea.value = result;
@@ -915,6 +955,19 @@
             valueTextArea.focus();
         }
 
+        function saveToFile() {
+            var valueTextArea = document.getElementById("value");
+            var value = isSelectionMode()? valueTextArea.value.substr(cursorPos.start, cursorPos.end - cursorPos.start): valueTextArea.value;
+            if(value.length == 0) {
+                info("Nothing to save.");
+                return;
+            }
+            var a = document.createElement("a");
+            a.href = window.URL.createObjectURL(new Blob([value], {type: "text/plain"}));
+            a.download = "file.txt";
+            a.click();
+        }
+
         var cursorPos = {
             start: -1,
             end: -1,
@@ -1077,7 +1130,7 @@
 </head>
 
 <body>
-    <textarea id="value" value="" placeholder="Text goes here..."></textarea>
+    <textarea id="value" value="" placeholder="Text goes here..." autofocus></textarea>
     <div style="float: right;position: relative;font-size: small;">Line: <span id="line"></span><span
             style="margin-left: 10px;">Column: </span><span id="col"></span></div>
     <div style="float: right;clear: right;position: relative;font-size: small;">Start: <span id="start"></span><span
@@ -1181,7 +1234,9 @@
             <input type="button" class="button button-xsmall" value="Clear"
                 onclick="clearValue();" /><br/>
             <input type="button" class="button button-xsmall" value="Crop"
-                onclick="cropToSelection();" />
+                onclick="cropToSelection();" /><br/>
+            <input type="button" class="button button-xsmall" value="Save as..."
+                onclick="saveToFile();" />
         </div>
         <div class="buttonGroup">
             <input type="button" class="button button-xsmall" value="New GUID"
@@ -1247,6 +1302,12 @@
         <strong id="messageType" style="padding: 10px;float: left;">Info</strong>
         <span id="messageText" style="padding: 3px;">.</span>
     </div>
+
+    <!--TODO add change history select menu-->
+    <!-- ...Preview... [Set] [Insert] -->
+
+    <!--TODO add json tree viewer-->
+    
 </body>
 
 </html>
