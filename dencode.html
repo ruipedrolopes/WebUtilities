@@ -65,6 +65,45 @@
         input[type=range] {
             margin: revert;
         }
+
+        .historyItem {
+            height: 100px;
+            font-size: small;
+            border-bottom: solid 3px;
+            overflow: hidden;
+            white-space: nowrap;
+            background-color: #242424;
+            color: #ccc;
+            font-family: monospace;
+            user-select: none;
+            padding: 2px;
+        }
+
+        .history {
+            position: absolute; top: 0px; bottom: 0px; right: 0px;
+        }
+
+        .historyExpanded {
+            right: 203px;
+        }
+
+        .historyExpanded .historyItems {
+            display: block !important;
+        }
+
+        .history .historyItems {
+            position: absolute;
+            top: 0px;
+            left: 20px;
+            width: 200px;
+            background-color: #ccc;
+            bottom: 0px;
+            border-left: solid 3px;
+            overflow-y: auto;
+            display: none;
+        }
+
+
     </style>
     <!-- Controls -->
     <style>
@@ -306,17 +345,22 @@
             if (document.getElementById("cbSelection").checked) {
                 value = value.substr(cursorPos.start, cursorPos.end - cursorPos.start);
             }
+            
+            try {
+                var result = transformer(value, params);
 
-            var result = transformer(value, params);
+                if (typeof result != "string") {
+                    console.warn("Transformer returned an invalid value.");
+                    return;
+                }
 
-            if (typeof result != "string") {
-                console.warn("Transformer returned an invalid value.");
-                return;
+                addToHistory();
+
+                displayResult(result);
+            } catch(e) {
+                error("An error occured: " + e, 4000);
+                throw e;
             }
-
-            addToHistory();
-
-            displayResult(result);
         }
 
         function generate(generator, params) {
@@ -325,16 +369,21 @@
                 return;
             }
 
-            var result = generator(params);
+            try {
+                var result = generator(params);
 
-            if (typeof result != "string") {
-                console.warn("Transformer returned an invalid value.");
-                return;
+                if (typeof result != "string") {
+                    console.warn("Transformer returned an invalid value.");
+                    return;
+                }
+
+                addToHistory();
+
+                displayResult(result);
+            } catch(e) {
+                error("An error occured: " + e, 4000);
+                throw e;
             }
-
-            addToHistory();
-
-            displayResult(result);
         }
 
         function addToHistory() {
@@ -351,11 +400,39 @@
                     "v": value,
                     "t": new Date().valueOf()
                 });
+
+            refreshHistoryItems(history);
             sessionStorage.setItem("history", JSON.stringify(history));
         }
 
+        function refreshHistoryItems(history) {
+            historyItems = document.getElementById("historyItems");
+            historyItems.innerHTML = "";
+            for(var i = history.length - 1; i >= 0; i--) {
+                var historyItem = document.createElement("div");
+                historyItem.setAttribute("class", "historyItem");
+                historyItem.setAttribute("ondblclick", "setFromHistory(" + i + ");");
+                //TODO add preview on mouse over
+                //TODO add set button
+                //TODO add insert button
+                //TODO add remove button
+                historyItem.innerText = history[i].v;
+                historyItems.appendChild(historyItem);
+            }
+        }
+
+        function setFromHistory(index) {
+            var history = JSON.parse(sessionStorage.getItem("history"));
+            document.getElementById("value").value = history[index].v;
+            flashValue();
+        }
+
         function initHistory() {
-            sessionStorage.setItem("history", JSON.stringify([]));
+            if(typeof(sessionStorage.getItem("history")) !== "string") {
+                sessionStorage.setItem("history", JSON.stringify([]));
+            } else {
+                refreshHistoryItems(JSON.parse(sessionStorage.getItem("history")));
+            }
         }
 
         function isSelectionMode() {
@@ -366,18 +443,22 @@
             return document.getElementById("cbCopy").checked;
         }
 
+        function flashValue() {
+            var valueTextArea = document.getElementById("value");
+            var color = valueTextArea.style.backgroundColor;
+            valueTextArea.style.backgroundColor = "gray";
+            setTimeout(function () { valueTextArea.style.backgroundColor = color; }, 150);
+        }
+
         function displayResult(result) {
             var valueTextArea = document.getElementById("value");
             if (isCopyMode()) {
-                //flash value
-                var color = valueTextArea.style.backgroundColor;
-                valueTextArea.style.backgroundColor = "gray";
-                setTimeout(function () { valueTextArea.style.backgroundColor = color; }, 150);
+                flashValue()
 
                 copyToClipboard(result);
             } else {
                 if (isSelectionMode()) {
-                    var currentValue = document.getElementById("value").value;
+                    var currentValue = valueTextArea.value;
                     var value = currentValue.substr(0, cursorPos.start) + result + currentValue.substr(cursorPos.end, currentValue.length - cursorPos.end);
 
                     valueTextArea.value = value;
@@ -639,25 +720,25 @@
 
             }
 
-                function xslTransform(source, xslTransformer) {
-                    var xmlDoc = new DOMParser().parseFromString(source, 'application/xml');
-                    var xsltDoc = new DOMParser().parseFromString(xslTransformer, 'application/xml');
-                    var xsltProcessor = new XSLTProcessor();    
-                    xsltProcessor.importStylesheet(xsltDoc);
-                    var resultDoc = xsltProcessor.transformToDocument(xmlDoc);
-                    var result = new XMLSerializer().serializeToString(resultDoc);
+            function xslTransform(source, xslTransformer) {
+                var xmlDoc = new DOMParser().parseFromString(source, 'application/xml');
+                var xsltDoc = new DOMParser().parseFromString(xslTransformer, 'application/xml');
+                var xsltProcessor = new XSLTProcessor();    
+                xsltProcessor.importStylesheet(xsltDoc);
+                var resultDoc = xsltProcessor.transformToDocument(xmlDoc);
+                var result = new XMLSerializer().serializeToString(resultDoc);
 
-                    //check for errors
-                    var resultParser = new DOMParser();
-                    resultDoc = resultParser.parseFromString(result, "application/xml");
+                //check for errors
+                var resultParser = new DOMParser();
+                resultDoc = resultParser.parseFromString(result, "application/xml");
 
-                    var errorElem = xmlDoc.getElementsByTagName("parsererror");
-                    if(errorElem.length > 0) {
-                        error("Error parsing value: " + errorElem[0].getElementsByTagName("div")[0].innerHTML, 5000);
-                        return source;
-                    }
-                    return result;
+                var errorElem = xmlDoc.getElementsByTagName("parsererror");
+                if(errorElem.length > 0) {
+                    error("Error parsing value: " + errorElem[0].getElementsByTagName("div")[0].innerHTML, 5000);
+                    return source;
                 }
+                return result;
+            }
 
             var prettifyXml = function(sourceXml, pretty, paddingChars) {
 
@@ -1303,8 +1384,15 @@
         <span id="messageText" style="padding: 3px;">.</span>
     </div>
 
-    <!--TODO add change history select menu-->
-    <!-- ...Preview... [Set] [Insert] -->
+    <div class="history">
+        <div onclick="this.parentElement.classList.toggle('historyExpanded');" style="writing-mode: vertical-rl;user-select: none;border-right: 20px solid #ccc;border-bottom: 15px solid transparent;border-top: 15px solid transparent;
+        width: 0px;height: 62px;" onclick=""><span style="position: absolute;right: 0px;letter-spacing: 2px;color: black;">History</span></div>
+
+        <div id="historyItems" class="historyItems">
+        </div>
+        <!-- ...Preview... TODO [Set] [Insert] [Remove] -->
+    </div>
+    
 
     <!--TODO add json tree viewer-->
     
