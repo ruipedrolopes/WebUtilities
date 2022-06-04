@@ -14,7 +14,6 @@
         }
 
         input {
-            margin: 10px 10px 0 0;
             background-color: darkgray;
             border-radius: 4pt
         }
@@ -55,7 +54,7 @@
             margin: revert;
         }
 
-        input[type=text] {
+        input[type=text], input[type=number] {
             font-family: monospace;
             background-color: rgb(36, 36, 36);
             color: silver;
@@ -79,19 +78,19 @@
             padding: 2px;
         }
 
-        .history {
+        .sidebar {
             position: absolute; top: 0px; bottom: 0px; right: 0px;
         }
 
-        .historyExpanded {
+        .sidebarExpanded {
             right: 203px;
         }
 
-        .historyExpanded .historyItems {
+        .sidebarExpanded .sidebarBody {
             display: block !important;
         }
 
-        .history .historyItems {
+        .sidebar .sidebarBody {
             position: absolute;
             top: 0px;
             left: 20px;
@@ -317,11 +316,74 @@
         .off-on+label:before {
             content: " ";
         }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            height: 7px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 5px;
+            background-image: linear-gradient(#2196F3, #2196F3);
+            background-repeat: no-repeat;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 15px;
+            width: 15px;
+            border-radius: 50%;
+            background: #2196F3;
+            cursor: ew-resize;
+            box-shadow: 0 0 3px 0 #555;
+            transition: background .3s ease-in-out;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            -webkit-appearance: none;
+            height: 15px;
+            width: 15px;
+            border-radius: 50%;
+            background: #2196F3;
+            cursor: ew-resize;
+            box-shadow: 0 0 3px 0 #555;
+            transition: background .3s ease-in-out;
+        }
+
+        input[type="range"]::-ms-thumb {
+            -webkit-appearance: none;
+            height: 15px;
+            width: 15px;
+            border-radius: 50%;
+            background: #2196F3;
+            cursor: ew-resize;
+            box-shadow: 0 0 3px 0 #555;
+            transition: background .3s ease-in-out;
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            -webkit-appearance: none;
+            box-shadow: none;
+            border: none;
+            background: transparent;
+        }
+
+        input[type=range]::-moz-range-track {
+            -webkit-appearance: none;
+            box-shadow: none;
+            border: none;
+            background: transparent;
+        }
+
+        input[type=range]::-ms-track {
+            -webkit-appearance: none;
+            box-shadow: none;
+            border: none;
+            background: transparent;
+        }
     </style>
     <script type="text/javascript">
 
         window.onload = function () {
-            var valueTextArea = document.getElementById("value");
+            var valueTextArea = getValueElement();
             valueTextArea.onmouseup =
             valueTextArea.onkeyup =
             valueTextArea.ontouchend =
@@ -331,6 +393,9 @@
             valueTextArea.onmouseleave = fetchData;
             
             document.getElementById("rndSpecialChars").onkeydown = preventInvalidSpecialChars;
+            document.getElementById("rndStringLengthNumberInput").oninput = preventInvalidRndLength;
+
+            adjustRndStringSlider(document.getElementById("rndStringLength"));
 
             initHistory();
         }
@@ -341,7 +406,7 @@
                 return;
             }
 
-            var value = document.getElementById("value").value;
+            var value = getValueElement().value;
             if (document.getElementById("cbSelection").checked) {
                 value = value.substr(cursorPos.start, cursorPos.end - cursorPos.start);
             }
@@ -386,8 +451,12 @@
             }
         }
 
+        function getValueElement() {
+            return document.getElementById("value");
+        }
+
         function addToHistory() {
-            var value = document.getElementById("value").value;
+            var value = getValueElement().value;
             if(value.length == 0) {
                 return;
             }
@@ -423,7 +492,7 @@
 
         function setFromHistory(index) {
             var history = JSON.parse(sessionStorage.getItem("history"));
-            document.getElementById("value").value = history[index].v;
+            getValueElement().value = history[index].v;
             flashValue();
         }
 
@@ -444,14 +513,14 @@
         }
 
         function flashValue() {
-            var valueTextArea = document.getElementById("value");
+            var valueTextArea = getValueElement();
             var color = valueTextArea.style.backgroundColor;
             valueTextArea.style.backgroundColor = "gray";
             setTimeout(function () { valueTextArea.style.backgroundColor = color; }, 150);
         }
 
         function displayResult(result) {
-            var valueTextArea = document.getElementById("value");
+            var valueTextArea = getValueElement();
             if (isCopyMode()) {
                 flashValue()
 
@@ -993,7 +1062,39 @@
 
                 xmlToJson: function(value) {
                     return xmlToJsonAux(value);
+                },
+
+                replace: function(value, params) {
+                    var replaceValue = params.replaceValue();
+                    var replaceWith = params.replaceWith();
+                    var replaceAll = params.all();
+                    //TODO
+                    var caseSensitive = params.caseSensitive();
+
+                    if(replaceValue == "") {
+                        warn("Nothing to replace");
+                        return -1;
+                    }
+
+                    if(params.isRegex()) {
+                        //TODO
+                        warn("Method not supported yet");
+                        return -1;
+                    } else {
+                        var result = value;
+                        if(replaceAll == true) {
+                            result = value.replaceAll(replaceValue, replaceWith);
+                        } else {
+                            result = value.replace(replaceValue, replaceWith);
+                        }
+                        if(result == value) {
+                            info("'"+ escape(replaceValue) + "'" + " was not found.")
+                            return -1;
+                        }
+                        return result;
+                    }
                 }
+
 
                 // TODO: add more transformers here
 
@@ -1008,13 +1109,9 @@
             toCopy.value = value;
             document.body.appendChild(toCopy);
 
-            /* Get the text field */
-            //var textArea = document.getElementById("value");
-
             /* Select the text field */
             toCopy.select();
             toCopy.setSelectionRange(0, value.length + 1); /*For mobile devices*/
-
 
             /* Copy the text inside the text field */
             document.execCommand("copy");
@@ -1025,19 +1122,19 @@
         }
 
         function clearValue() {
-            var valueTextArea = document.getElementById("value");
+            var valueTextArea = getValueElement();
             valueTextArea.value = "";
             valueTextArea.focus();
         }
 
         function cropToSelection() {
-            var valueTextArea = document.getElementById("value");
+            var valueTextArea = getValueElement();
             valueTextArea.value = valueTextArea.value.substr(cursorPos.start, cursorPos.end - cursorPos.start);
             valueTextArea.focus();
         }
 
         function saveToFile() {
-            var valueTextArea = document.getElementById("value");
+            var valueTextArea = getValueElement();
             var value = isSelectionMode()? valueTextArea.value.substr(cursorPos.start, cursorPos.end - cursorPos.start): valueTextArea.value;
             if(value.length == 0) {
                 info("Nothing to save.");
@@ -1109,6 +1206,26 @@
             return !document.getElementById("sortDescending").checked;
         }
 
+        function isReplaceRegex() {
+            return document.getElementById("replaceRegex").checked;
+        }
+
+        function getReplaceValue() {
+            return document.getElementById("replaceValue").value;
+        }
+
+        function getReplaceWith() {
+            return document.getElementById("replaceWith").value;
+        }
+
+        function getReplaceAll() {
+            return document.getElementById("replaceAll").checked;
+        }
+
+        function getReplaceCaseSensitive() {
+            return document.getElementById("replaceCaseSensitive").checked;
+        }
+
         function getCol(value, start) {
             var index = start;
             var char = '\n';
@@ -1119,15 +1236,17 @@
         }
 
         function fetchData() {
-            var value = document.getElementById("value");
-            var pos = getCursorPos(value);
+            if(document.activeElement == getValueElement()) {
+                var valueTextArea = getValueElement();
+                var pos = getCursorPos(valueTextArea);
 
-            document.getElementById("start").innerHTML = pos.start;
-            document.getElementById("end").innerHTML = pos.end;
-            document.getElementById("length").innerHTML = value.value.length;
+                document.getElementById("start").innerHTML = pos.start;
+                document.getElementById("end").innerHTML = pos.end;
+                document.getElementById("length").innerHTML = valueTextArea.value.length;
 
-            document.getElementById("line").innerHTML = pos.line;
-            document.getElementById("col").innerHTML = pos.column;
+                document.getElementById("line").innerHTML = pos.line;
+                document.getElementById("col").innerHTML = pos.column;
+            }
         }
 
         function rndSpecialChanged(event) {
@@ -1140,10 +1259,6 @@
 
         var stopRndChangeEvent = false;
 
-        function rndStringLengthChanged(event) {
-            document.getElementById("rndStringLengthLabel").innerText = document.getElementById("rndStringLength").value;
-        }
-
         function preventInvalidSpecialChars(event) {
             if (event.keyCode < 32) {
                 return true;
@@ -1151,6 +1266,16 @@
             var pattern = new RegExp(event.target.pattern);
 
             return pattern.test(event.key) == true;
+        }
+
+        function preventInvalidRndLength(event) {
+            if(parseInt(this.value) > parseInt(this.max) || parseInt(this.value) < parseInt(this.min)) {
+                this.value = this.max;
+            }
+        }
+
+        function adjustRndStringSlider(slider) {
+            slider.style.backgroundSize = (slider.value - slider.min) * 100 / (slider.max - slider.min) + '% 100%';
         }
 
         function getRandomStringParams() {
@@ -1224,9 +1349,9 @@
                 onclick="transform(trs.urlencode);" /><br />
             <input type="button" class="button button-xsmall" value="URL Decode" onclick="transform(trs.urldecode);" />
             <hr/>
-            <input type="button" class="button button-xsmall" value="Url Token Encode"
+            <input type="button" class="button button-xsmall" value="URL Token Encode"
                 onclick="transform(trs.urlTokenEncode);" /><br />
-            <input type="button" class="button button-xsmall" value="Url Token Decode"
+            <input type="button" class="button button-xsmall" value="URL Token Decode"
                 onclick="transform(trs.urlTokenDecode);" />
         </div>
         <div class="buttonGroup">
@@ -1331,11 +1456,10 @@
         <div class="buttonGroup settingsGroup">
             <label>Random string</label><br />
             <input id="rndStringLength" type="range" min="1" max="256" value="10"
-                style="width: 350px; vertical-align: bottom;"
-                oninput="stopRndChangeEvent = true; rndStringLengthChanged(event); generate(gens.randomString, { loadParams: getRandomStringParams });"
-                onclick="if(stopRndChangeEvent == true) { stopRndChangeEvent = false; } else { generate(gens.randomString, { loadParams: getRandomStringParams }); }" />
-            <span style="border-style: solid; border-radius: 4px; padding: 2px;"
-                id="rndStringLengthLabel">10</span><br />
+                style="width: 350px;"
+                oninput="adjustRndStringSlider(this); stopRndChangeEvent = true; rndStringLengthNumberInput.value = value; generate(gens.randomString, { loadParams: getRandomStringParams });"
+                onclick="adjustRndStringSlider(this); if(stopRndChangeEvent == true) { stopRndChangeEvent = false; } else { generate(gens.randomString, { loadParams: getRandomStringParams }); }" />
+            <input id="rndStringLengthNumberInput" type="number" min="1" max="256" value="10" style="width: 50px;" onchange="rndStringLength.value = value; rndStringLength.click()"/><br />
             <label class="off-on">
                 <input id="rndLower" type="checkbox" checked
                 onchange="generate(gens.randomString, { loadParams: getRandomStringParams });"/>
@@ -1365,6 +1489,28 @@
                 onchange="generate(gens.randomString, { loadParams: getRandomStringParams });" />
             <!--onkeyup for rndSpecialChars defined on page load-->
         </div>
+
+        <div class="buttonGroup">
+            <input type="text" id="replaceValue" placeholder="To replace..." style="margin: 4px 2px;" /><br/>
+            <input type="text" id="replaceWith" placeholder="Replace with..." style="margin: 4px 2px;" /><br/>
+            <input type="button" class="button button-xsmall" value="Replace"
+                onclick="transform(trs.replace, {'isRegex': isReplaceRegex, 'replaceValue': getReplaceValue, 'replaceWith': getReplaceWith, 'all': getReplaceAll, 'caseSensitive': getReplaceCaseSensitive });" /><br/>
+            <label class="off-on">
+                <input id="replaceAll" type="checkbox" checked />
+                <span class="off-on-slider round"></span>
+            </label><label for="replaceAll">Replace all</label><br/>
+            <div style="display: none;"><!--TODO-->
+                <label class="off-on">
+                    <input id="replaceRegex" type="checkbox" />
+                    <span class="off-on-slider round"></span>
+                </label><label for="replaceRegex">Use RegEx</label><br/>
+                <label class="off-on">
+                    <input id="replaceCaseSensitive" type="checkbox" checked />
+                    <span class="off-on-slider round"></span>
+                </label><label for="replaceCaseSensitive">Case sensitive</label>
+            </div>
+            
+        </div>
     </div>
     <hr />
 
@@ -1384,11 +1530,11 @@
         <span id="messageText" style="padding: 3px;">.</span>
     </div>
 
-    <div class="history">
-        <div onclick="this.parentElement.classList.toggle('historyExpanded');" style="writing-mode: vertical-rl;user-select: none;border-right: 20px solid #ccc;border-bottom: 15px solid transparent;border-top: 15px solid transparent;
+    <div class="sidebar">
+        <div onclick="this.parentElement.classList.toggle('sidebarExpanded');" style="writing-mode: vertical-rl;user-select: none;border-right: 20px solid #ccc;border-bottom: 15px solid transparent;border-top: 15px solid transparent;
         width: 0px;height: 62px;" onclick=""><span style="position: absolute;right: 0px;letter-spacing: 2px;color: black;">History</span></div>
 
-        <div id="historyItems" class="historyItems">
+        <div id="historyItems" class="sidebarBody">
         </div>
         <!-- ...Preview... TODO [Set] [Insert] [Remove] -->
     </div>
