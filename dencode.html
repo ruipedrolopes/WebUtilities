@@ -461,6 +461,12 @@
                 return;
             }
             var history = JSON.parse(sessionStorage.getItem("history"));
+
+            //prevent history filling when changing random size
+            if(history[history.length-1].t > new Date().valueOf() - 300) {
+                return;
+            }
+
             if(history.length > 32) {
                 history = history.sort((a, b) => a.t - b.t).splice(1);
             }
@@ -896,6 +902,18 @@
                 return temp + "===".substring(0, ec);
             }
 
+            function indexes(value, toFind, startingAt, found) {
+                if(typeof(found) == "undefined") { found = []; }
+                if(typeof(startingAt) == "undefined") { startingAt = 0; }
+
+                var idx = value.indexOf(toFind, startingAt);
+                
+                if(idx == -1) { return found; }
+
+                found.push(idx);
+                return indexes(value, toFind, idx + toFind.length, found);
+            }
+
             // public functions
             return {
                 urlencode: function (value) {
@@ -907,8 +925,8 @@
                         return decodeURIComponent(value);
                     }
                     catch (e) {
-                        // TODO show error
-                        return value;
+                        console.error(e);
+                        return -1;
                     }
                 },
 
@@ -942,8 +960,8 @@
                         return decodeURIComponent(escape(window.atob(value)));
                     }
                     catch (e) {
-                        // TODO show error
-                        return value;
+                        console.error(e);
+                        return -1;
                     }
                 },
 
@@ -1068,7 +1086,6 @@
                     var replaceValue = params.replaceValue();
                     var replaceWith = params.replaceWith();
                     var replaceAll = params.all();
-                    //TODO
                     var caseSensitive = params.caseSensitive();
 
                     if(replaceValue == "") {
@@ -1076,22 +1093,55 @@
                         return -1;
                     }
 
+                    var result = value;
+
                     if(params.isRegex()) {
-                        //TODO
-                        warn("Method not supported yet");
-                        return -1;
-                    } else {
-                        var result = value;
-                        if(replaceAll == true) {
-                            result = value.replaceAll(replaceValue, replaceWith);
-                        } else {
-                            result = value.replace(replaceValue, replaceWith);
-                        }
-                        if(result == value) {
-                            info("'"+ escape(replaceValue) + "'" + " was not found.")
+                        var regex = new RegExp();
+                        try {
+                            regex = new RegExp(replaceValue,
+                            "m" + (caseSensitive == true? "": "i") + (replaceAll == true? "g": ""));
+                        } catch(e) {
+                            console.error(e);
+                            error(e.message);
                             return -1;
                         }
+
+                        result = value.replace(regex, replaceWith);
+
                         return result;
+                        
+                    } else {
+                        if(caseSensitive == true) {
+                            if(replaceAll == true) {
+                                result = value.replaceAll(replaceValue, replaceWith);
+                            } else {
+                                result = value.replace(replaceValue, replaceWith);
+                            }
+                            if(result == value) {
+                                info("'"+ replaceValue + "'" + " was not found.")
+                                return -1;
+                            }
+                            return result;
+                        } else {
+                            if(replaceAll == true) {
+                                var found = indexes(value.toLowerCase(), replaceValue.toLowerCase());
+                                if(found.length == 0) {
+                                    info("'"+ replaceValue + "'" + " was not found.")
+                                    return -1;
+                                }
+                                var result = value;
+                                found.reverse().forEach(foundIndex => result = result.substr(0, foundIndex) + replaceWith + result.substr(foundIndex + replaceValue.length));
+                                return result;
+                            } else {
+                                var foundIndex = value.toLowerCase().indexOf(replaceValue.toLowerCase());
+                                if(foundIndex == -1) {
+                                    info("'"+ replaceValue + "'" + " was not found.")
+                                    return -1;
+                                }
+                                
+                                return value.substr(0, foundIndex) + replaceWith + value.substr(foundIndex + replaceValue.length);
+                            }
+                        }
                     }
                 }
 
@@ -1499,17 +1549,14 @@
                 <input id="replaceAll" type="checkbox" checked />
                 <span class="off-on-slider round"></span>
             </label><label for="replaceAll">Replace all</label><br/>
-            <div style="display: none;"><!--TODO-->
-                <label class="off-on">
-                    <input id="replaceRegex" type="checkbox" />
-                    <span class="off-on-slider round"></span>
-                </label><label for="replaceRegex">Use RegEx</label><br/>
-                <label class="off-on">
-                    <input id="replaceCaseSensitive" type="checkbox" checked />
-                    <span class="off-on-slider round"></span>
-                </label><label for="replaceCaseSensitive">Case sensitive</label>
-            </div>
-            
+            <label class="off-on">
+                <input id="replaceRegex" type="checkbox" />
+                <span class="off-on-slider round"></span>
+            </label><label for="replaceRegex">Use RegEx</label><br/>
+            <label class="off-on">
+                <input id="replaceCaseSensitive" type="checkbox" checked />
+                <span class="off-on-slider round"></span>
+            </label><label for="replaceCaseSensitive">Case sensitive</label>
         </div>
     </div>
     <hr />
