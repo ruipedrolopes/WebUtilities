@@ -463,7 +463,7 @@
             var history = JSON.parse(sessionStorage.getItem("history"));
 
             //prevent history filling when changing random size
-            if(history[history.length-1].t > new Date().valueOf() - 300) {
+            if(history.length > 0 && history[history.length-1].t > new Date().valueOf() - 300) {
                 return;
             }
 
