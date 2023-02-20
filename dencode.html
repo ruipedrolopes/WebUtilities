@@ -415,6 +415,23 @@
                 var result = transformer(value, params);
 
                 if (typeof result != "string") {
+
+                    if (typeof result == "object" && typeof result.promise == "object" && typeof result.promise.then == "function") {
+                        // this has a promise
+
+                        result.promise.then((promiseResult) => {
+                            addToHistory();
+                            var b64result = auxiliary.arrayBufferToBase64(promiseResult);
+                            
+                            if(result.finalize) {
+                                displayResult(eval(result.finalize)(b64result));
+                            } else {
+                                displayResult(b64result);
+                            }
+                        });
+                        return;
+                    }
+
                     console.warn("Transformer returned an invalid value.");
                     return;
                 }
@@ -463,7 +480,7 @@
             var history = JSON.parse(sessionStorage.getItem("history"));
 
             //prevent history filling when changing random size
-            if(history[history.length-1].t > new Date().valueOf() - 300) {
+            if(history.length > 0 && history[history.length-1].t > new Date().valueOf() - 300) {
                 return;
             }
 
@@ -569,7 +586,28 @@
                 }
 
 
+            },
+
+            arrayBufferToBase64: function (buffer) {
+                var binary = '';
+                var bytes = new Uint8Array(buffer);
+                var len = bytes.byteLength;
+                for (var i = 0; i < len; i++) {
+                    binary += String.fromCharCode(bytes[i]);
+                }
+                return window.btoa(binary);
+            },
+
+            base64ToArrayBuffer: function (base64) {
+                var binary_string =  window.atob(base64);
+                var len = binary_string.length;
+                var bytes = new Uint8Array(len);
+                for (var i = 0; i < len; i++)        {
+                    bytes[i] = binary_string.charCodeAt(i);
+                }
+                return bytes.buffer;
             }
+
         };
 
         //Generators
@@ -914,6 +952,18 @@
                 return indexes(value, toFind, idx + toFind.length, found);
             }
 
+            function compressArrayBuffer(input, algorithm) {
+                const stream = new Response(input).body
+                    .pipeThrough(new CompressionStream(algorithm));
+                return new Response(stream).arrayBuffer();
+            }
+
+            function decompressArrayBuffer(input, algorithm) {
+                const stream = new Response(input).body
+                    .pipeThrough(new DecompressionStream(algorithm));
+                return new Response(stream).arrayBuffer();
+            }
+
             // public functions
             return {
                 urlencode: function (value) {
@@ -952,12 +1002,12 @@
                 },
 
                 base64encode: function (value) {
-                    return window.btoa(unescape(encodeURIComponent(value)));
+                    return window.btoa(value);
                 },
 
                 base64decode: function (value) {
                     try {
-                        return decodeURIComponent(escape(window.atob(value)));
+                        return window.atob(value);
                     }
                     catch (e) {
                         console.error(e);
@@ -1143,6 +1193,18 @@
                             }
                         }
                     }
+                },
+
+                compress: function(value, params) {
+                    var algorithm = params.compressAlgorithm();
+                    return { promise: compressArrayBuffer(value, algorithm), finalize: null };
+                },
+
+                decompress: function(value, params) {
+                    var algorithm = params.compressAlgorithm();
+                    var arrayBufferValue = auxiliary.base64ToArrayBuffer(value);
+
+                    return { promise: decompressArrayBuffer(arrayBufferValue, algorithm), finalize: window.atob };
                 }
 
 
@@ -1266,6 +1328,10 @@
 
         function getReplaceWith() {
             return document.getElementById("replaceWith").value;
+        }
+
+        function getCompressAlgorithm() {
+            return document.getElementById("compressAlgorithm").value;
         }
 
         function getReplaceAll() {
@@ -1460,6 +1526,24 @@
                 <input type="checkbox" id="useTabs">
                 <span class="slider round slider-padding"></span>
             </label>
+        </div>
+        
+        <div class="buttonGroup">
+            <input type="button" class="button button-xsmall" value="Compress"
+                onclick="transform(trs.compress, {'compressAlgorithm': getCompressAlgorithm });" /><br />
+            <input type="button" class="button button-xsmall" value="Decompress"
+                onclick="transform(trs.decompress, {'compressAlgorithm': getCompressAlgorithm });" /><br />
+            <select id="compressAlgorithm" class="button button-xsmall" style="text-align: left;">
+                <option selected value="deflate">
+                    Deflate
+                </option>
+                <option value="deflate-raw">
+                    Deflate Raw
+                </option>
+                <option value="gzip">
+                    GZip
+                </option>
+            </select>
         </div>
 
         <div class="buttonGroup">
