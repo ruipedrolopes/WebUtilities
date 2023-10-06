@@ -102,6 +102,11 @@
             display: none;
         }
 
+        hr {
+            margin-top: 0.2rem;
+            margin-bottom: 0.2rem;
+        }
+
 
     </style>
     <!-- Controls -->
@@ -153,7 +158,7 @@
         }
 
         .slider-selection:after {
-            content: "All";
+            content: "All text";
         }
 
         input:checked+.slider-selection:after {
@@ -166,6 +171,14 @@
 
         input:checked+.slider-sort:after {
             content: "Desc.";
+        }
+
+        .slider-wrap:after {
+            content: "Wrap";
+        }
+
+        input:checked+.slider-wrap:after {
+            content: "No wrap";
         }
 
         .slider:after {
@@ -237,10 +250,18 @@
         }
 
         .button-xsmall {
-            padding: 2px 12px;
+            padding: 2px 6px;
             font-size: 14px;
         }
 
+        select:active {
+            background-color: unset !important;
+        }
+
+        select:hover {
+            background-color: #ccc !important;
+            color: #000000 !important;
+        }
 
         .off-on {
             width: 40px;
@@ -608,7 +629,7 @@
             },
 
             base64ToArrayBuffer: function (base64) {
-                var binary_string =  window.atob(base64);
+                var binary_string = window.atob(base64);
                 var len = binary_string.length;
                 var bytes = new Uint8Array(len);
                 for (var i = 0; i < len; i++)        {
@@ -973,6 +994,16 @@
                 return new Response(stream).arrayBuffer();
             }
 
+            function base64ToBytes(base64) {
+                const binString = atob(base64);
+                return Uint8Array.from(binString, (m) => m.codePointAt(0));
+            }
+
+            function bytesToBase64(bytes) {
+                const binString = String.fromCodePoint(...bytes);
+                return btoa(binString);
+            }
+
             // public functions
             return {
                 urlencode: function (value) {
@@ -1011,17 +1042,31 @@
                 },
 
                 base64encode: function (value) {
-                    return window.btoa(value);
+                    try {
+                        return bytesToBase64(new TextEncoder().encode(value))
+                    } catch(e) {
+                        console.error(e);
+                        console.error("Falling back to legacy btoa.");
+                        return window.btoa(value);
+                    }
                 },
 
                 base64decode: function (value) {
                     try {
-                        return window.atob(value);
-                    }
-                    catch (e) {
+                        return new TextDecoder().decode(base64ToBytes(value));
+                    } catch(e) {
                         console.error(e);
-                        return -1;
+                        console.error("Falling back to legacy atob.");
+                        try {
+                            return window.atob(value);
+                        }
+                        catch (e) {
+                            console.error(e);
+                            warn("Invalid base64 text");
+                            return -1;
+                        }
                     }
+                    
                 },
 
                 hexencode: function (value) {
@@ -1043,7 +1088,7 @@
                     return str;
                 },
 
-                JavaCSharp_StringEscape: function (value) {
+                CTypeLang_StringEscape: function (value) {
                     var preescape = "" + value;
                     var escaped = "";
 
@@ -1055,7 +1100,7 @@
                     return escaped;
                 },
 
-                JavaCSharp_StringUnescape: function (value) {
+                CTypeLang_StringUnescape: function (value) {
                     try {
                         var replacement = `##TEMP##${auxiliary.uuidv4()}##`;
                         var temp = eval(`new String(\'${value.replaceAll("'", replacement)}\')`);
@@ -1067,22 +1112,31 @@
                     }
                 },
 
-                prettyPrintXml: function (value, params) {
-                    var p1 = params.getPadding();
-                    return formatXml(value, true, p1);
+                prettyPrint: function(value, params) {
+                    const padding = params.getPadding();
+                    const lang = params.getFormatingLang();
+                    switch (lang) {
+                        case "JSON":
+                            return JSON.stringify(JSON.parse(value), null, padding);
+                        case "XML":
+                            return formatXml(value, true, padding);
+                        default:
+                            console.error("Unsupported formatting lang");
+                            return -1;
+                    }
                 },
 
-                minifyXml: function (value, params) {
-                    return formatXml(value, false);
-                },
-
-                prettyPrintJSON: function (value, params) {
-                    var p2 = params.getPadding();
-                    return JSON.stringify(JSON.parse(value), null, p2);
-                },
-
-                minifyJSON: function (value) {
-                    return JSON.stringify(JSON.parse(value));
+                minify: function(value, params) {
+                    const lang = params.getFormatingLang();
+                    switch (lang) {
+                        case "JSON":
+                            return JSON.stringify(JSON.parse(value));
+                        case "XML":
+                            return formatXml(value, false);
+                        default:
+                            console.error("Unsupported formatting lang");
+                            return -1;
+                    }
                 },
 
                 toUpperCase: function (value) {
@@ -1091,16 +1145,6 @@
 
                 toLowerCase: function (value) {
                     return value.toLowerCase();
-                },
-
-                urlTokenDecode: function (value) {
-                    var intermediate = decodeUrlToken(value);
-                    return trs.base64decode(intermediate);
-                },
-
-                urlTokenEncode: function (value) {
-                    var intermediate = base64encode(value);
-                    return trs.encodeUrlToken(value);
                 },
 
                 replicate: function (value) {
@@ -1113,26 +1157,26 @@
                         value.split("\n").sort().reverse().join("\n");
                 },
 
-                JavaCSharp_Stringify: function(value) {
+                CTypeLang_Stringify: function(value) {
                     var lines = value.split("\n");
                     var result = "";
                     for(var i = 0; i < lines.length; i++) {
                         result += (i == 0? "": "+ ")
-                        + "\"" + trs.JavaCSharp_StringEscape(lines[i])
+                        + "\"" + trs.CTypeLang_StringEscape(lines[i])
                         + (i == lines.length - 1? "\"": "\\n\"" + "\n");
                     }
                     return result;
                 },
 
-                JavaCSharp_Unstringify: function(value) {
+                CTypeLang_Unstringify: function(value) {
                     var lines = value.split(/\s*\n\s*\+\s*/);
                     var result = "";
                     for(var i = 0; i < lines.length; i++) {
                         if(lines[i].match(/^".*"$/) == null) {
-                            warn("Could not unstringify. Make sure you have valid Java/C# strings.", 5000);
+                            warn("Could not unstringify. Make sure you have valid C language type strings.", 5000);
                             return value;
                         }
-                        result += trs.JavaCSharp_StringUnescape(lines[i].substr(1, lines[i].length - 2));
+                        result += trs.CTypeLang_StringUnescape(lines[i].substr(1, lines[i].length - 2));
                     }
                     return result;
                 },
@@ -1319,6 +1363,10 @@
             return (document.getElementById("useTabs").checked == true) ? '\t' : '  ';
         }
 
+        function getFormattingLang() {
+            return document.getElementById("formattingLang").value;
+        }
+
         function xmlSafe() {
             return document.getElementById("xmlSafe").checked;
         }
@@ -1457,12 +1505,15 @@
             window.setTimeout(function () { if (id != messageId) { return; } document.getElementById("message").style.display = "none"; }, typeof delay == "number" ? delay : 2000);
         }
 
+        function setWrap() {
+            getValueElement().style.overflowWrap = document.getElementById("cbWrap").checked? 'inherit': 'anywhere';
+        }
     </script>
 </head>
 
 <body>
     <textarea id="value" value="" placeholder="Text goes here..." autofocus></textarea>
-    <div style="float: right;position: relative;font-size: small;">Line: <span id="line"></span><span
+    <div style="float: right;position: relative;font-size: small; margin-top: 0.2rem">Line: <span id="line"></span><span
             style="margin-left: 10px;">Column: </span><span id="col"></span></div>
     <div style="float: right;clear: right;position: relative;font-size: small;">Start: <span id="start"></span><span
             style="margin-left: 10px;">End: </span><span id="end"></span><span style="margin-left: 10px;">Length:
@@ -1474,12 +1525,6 @@
                 onclick="transform(trs.urlencode);" /><br />
             <input type="button" class="button button-xsmall" value="URL Decode" onclick="transform(trs.urldecode);" />
             <hr/>
-            <input type="button" class="button button-xsmall" value="URL Token Encode"
-                onclick="transform(trs.urlTokenEncode);" /><br />
-            <input type="button" class="button button-xsmall" value="URL Token Decode"
-                onclick="transform(trs.urlTokenDecode);" />
-        </div>
-        <div class="buttonGroup">
             <input type="button" class="button button-xsmall" value="HTML Encode"
                 onclick="transform(trs.htmlencode2, {'xmlSafe': xmlSafe});" />
             <br />
@@ -1505,32 +1550,34 @@
         </div>
 
         <div class="buttonGroup">
-            <input type="button" class="button button-xsmall" value="Java/C# String Escape"
-                onclick="transform(trs.JavaCSharp_StringEscape);" /><br />
-            <input type="button" class="button button-xsmall" value="Java/C# String Unescape"
-                onclick="transform(trs.JavaCSharp_StringUnescape);" /><br />
-            <input type="button" class="button button-xsmall" value="Java/C# Stringify"
-                onclick="transform(trs.JavaCSharp_Stringify);" /><br />
-            <input type="button" class="button button-xsmall" value="Java/C# Unstringify"
-                onclick="transform(trs.JavaCSharp_Unstringify);" />
+            <input type="button" class="button button-xsmall" value="String Escape"
+                onclick="transform(trs.CTypeLang_StringEscape);" /><br />
+            <input type="button" class="button button-xsmall" value="String Unescape"
+                onclick="transform(trs.CTypeLang_StringUnescape);" />
+            <hr/>
+            <input type="button" class="button button-xsmall" value="Stringify"
+                onclick="transform(trs.CTypeLang_Stringify);" /><br />
+            <input type="button" class="button button-xsmall" value="Unstringify"
+                onclick="transform(trs.CTypeLang_Unstringify);" />
         </div>
 
-        <div class="checkAlign">
-            <div class="buttonGroup">
-                <input type="button" class="button button-xsmall" value="Pretty Print XML"
-                    onclick="transform(trs.prettyPrintXml, { 'getPadding': formatWhitepacePadding });"><br />
-                <input type="button" class="button button-xsmall" value="Minify XML"
-                    onclick="transform(trs.minifyXml);">
-            </div>
-            <div class="buttonGroup">
-                <input type="button" class="button button-xsmall" value="Pretty Print JSON"
-                    onclick="transform(trs.prettyPrintJSON, { 'getPadding': formatWhitepacePadding });"><br />
-                <input type="button" class="button button-xsmall" value="Minify JSON"
-                    onclick="transform(trs.minifyJSON);">
-            </div>
-            <br />
-            <hr />
-
+        <div class="buttonGroup">
+            <input type="button" class="button button-xsmall" value="Pretty Print"
+                onclick="transform(trs.prettyPrint, { 'getPadding': formatWhitepacePadding, 'getFormatingLang': getFormattingLang });"><br />
+            <input type="button" class="button button-xsmall" value="Minify"
+                onclick="transform(trs.minify, { 'getFormatingLang': getFormattingLang });"><br/>
+                <hr/>
+            <select id="formattingLang" class="button button-xsmall" style="text-align: left;">
+                <option selected value="JSON">
+                    JSON
+                </option>
+                <option value="XML">
+                    XML
+                </option>
+                <option value="YAML" disabled>
+                    YAML
+                </option>
+            </select><br/>
             <label class="switch">
                 <input type="checkbox" id="useTabs">
                 <span class="slider round slider-padding"></span>
@@ -1541,7 +1588,8 @@
             <input type="button" class="button button-xsmall" value="Compress"
                 onclick="transform(trs.compress, {'compressAlgorithm': getCompressAlgorithm });" /><br />
             <input type="button" class="button button-xsmall" value="Decompress"
-                onclick="transform(trs.decompress, {'compressAlgorithm': getCompressAlgorithm });" /><br />
+                onclick="transform(trs.decompress, {'compressAlgorithm': getCompressAlgorithm });" />
+            <hr/>
             <select id="compressAlgorithm" class="button button-xsmall" style="text-align: left;">
                 <option selected value="deflate">
                     Deflate
@@ -1654,7 +1702,7 @@
     </div>
     <hr />
 
-    <p>Mode</p>
+    <h4>Mode</h4>
     <label class="switch">
         <input type="checkbox" id="cbCopy">
         <span class="slider round slider-copy"></span>
@@ -1662,6 +1710,10 @@
     <label class="switch">
         <input type="checkbox" id="cbSelection">
         <span class="slider round slider-selection"></span>
+    </label>
+    <label class="switch">
+        <input type="checkbox" id="cbWrap" onchange="setWrap()">
+        <span class="slider round slider-wrap"></span>
     </label>
 
     <div id="message"
