@@ -1004,6 +1004,34 @@
                 return btoa(binString);
             }
 
+            function sortObject(unordered, sortArrays = false, reverse = false) {
+                if (!unordered || typeof unordered !== 'object') {
+                    return unordered;
+                }
+
+                if (Array.isArray(unordered)) {
+                    const newArr = unordered.map((item) => sortObject(item, sortArrays, reverse));
+                    if (sortArrays) {
+                        newArr.sort();
+                        if(reverse === true) {
+                            newArr.reverse();
+                        }
+                    }
+                    return newArr;
+                }
+
+                const ordered = {};
+                const keys = Object.keys(unordered).sort();
+                if(reverse === true) {
+                    keys.reverse();
+                }
+
+                keys.forEach((key) => {
+                    ordered[key] = sortObject(unordered[key], sortArrays, reverse);
+                });
+                return ordered;
+            }
+
             // public functions
             return {
                 urlencode: function (value) {
@@ -1155,6 +1183,11 @@
                     return params.isAscending()?
                         value.split("\n").sort().join("\n") :
                         value.split("\n").sort().reverse().join("\n");
+                },
+
+                sortObject: function (value, params) {
+                    let unsortedObject = JSON.parse(value);
+                    return JSON.stringify(sortObject(unsortedObject, false, !params.isAscending()), null, params.getPadding());
                 },
 
                 CTypeLang_Stringify: function(value) {
@@ -1617,7 +1650,9 @@
         </div>
         <div class="buttonGroup">
             <input type="button" class="button button-xsmall" value="Sort lines"
-                onclick="transform(trs.sort, {'isAscending': sortIsAscending });" />
+                onclick="transform(trs.sort, {'isAscending': sortIsAscending });" /><br />
+            <input type="button" class="button button-xsmall" value="Sort JSON"
+                onclick="transform(trs.sortObject, {'isAscending': sortIsAscending, 'getPadding': formatWhitepacePadding });" />
             <br/>
             <label class="switch">
                 <input type="checkbox" id="sortDescending">
