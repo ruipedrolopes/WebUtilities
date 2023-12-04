@@ -1,0 +1,523 @@
+<html>
+
+<head>
+    <title>COMPARER</title>
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOm9vbz0iaHR0cDovL3htbC5vcGVub2ZmaWNlLm9yZy9zdmcvZXhwb3J0IiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeG1sbnM6cHJlc2VudGF0aW9uPSJodHRwOi8vc3VuLmNvbS94bWxucy9zdGFyb2ZmaWNlL3ByZXNlbnRhdGlvbiIgeG1sbnM6c21pbD0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9TTUlMMjAvIiB4bWxuczphbmltPSJ1cm46b2FzaXM6bmFtZXM6dGM6b3BlbmRvY3VtZW50OnhtbG5zOmFuaW1hdGlvbjoxLjAiIHZlcnNpb249IjEuMiIgd2lkdGg9IjY4bW0iIGhlaWdodD0iNzAuNW1tIiB2aWV3Qm94PSIwIDAgNjgwMCA3MDUwIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2Utd2lkdGg9IjI4LjIyMiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PGRlZnMgY2xhc3M9IkNsaXBQYXRoR3JvdXAiPjxjbGlwUGF0aCBpZD0icHJlc2VudGF0aW9uX2NsaXBfcGF0aCIgY2xpcFBhdGhVbml0cz0idXNlclNwYWNlT25Vc2UiPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSI2ODAwIiBoZWlnaHQ9IjcwNTAiLz48L2NsaXBQYXRoPjxjbGlwUGF0aCBpZD0icHJlc2VudGF0aW9uX2NsaXBfcGF0aF9zaHJpbmsiIGNsaXBQYXRoVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cmVjdCB4PSI2IiB5PSI3IiB3aWR0aD0iNjc4NyIgaGVpZ2h0PSI3MDM2Ii8+PC9jbGlwUGF0aD48L2RlZnM+PGRlZnMgY2xhc3M9IlRleHRTaGFwZUluZGV4Ij48ZyBvb286c2xpZGU9ImlkMSIgb29vOmlkLWxpc3Q9ImlkMyBpZDQgaWQ1IGlkNiBpZDcgaWQ4Ii8+PC9kZWZzPjxkZWZzIGNsYXNzPSJFbWJlZGRlZEJ1bGxldENoYXJzIj48ZyBpZD0iYnVsbGV0LWNoYXItdGVtcGxhdGUtNTczNTYiIHRyYW5zZm9ybT0ic2NhbGUoMC4wMDA0ODgyODEyNSwtMC4wMDA0ODgyODEyNSkiPjxwYXRoIGQ9Ik0gNTgwLDExNDEgTCAxMTYzLDU3MSA1ODAsMCAtNCw1NzEgNTgwLDExNDEgWiIvPjwvZz48ZyBpZD0iYnVsbGV0LWNoYXItdGVtcGxhdGUtNTczNTQiIHRyYW5zZm9ybT0ic2NhbGUoMC4wMDA0ODgyODEyNSwtMC4wMDA0ODgyODEyNSkiPjxwYXRoIGQ9Ik0gOCwxMTI4IEwgMTEzNywxMTI4IDExMzcsMCA4LDAgOCwxMTI4IFoiLz48L2c+PGcgaWQ9ImJ1bGxldC1jaGFyLXRlbXBsYXRlLTEwMTQ2IiB0cmFuc2Zvcm09InNjYWxlKDAuMDAwNDg4MjgxMjUsLTAuMDAwNDg4MjgxMjUpIj48cGF0aCBkPSJNIDE3NCwwIEwgNjAyLDczOSAxNzQsMTQ4MSAxNDU2LDczOSAxNzQsMCBaIE0gMTM1OCw3MzkgTCAzMDksMTM0NiA2NTksNzM5IDEzNTgsNzM5IFoiLz48L2c+PGcgaWQ9ImJ1bGxldC1jaGFyLXRlbXBsYXRlLTEwMTMyIiB0cmFuc2Zvcm09InNjYWxlKDAuMDAwNDg4MjgxMjUsLTAuMDAwNDg4MjgxMjUpIj48cGF0aCBkPSJNIDIwMTUsNzM5IEwgMTI3NiwwIDcxNywwIDEyNjAsNTQzIDE3NCw1NDMgMTc0LDkzNiAxMjYwLDkzNiA3MTcsMTQ4MSAxMjc0LDE0ODEgMjAxNSw3MzkgWiIvPjwvZz48ZyBpZD0iYnVsbGV0LWNoYXItdGVtcGxhdGUtMTAwMDciIHRyYW5zZm9ybT0ic2NhbGUoMC4wMDA0ODgyODEyNSwtMC4wMDA0ODgyODEyNSkiPjxwYXRoIGQ9Ik0gMCwtMiBDIC03LDE0IC0xNiwyNyAtMjUsMzcgTCAzNTYsNTY3IEMgMjYyLDgyMyAyMTUsOTUyIDIxNSw5NTQgMjE1LDk3OSAyMjgsOTkyIDI1NSw5OTIgMjY0LDk5MiAyNzYsOTkwIDI4OSw5ODcgMzEwLDk5MSAzMzEsOTk5IDM1NCwxMDEyIEwgMzgxLDk5OSA0OTIsNzQ4IDc3MiwxMDQ5IDgzNiwxMDI0IDg2MCwxMDQ5IEMgODgxLDEwMzkgOTAxLDEwMjUgOTIyLDEwMDYgODg2LDkzNyA4MzUsODYzIDc3MCw3ODQgNzY5LDc4MyA3MTAsNzE2IDU5NCw1ODQgTCA3NzQsMjIzIEMgNzc0LDE5NiA3NTMsMTY4IDcxMSwxMzkgTCA3MjcsMTE5IEMgNzE3LDkwIDY5OSw3NiA2NzIsNzYgNjQxLDc2IDU3MCwxNzggNDU3LDM4MSBMIDE2NCwtNzYgQyAxNDIsLTExMCAxMTEsLTEyNyA3MiwtMTI3IDMwLC0xMjcgOSwtMTEwIDgsLTc2IDEsLTY3IC0yLC01MiAtMiwtMzIgLTIsLTIzIC0xLC0xMyAwLC0yIFoiLz48L2c+PGcgaWQ9ImJ1bGxldC1jaGFyLXRlbXBsYXRlLTEwMDA0IiB0cmFuc2Zvcm09InNjYWxlKDAuMDAwNDg4MjgxMjUsLTAuMDAwNDg4MjgxMjUpIj48cGF0aCBkPSJNIDI4NSwtMzMgQyAxODIsLTMzIDExMSwzMCA3NCwxNTYgNTIsMjI4IDQxLDMzMyA0MSw0NzEgNDEsNTQ5IDU1LDYxNiA4Miw2NzIgMTE2LDc0MyAxNjksNzc4IDI0MCw3NzggMjkzLDc3OCAzMjgsNzQ3IDM0Niw2ODQgTCAzNjksNTA4IEMgMzc3LDQ0NCAzOTcsNDExIDQyOCw0MTAgTCAxMTYzLDExMTYgQyAxMTc0LDExMjcgMTE5NiwxMTMzIDEyMjksMTEzMyAxMjcxLDExMzMgMTI5MiwxMTE4IDEyOTIsMTA4NyBMIDEyOTIsOTY1IEMgMTI5Miw5MjkgMTI4Miw5MDEgMTI2Miw4ODEgTCA0NDIsNDcgQyAzOTAsLTYgMzM4LC0zMyAyODUsLTMzIFoiLz48L2c+PGcgaWQ9ImJ1bGxldC1jaGFyLXRlbXBsYXRlLTk2NzkiIHRyYW5zZm9ybT0ic2NhbGUoMC4wMDA0ODgyODEyNSwtMC4wMDA0ODgyODEyNSkiPjxwYXRoIGQ9Ik0gODEzLDAgQyA2MzIsMCA0ODksNTQgMzgzLDE2MSAyNzYsMjY4IDIyMyw0MTEgMjIzLDU5MiAyMjMsNzczIDI3Niw5MTYgMzgzLDEwMjMgNDg5LDExMzAgNjMyLDExODQgODEzLDExODQgOTkyLDExODQgMTEzNiwxMTMwIDEyNDUsMTAyMyAxMzUzLDkxNiAxNDA3LDc3MiAxNDA3LDU5MiAxNDA3LDQxMiAxMzUzLDI2OCAxMjQ1LDE2MSAxMTM2LDU0IDk5MiwwIDgxMywwIFoiLz48L2c+PGcgaWQ9ImJ1bGxldC1jaGFyLXRlbXBsYXRlLTgyMjYiIHRyYW5zZm9ybT0ic2NhbGUoMC4wMDA0ODgyODEyNSwtMC4wMDA0ODgyODEyNSkiPjxwYXRoIGQ9Ik0gMzQ2LDQ1NyBDIDI3Myw0NTcgMjA5LDQ4MyAxNTUsNTM1IDEwMSw1ODYgNzQsNjQ5IDc0LDcyMyA3NCw3OTYgMTAxLDg1OSAxNTUsOTExIDIwOSw5NjMgMjczLDk4OSAzNDYsOTg5IDQxOSw5ODkgNDgwLDk2MyA1MzEsOTEwIDU4Miw4NTkgNjA4LDc5NiA2MDgsNzIzIDYwOCw2NDggNTgzLDU4NiA1MzIsNTM1IDQ4Miw0ODMgNDIwLDQ1NyAzNDYsNDU3IFoiLz48L2c+PGcgaWQ9ImJ1bGxldC1jaGFyLXRlbXBsYXRlLTgyMTEiIHRyYW5zZm9ybT0ic2NhbGUoMC4wMDA0ODgyODEyNSwtMC4wMDA0ODgyODEyNSkiPjxwYXRoIGQ9Ik0gLTQsNDU5IEwgMTEzNSw0NTkgMTEzNSw2MDYgLTQsNjA2IC00LDQ1OSBaIi8+PC9nPjxnIGlkPSJidWxsZXQtY2hhci10ZW1wbGF0ZS02MTU0OCIgdHJhbnNmb3JtPSJzY2FsZSgwLjAwMDQ4ODI4MTI1LC0wLjAwMDQ4ODI4MTI1KSI+PHBhdGggZD0iTSAxNzMsNzQwIEMgMTczLDkwMyAyMzEsMTA0MyAzNDYsMTE1OSA0NjIsMTI3NCA2MDEsMTMzMiA3NjUsMTMzMiA5MjgsMTMzMiAxMDY3LDEyNzQgMTE4MywxMTU5IDEyOTksMTA0MyAxMzU3LDkwMyAxMzU3LDc0MCAxMzU3LDU3NyAxMjk5LDQzNyAxMTgzLDMyMiAxMDY3LDIwNiA5MjgsMTQ4IDc2NSwxNDggNjAxLDE0OCA0NjIsMjA2IDM0NiwzMjIgMjMxLDQzNyAxNzMsNTc3IDE3Myw3NDAgWiIvPjwvZz48L2RlZnM+PGc+PGcgaWQ9ImlkMiIgY2xhc3M9Ik1hc3Rlcl9TbGlkZSI+PGcgaWQ9ImJnLWlkMiIgY2xhc3M9IkJhY2tncm91bmQiLz48ZyBpZD0iYm8taWQyIiBjbGFzcz0iQmFja2dyb3VuZE9iamVjdHMiLz48L2c+PC9nPjxnIGNsYXNzPSJTbGlkZUdyb3VwIj48Zz48ZyBpZD0iY29udGFpbmVyLWlkMSI+PGcgaWQ9ImlkMSIgY2xhc3M9IlNsaWRlIiBjbGlwLXBhdGg9InVybCgjcHJlc2VudGF0aW9uX2NsaXBfcGF0aCkiPjxnIGNsYXNzPSJQYWdlIj48ZyBjbGFzcz0iY29tLnN1bi5zdGFyLmRyYXdpbmcuQ3VzdG9tU2hhcGUiPjxnIGlkPSJpZDMiPjxyZWN0IGNsYXNzPSJCb3VuZGluZ0JveCIgc3Ryb2tlPSJub25lIiBmaWxsPSJub25lIiB4PSIyNzQ0IiB5PSItMSIgd2lkdGg9IjQwNTciIGhlaWdodD0iNTg1MCIvPjxwYXRoIGZpbGw9InJnYigyNTUsMjU1LDApIiBzdHJva2U9Im5vbmUiIGQ9Ik0gNDc3Miw1ODQ4IEwgMjc0NCw1ODQ4IDI3NDQsLTEgNjgwMCwtMSA2ODAwLDU4NDggNDc3Miw1ODQ4IFoiLz48L2c+PC9nPjxnIGNsYXNzPSJjb20uc3VuLnN0YXIuZHJhd2luZy5DdXN0b21TaGFwZSI+PGcgaWQ9ImlkNCI+PHJlY3QgY2xhc3M9IkJvdW5kaW5nQm94IiBzdHJva2U9Im5vbmUiIGZpbGw9Im5vbmUiIHg9IjAiIHk9IjEyMDAiIHdpZHRoPSI0MDU3IiBoZWlnaHQ9IjU4NTAiLz48cGF0aCBmaWxsPSJyZ2IoMTA3LDE3OSwyNTUpIiBzdHJva2U9Im5vbmUiIGQ9Ik0gMjAyOCw3MDQ5IEwgMCw3MDQ5IDAsMTIwMCA0MDU2LDEyMDAgNDA1Niw3MDQ5IDIwMjgsNzA0OSBaIi8+PC9nPjwvZz48ZyBjbGFzcz0iR3JvdXAiPjxnIGNsYXNzPSJjb20uc3VuLnN0YXIuZHJhd2luZy5DdXN0b21TaGFwZSI+PGcgaWQ9ImlkNSI+PHJlY3QgY2xhc3M9IkJvdW5kaW5nQm94IiBzdHJva2U9Im5vbmUiIGZpbGw9Im5vbmUiIHg9IjUzMjQiIHk9IjI0NTAiIHdpZHRoPSIxNDc3IiBoZWlnaHQ9Ijk0OCIvPjxwYXRoIGZpbGw9InJnYigxMDcsMTc5LDI1NSkiIHN0cm9rZT0ibm9uZSIgZD0iTSA2MDYyLDMzOTcgTCA1MzI0LDMzOTcgNTMyNCwyNDUwIDY4MDAsMjQ1MCA2ODAwLDMzOTcgNjA2MiwzMzk3IFoiLz48L2c+PC9nPjxnIGNsYXNzPSJjb20uc3VuLnN0YXIuZHJhd2luZy5DdXN0b21TaGFwZSI+PGcgaWQ9ImlkNiI+PHJlY3QgY2xhc3M9IkJvdW5kaW5nQm94IiBzdHJva2U9Im5vbmUiIGZpbGw9Im5vbmUiIHg9IjQwOTgiIHk9IjE5NDYiIHdpZHRoPSIxNzE2IiBoZWlnaHQ9IjE5NTciLz48cGF0aCBmaWxsPSJyZ2IoMTA3LDE3OSwyNTUpIiBzdHJva2U9Im5vbmUiIGQ9Ik0gNDA5OCwyOTI0IEwgNTgxMiwzOTAyIDU4MTIsMTk0NiA0MDk4LDI5MjQgWiIvPjwvZz48L2c+PC9nPjxnIGNsYXNzPSJHcm91cCI+PGcgY2xhc3M9ImNvbS5zdW4uc3Rhci5kcmF3aW5nLkN1c3RvbVNoYXBlIj48ZyBpZD0iaWQ3Ij48cmVjdCBjbGFzcz0iQm91bmRpbmdCb3giIHN0cm9rZT0ibm9uZSIgZmlsbD0ibm9uZSIgeD0iMCIgeT0iMzY1MSIgd2lkdGg9IjE0NzciIGhlaWdodD0iOTQ4Ii8+PHBhdGggZmlsbD0icmdiKDI1NSwyNTUsMCkiIHN0cm9rZT0ibm9uZSIgZD0iTSA3MzgsNDU5OCBMIDAsNDU5OCAwLDM2NTEgMTQ3NiwzNjUxIDE0NzYsNDU5OCA3MzgsNDU5OCBaIi8+PC9nPjwvZz48ZyBjbGFzcz0iY29tLnN1bi5zdGFyLmRyYXdpbmcuQ3VzdG9tU2hhcGUiPjxnIGlkPSJpZDgiPjxyZWN0IGNsYXNzPSJCb3VuZGluZ0JveCIgc3Ryb2tlPSJub25lIiBmaWxsPSJub25lIiB4PSI5ODciIHk9IjMxNDYiIHdpZHRoPSIxNzE1IiBoZWlnaHQ9IjE5NTgiLz48cGF0aCBmaWxsPSJyZ2IoMjU1LDI1NSwwKSIgc3Ryb2tlPSJub25lIiBkPSJNIDI3MDEsNDEyNSBMIDk4Nyw1MTAzIDk4NywzMTQ3IDI3MDEsNDEyNSBaIi8+PC9nPjwvZz48L2c+PC9nPjwvZz48L2c+PC9nPjwvZz48L3N2Zz4=">
+    <!-- General -->
+    <style>
+        body {
+            margin: 20px;
+            font-family: sans-serif;
+            background-color: #353535;
+            color: silver;
+        }
+
+        input {
+            background-color: darkgray;
+            border-radius: 4pt
+        }
+
+        textarea {
+            width: 100%;
+            height: 50%;
+            max-width: 100%;
+            background-color: rgb(36, 36, 36);
+            color: silver;
+            caret-color: orange;
+        }
+
+        textarea::selection {
+            color: #101010;
+            background-color: darkgray;
+        }
+
+        .smaller-font {
+            font-size: smaller;
+        } 
+
+        .buttonGroup,
+        .checkAlign {
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .settingsGroup {
+            padding-left: 5px;
+        }
+        
+        .settingsGroup>label {
+            line-height: 30px;
+        }
+
+        .buttonGroup>label {
+            user-select: none;
+        }
+
+        input[type=checkbox] {
+            margin: revert;
+        }
+
+        input[type=text], input[type=number] {
+            font-family: monospace;
+            background-color: rgb(36, 36, 36);
+            color: silver;
+            margin: revert;
+        }
+
+        hr {
+            margin-top: 0.2rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .d2h-file-collapse {
+            display: none !important;
+        }
+
+        .d2h-moved-tag {
+            display: none !important;
+        }
+    </style>
+    <!-- Controls -->
+    <style>
+        .switch {
+            color: black;
+            position: relative;
+            display: inline-block;
+            width: 120px;
+            height: 30px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            margin-top: 16px;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+            text-align: center;
+        }
+
+        .slider-format:after {
+            content: "Side-by-side";
+        }
+
+        input:checked+.slider-format:after {
+            content: "Line-by-line";
+        }
+
+        .slider:after {
+            line-height: 30px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+            box-shadow: 2px 2px 8px 1px #434343ba
+        }
+
+        input:checked+.slider {
+            background-color: #2196F3;
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked+.slider:before {
+            -webkit-transform: translateX(90px);
+            -ms-transform: translateX(90px);
+            transform: translateX(90px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 30px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        .button {
+            background-color: #ccc;
+            border: 2px solid #7c7c7c;
+            color: #000000;
+            padding: 6px 22px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            border-radius: 8px;
+            width: 100%;
+        }
+
+        .button:hover {
+            background-color: #4d4d4d;
+            border: 2px solid #c5c5c5;
+            color: white;
+        }
+
+        .button:active {
+            background-color: #2196F3;
+            border: 2px solid #7c7c7c;
+            color: #000000;
+        }
+
+        .button-xsmall {
+            padding: 2px 6px;
+            font-size: 14px;
+        }
+
+        select:active {
+            background-color: unset !important;
+        }
+
+        select:hover {
+            background-color: #ccc !important;
+            color: #000000 !important;
+        }
+
+        .off-on {
+            width: 40px;
+            height: 20px;
+            position: relative;
+            display: inline-block;
+            margin: 5px 0;
+        }
+
+        .off-on-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .off-on input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            margin-top: 16px;
+        }
+
+        .off-on-slider:after {
+            line-height: 20px;
+        }
+
+        .off-on-slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+            box-shadow: 1px 1px 3px 1px #434343ba
+        }
+
+        input:checked+.off-on-slider {
+            background-color: #2196F3;
+        }
+
+        input:focus+.off-on-slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked+.off-on-slider:before {
+            -webkit-transform: translateX(20px);
+            -ms-transform: translateX(20px);
+            transform: translateX(20px);
+        }
+
+        .off-on-slider.round {
+            border-radius: 10px;
+        }
+
+        .off-on-slider.round:before {
+            border-radius: 50%;
+        }
+
+        .off-on+label {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .off-on+label:before {
+            content: " ";
+        }
+    </style>
+
+    <script type="text/javascript">
+
+        window.onload = function () {
+            const value1TextArea = getValue1Element();
+            value1TextArea.addEventListener("keyup", compare);
+            value1TextArea.addEventListener("input", compare);
+            
+            value1TextArea.addEventListener("mouseup", fetchData);
+            value1TextArea.addEventListener("keyup", fetchData);
+            value1TextArea.addEventListener("touchend", fetchData);
+            value1TextArea.addEventListener("select", fetchData);
+            value1TextArea.addEventListener("selectionchange", fetchData);
+            value1TextArea.addEventListener("input", fetchData);
+            value1TextArea.addEventListener("mouseleave", fetchData);
+
+            const value2TextArea = getValue2Element();
+            value2TextArea.addEventListener("keyup", compare);
+            value2TextArea.addEventListener("input", compare);
+            
+            value2TextArea.addEventListener("mouseup", fetchData);
+            value2TextArea.addEventListener("keyup", fetchData);
+            value2TextArea.addEventListener("touchend", fetchData);
+            value2TextArea.addEventListener("select", fetchData);
+            value2TextArea.addEventListener("selectionchange", fetchData);
+            value2TextArea.addEventListener("input", fetchData);
+            value2TextArea.addEventListener("mouseleave", fetchData);
+
+            document.getElementById("outputFormat").addEventListener("change", compare);
+
+            // go to the clicked line number in the corresponding text area
+            document.getElementById('compareResult').addEventListener('click', function(e) {
+                let valueTextArea = getValue1Element();
+                let line = 1;
+                let select = false;
+
+                if(e.target.classList.contains('line-num1')) {
+                    line = parseInt(e.target.innerText.trim());
+                    select = true;
+                }
+                if(e.target.classList.contains('line-num2')) {
+                    valueTextArea = getValue2Element();
+                    line = parseInt(e.target.innerText.trim());
+                    select = true;
+                }
+                if(e.target.classList.contains('d2h-code-side-linenumber')) {
+                    //check if clicked left or right (there are two element with class d2h-file-side-diff, the first for left, the second for right)
+                    if (document.getElementsByClassName('d2h-file-side-diff')[1] === e.target.closest(".d2h-file-side-diff")) {
+                        valueTextArea = getValue2Element();
+                    }
+                    line = parseInt(e.target.innerText.trim());
+                    select = true;
+                }
+
+                if(select === true) {
+                    let lines = valueTextArea.value.split("\n");
+                    let pos = 0;
+                    for (let i = 0; i < line-1; i++) {
+                        pos += lines[i].length+1;
+                    } 
+                    valueTextArea.setSelectionRange(pos, pos);
+
+                    valueTextArea.focus();
+                }
+            });
+        }
+
+        function fetchData() {
+            if(document.activeElement == getValue1Element()) {
+                let valueTextArea = document.activeElement;
+                let pos = getCursorPos(valueTextArea);
+
+                document.getElementById("start1").innerHTML = pos.start;
+                document.getElementById("end1").innerHTML = pos.end;
+                document.getElementById("length1").innerHTML = valueTextArea.value.length;
+
+                document.getElementById("line1").innerHTML = pos.line;
+                document.getElementById("col1").innerHTML = pos.column;
+            }
+            if(document.activeElement == getValue2Element()) {
+                let valueTextArea = document.activeElement;
+                let pos = getCursorPos(valueTextArea);
+
+                document.getElementById("start2").innerHTML = pos.start;
+                document.getElementById("end2").innerHTML = pos.end;
+                document.getElementById("length2").innerHTML = valueTextArea.value.length;
+
+                document.getElementById("line2").innerHTML = pos.line;
+                document.getElementById("col2").innerHTML = pos.column;
+            }
+        }
+
+        function compare() {
+            const leftText = getValue1Element().value;
+            const rightText = getValue2Element().value;
+
+            // Generate the diff
+            const differences = Diff.createTwoFilesPatch('Left', 'Rigth', leftText, rightText);
+
+            const configuration = {
+                outputFormat: getOutputFormat(),
+                drawFileList: false,
+                matching: 'lines',
+                colorScheme: "dark",
+            };
+            const targetElement = document.getElementById('compareResult');
+            const diff2htmlUi = new Diff2HtmlUI(targetElement, differences, configuration);
+            diff2htmlUi.draw();
+            diff2htmlUi.fileListToggle(false);
+            //diff2htmlUi.highlightCode();
+        }
+
+        function getOutputFormat() {
+            if (document.getElementById("outputFormat").checked) {
+                return "line-by-line";
+            }
+            return "side-by-side";
+        }
+
+        function getValue1Element() {
+            return document.getElementById("value1");
+        }
+        
+        function getValue2Element() {
+            return document.getElementById("value2");
+        }
+
+        let cursorPos1 = {
+            start: -1,
+            end: -1,
+            line: -1,
+            column: -1
+        };
+
+        let cursorPos2 = {
+            start: -1,
+            end: -1,
+            line: -1,
+            column: -1
+        };
+        
+        function getCursorPos(input) {
+            let cursorPos = {
+                start: -1,
+                end: -1,
+                line: -1,
+                column: -1
+            };
+
+            if ("selectionStart" in input && document.activeElement == input) {
+                cursorPos.start = input.selectionStart;
+                cursorPos.end = input.selectionEnd;
+                cursorPos.line = input.value.substr(0, input.selectionStart).split(/\r?\n|\r/).length;
+                cursorPos.column = getCol(input, input.selectionStart);
+                return cursorPos;
+            }
+            else if (input.createTextRange) {
+                var sel = document.selection.createRange();
+                if (sel.parentElement() === input) {
+                    var rng = input.createTextRange();
+                    rng.moveToBookmark(sel.getBookmark());
+                    for (var len = 0;
+                        rng.compareEndPoints("EndToStart", rng) > 0;
+                        rng.moveEnd("character", -1)) {
+                        len++;
+                    }
+                    rng.setEndPoint("StartToStart", input.createTextRange());
+                    for (var pos = { start: 0, end: len };
+                        rng.compareEndPoints("EndToStart", rng) > 0;
+                        rng.moveEnd("character", -1)) {
+                        pos.start++;
+                        pos.end++;
+                    }
+
+                    pos.line = input.value.substr(0, input.selectionStart).split(/\r?\n|\r/).length;
+                    pos.column = getCol(input, input.selectionStart);
+                    cursorPos = pos;
+                    return cursorPos;
+                }
+            }
+            
+            return cursorPos;
+        }
+
+        function getCol(value, start) {
+            var index = start;
+            var char = '\n';
+            do {
+                char = value.value[-1 + index--];
+            } while (char != '\n' && char != '\r' && index >= 0);
+            return start - index - 1;
+        }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/4.0.2/diff.min.js"></script>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" media="screen and (prefers-color-scheme: light)"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" media="screen and (prefers-color-scheme: dark)"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/diff2html/bundles/css/diff2html.min.css" />
+
+    <!-- Javascripts -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/diff2html/bundles/js/diff2html-ui.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/diff2html/bundles/js/diff2html-ui.min.js"></script>
+
+</head>
+
+<body>
+    <div>
+        <div style="width: 50%; float: left;">
+            <textarea id="value1" value="" placeholder="Original text" autofocus></textarea>
+            <div style="padding-top: 5px">
+                <div style="float: left;">
+                    <label class="switch">
+                        <input type="checkbox" id="outputFormat">
+                        <span class="slider round slider-format smaller-font"></span>
+                    </label>
+                </div>
+                <div style="float: right;position: relative;font-size: small; margin-top: 0.2rem">Line: <span id="line1"></span>
+                    <span style="margin-left: 10px;">Column: </span><span id="col1"></span>
+                </div>
+                <div style="float: right;clear: right;position: relative;font-size: small;">Start: <span id="start1"></span>
+                    <span style="margin-left: 10px;">End: </span><span id="end1"></span>
+                    <span style="margin-left: 10px;">Length: </span><span id="length1"></span>
+                </div>
+            </div>
+        </div>
+        <div style="width: 50%; float: right;">
+            <textarea id="value2" value="" placeholder="Text to compare"></textarea>
+            <div style="padding-top: 5px">
+                <div style="float: right;position: relative;font-size: small; margin-top: 0.2rem">Line: <span id="line2"></span>
+                    <span style="margin-left: 10px;">Column: </span><span id="col2"></span>
+                </div>
+                <div style="float: right;clear: right;position: relative;font-size: small;">Start: <span id="start2"></span>
+                    <span style="margin-left: 10px;">End: </span><span id="end2"></span>
+                    <span style="margin-left: 10px;">Length: </span><span id="length2"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div id="compareResult" style="float: left;width: 100%;padding-top: 5px;"></div>
+</body>
+
+</html>
