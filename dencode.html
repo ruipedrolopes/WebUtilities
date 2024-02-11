@@ -54,11 +54,15 @@
             margin: revert;
         }
 
-        input[type=text], input[type=number] {
+        input[type=text], input[type=number], input[type=password] {
             font-family: monospace;
             background-color: rgb(36, 36, 36);
             color: silver;
             margin: revert;
+        }
+
+        input[type=number] {
+            width: 50px;
         }
 
         input[type=range] {
@@ -106,6 +110,8 @@
             margin-top: 0.2rem;
             margin-bottom: 0.2rem;
         }
+
+        
 
 
     </style>
@@ -427,7 +433,11 @@
             initHistory();
         }
 
-        function transform(transformer, params) {
+        function isAsync(func) {
+            return func.constructor.name === "AsyncFunction";
+        }
+
+        async function transform(transformer, params) {
             if (typeof transformer != "function") {
                 console.warn("Transformer is not a function.");
                 return;
@@ -439,7 +449,13 @@
             }
             
             try {
-                var result = transformer(value, params);
+                let result;
+
+                if(isAsync(transformer)) {
+                    result = await transformer(value, params);
+                } else {
+                    result = transformer(value, params);
+                }
 
                 if (typeof result != "string") {
 
@@ -618,24 +634,53 @@
 
             },
 
-            arrayBufferToBase64: function (buffer) {
+            /*arrayBufferToBase64: function (buffer) {
                 var binary = '';
                 var bytes = new Uint8Array(buffer);
                 var len = bytes.byteLength;
                 for (var i = 0; i < len; i++) {
                     binary += String.fromCharCode(bytes[i]);
                 }
-                return window.btoa(binary);
+                return auxiliary.bytesToBase64(new TextEncoder().encode(binary));
+                //return auxiliary.utf8ToBase64(new TextEncoder().encode(binary));
             },
 
             base64ToArrayBuffer: function (base64) {
-                var binary_string = window.atob(base64);
+                var binary_string = new TextDecoder().decode(auxiliary.base64ToBytes(base64));
+                //var binary_string = auxiliary.base64ToUtf8(base64);
+                
                 var len = binary_string.length;
                 var bytes = new Uint8Array(len);
                 for (var i = 0; i < len; i++)        {
                     bytes[i] = binary_string.charCodeAt(i);
                 }
                 return bytes.buffer;
+            },
+
+            base64ToBytes: function (base64) {
+                const binString = atob(base64);
+                return Uint8Array.from(binString, (m) => m.codePointAt(0));
+            },
+
+            bytesToBase64: function (bytes) {
+                const binString = String.fromCodePoint(...bytes);
+                return btoa(binString);
+            },*/
+
+            utf8ToBase64: function (str) {
+                const encoder = new TextEncoder();
+                const uint8Array = encoder.encode(str);
+                return btoa(String.fromCharCode.apply(null, uint8Array));
+            },
+
+            base64ToUtf8: function (base64Str) {
+                const binaryString = atob(base64Str);
+                const uint8Array = new Uint8Array(binaryString.length);
+                for (let i = 0; i < binaryString.length; i++) {
+                    uint8Array[i] = binaryString.charCodeAt(i);
+                }
+                const decoder = new TextDecoder();
+                return decoder.decode(uint8Array);
             }
 
         };
@@ -982,28 +1027,6 @@
                 return indexes(value, toFind, idx + toFind.length, found);
             }
 
-            function compressArrayBuffer(input, algorithm) {
-                const stream = new Response(input).body
-                    .pipeThrough(new CompressionStream(algorithm));
-                return new Response(stream).arrayBuffer();
-            }
-
-            function decompressArrayBuffer(input, algorithm) {
-                const stream = new Response(input).body
-                    .pipeThrough(new DecompressionStream(algorithm));
-                return new Response(stream).arrayBuffer();
-            }
-
-            function base64ToBytes(base64) {
-                const binString = atob(base64);
-                return Uint8Array.from(binString, (m) => m.codePointAt(0));
-            }
-
-            function bytesToBase64(bytes) {
-                const binString = String.fromCodePoint(...bytes);
-                return btoa(binString);
-            }
-
             function sortObject(unordered, sortArrays = false, reverse = false) {
                 if (!unordered || typeof unordered !== 'object') {
                     return unordered;
@@ -1030,6 +1053,20 @@
                     ordered[key] = sortObject(unordered[key], sortArrays, reverse);
                 });
                 return ordered;
+            }
+
+
+            async function collectStream(stream) {
+                const reader = stream.getReader();
+                let chunks = [];
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) {
+                        break;
+                    }
+                    chunks.push(value);
+                }
+                return new Uint8Array(await new Blob(chunks).arrayBuffer());
             }
 
             // public functions
@@ -1071,7 +1108,7 @@
 
                 base64encode: function (value) {
                     try {
-                        return bytesToBase64(new TextEncoder().encode(value))
+                        return auxiliary.utf8ToBase64(value);
                     } catch(e) {
                         console.error(e);
                         console.error("Falling back to legacy btoa.");
@@ -1081,7 +1118,7 @@
 
                 base64decode: function (value) {
                     try {
-                        return new TextDecoder().decode(base64ToBytes(value));
+                        return auxiliary.base64ToUtf8(value);
                     } catch(e) {
                         console.error(e);
                         console.error("Falling back to legacy atob.");
@@ -1177,6 +1214,43 @@
 
                 replicate: function (value) {
                     return value + value;
+                },
+
+                replicate: function (value, params) {
+
+                    const mode = params.getReplicateMode()
+
+                    if(mode === "simple") {
+                        return value + value;
+                    }
+                    
+                    const template = value;
+                    
+                    const placeholder = params.getReplicatePlaceholder();
+
+                    var result = "";
+                    if (mode === "range") {
+                        let start = params.getReplicateRangeStart();
+                        let end = params.getReplicateRangeEnd();
+                        
+                        if(start > end) {
+                            for(let i = start; i >= end; i--) {
+                                result += template.replaceAll(placeholder, i);
+                            }
+                        } else {
+                            for(let i = start; i <= end; i++) {
+                                result += template.replaceAll(placeholder, i);
+                            }
+                        }
+                        
+                    } else {
+                        const items = params.getReplicateTemplateItems();
+                        for(let i = 0; i < items.length; i++) {
+                            result += template.replaceAll(placeholder, items[i]);
+                        }
+                    }
+                    
+                    return result;
                 },
 
                 sort: function(value, params) {
@@ -1281,19 +1355,32 @@
                     }
                 },
 
-                compress: function(value, params) {
+                compress: async function (text, params) {
                     var algorithm = params.compressAlgorithm();
-                    return { promise: compressArrayBuffer(value, algorithm), finalize: null };
+                    const encoder = new TextEncoder();
+                    const utf8Bytes = encoder.encode(text);
+                    const compressedStream = new CompressionStream(algorithm);
+                    const writer = compressedStream.writable.getWriter();
+                    writer.write(utf8Bytes);
+                    writer.close();
+                    const compressedBytes = await collectStream(compressedStream.readable);
+                    const base64String = btoa(String.fromCharCode(...new Uint8Array(compressedBytes)));
+                    return base64String;
                 },
 
-                decompress: function(value, params) {
+                decompress: async function (base64String, params) {
                     var algorithm = params.compressAlgorithm();
-                    var arrayBufferValue = auxiliary.base64ToArrayBuffer(value);
-
-                    return { promise: decompressArrayBuffer(arrayBufferValue, algorithm), finalize: window.atob };
+                    const compressedBytes = Uint8Array.from(atob(base64String), c => c.charCodeAt(0));
+                    const decompressedStream = new DecompressionStream(algorithm);
+                    const writer = decompressedStream.writable.getWriter();
+                    writer.write(compressedBytes);
+                    writer.close();
+                    const decompressedBytes = await collectStream(decompressedStream.readable);
+                    const decoder = new TextDecoder();
+                    const decompressedText = decoder.decode(decompressedBytes);
+                    return decompressedText;
                 }
-
-
+ 
                 // TODO: add more transformers here
 
             };
@@ -1541,11 +1628,102 @@
         function setWrap() {
             getValueElement().style.overflowWrap = document.getElementById("cbWrap").checked? 'inherit': 'anywhere';
         }
+
+        function dropHandler(ev) {
+            return;
+            // TODO resume implementation
+            console.log("File(s) dropped");
+
+            // Prevent default behavior (Prevent file from being opened)
+            ev.preventDefault();
+
+            if (ev.dataTransfer.items) {
+                // Use DataTransferItemList interface to access the file(s)
+                [...ev.dataTransfer.items].forEach((item, i) => {
+                // If dropped items aren't files, reject them
+                if (item.kind === "file") {
+                    const file = item.getAsFile();
+                    console.log(`1… file[${i}].name = ${file.name}`);
+                    debugger;
+
+
+                    //reader = new FileReader();
+
+                    //reader.readAsDataURL(file);
+                }
+                });
+            } else {
+                // Use DataTransfer interface to access the file(s)
+                [...ev.dataTransfer.files].forEach((file, i) => {
+                console.log(`2… file[${i}].name = ${file.name}`);
+                debugger;
+                });
+            }
+        }
+
+        function selectReplicateTemplateItems() {
+            const rawItems = document.getElementById("replicateTemplateItemsBuilder").value;
+
+            let result = [];
+            rawItems.split("\n").forEach(item => {
+                if(item.trim().length > 0) {
+                    result.push(item.trim());
+                }
+            });
+
+            document.getElementById("replicateTemplateItems").value = result.join(",");
+        }
+
+        function fillReplicateTemplateItemsBuilder() {
+            document.getElementById("replicateTemplateItemsBuilder").value =
+                getReplicateTemplateItems().join("\n");
+            
+            document.querySelector(".overlay").style.display = "flex";
+        }
+
+        function getReplicateMode() {
+            return document.getElementById("replicateMode").value;
+        }
+
+        function getReplicateRangeStart() {
+            return parseInt(document.getElementById("replicateRangeStart").value);
+        }
+        function getReplicateRangeEnd() {
+            return parseInt(document.getElementById("replicateRangeEnd").value);
+        }
+        
+        function getReplicateTemplateItems() {
+            return document.getElementById("replicateTemplateItems").value.split(",");
+        }
+        
+        function getReplicatePlaceholder() {
+            return document.getElementById("replicatePlaceholder").value.trim();
+        }
+
+        function selectReplicateMode() {
+            const mode = getReplicateMode();
+
+            if(mode === "simple") {
+                document.getElementById("replicateParams").style.display = "none";
+            } else {
+                document.getElementById("replicateParams").style.display = "inherit";
+
+                if(mode === "template") {
+                    document.getElementById("replicateRange").style.display = "none";
+                    document.getElementById("replicateTemplateItems").style.display = "inherit";
+                    replicateTemplateItems
+                } else {
+                    document.getElementById("replicateRange").style.display = "inherit";
+                    document.getElementById("replicateTemplateItems").style.display = "none";
+                }
+            }
+        }
+
     </script>
 </head>
 
 <body>
-    <textarea id="value" value="" placeholder="Text goes here..." autofocus></textarea>
+    <textarea id="value" value="" placeholder="Text goes here..." autofocus ondrop="dropHandler(event);"></textarea>
     <div style="float: right;position: relative;font-size: small; margin-top: 0.2rem">Line: <span id="line"></span><span
             style="margin-left: 10px;">Column: </span><span id="col"></span></div>
     <div style="float: right;clear: right;position: relative;font-size: small;">Start: <span id="start"></span><span
@@ -1646,7 +1824,42 @@
 
         <div class="buttonGroup">
             <input type="button" class="button button-xsmall" value="Replicate"
-                onclick="transform(trs.replicate);" />
+                onclick="transform(trs.replicate, {'getReplicateMode': getReplicateMode, 'getReplicatePlaceholder': getReplicatePlaceholder, 'getReplicateRangeStart': getReplicateRangeStart, 'getReplicateRangeEnd': getReplicateRangeEnd, 'getReplicateTemplateItems': getReplicateTemplateItems});" /><br/>
+
+            <select id="replicateMode" class="button button-xsmall"
+                style="text-align: left;" onchange="selectReplicateMode()">
+                <option value="simple">Simple</option>
+                <option value="template">Template</option>
+                <option value="range">Ranged</option>
+            </select><br/>
+
+            <div id="replicateParams" style="display: none;">
+                <div id="replicateRange">
+                    <input id="replicateRangeStart" type="number" value="1" min="0" />
+                    <input id="replicateRangeEnd" type="number" value="10" min="0" style="margin-left: 58px" />
+                </div>
+                
+                <input onfocus="fillReplicateTemplateItemsBuilder()" id="replicateTemplateItems" type="text" placeholder="Items" readonly />
+                
+                <br/>
+                <br/>
+
+                <small>Placeholder</small> <input id="replicatePlaceholder" type="text" value="##" style="width:88px" />
+                <div class="overlay" style="position: fixed; top:0; bottom: 0; left: 0; right: 0; width: 100%; height: 100%; background-color: #000000bd; z-index: 1001; display: none;">
+                    <div style="position: relative; width: 500px; height: 700px; background-color: #909090; margin: auto;">
+
+                        <textarea id="replicateTemplateItemsBuilder" placeholder="items: one per line" style="height: 600px;"></textarea>
+                
+                        <div style="margin: auto;align-items: center;display: flex;height: 100px;width: fit-content;">
+                            <button class="button button-xsmall" onclick="this.closest('.overlay').style.display='none'">Close</button>&nbsp;
+                            <button class="button button-xsmall" onclick="this.closest('.overlay').style.display='none'; selectReplicateTemplateItems()">OK</button>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            
         </div>
         <div class="buttonGroup">
             <input type="button" class="button button-xsmall" value="Sort lines"
