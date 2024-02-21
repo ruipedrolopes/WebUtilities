@@ -111,8 +111,10 @@
             margin-bottom: 0.2rem;
         }
 
-        
-
+        .nowrap {
+            overflow-wrap: anywhere;
+            white-space: nowrap;
+        }
 
     </style>
     <!-- Controls -->
@@ -257,6 +259,14 @@
 
         .button-xsmall {
             padding: 2px 6px;
+            font-size: 14px;
+        }
+
+        .button.round {
+            text-align: left;
+            margin: 0;
+            padding: 5px 22px;
+            border-radius: 30px;
             font-size: 14px;
         }
 
@@ -437,55 +447,76 @@
             return func.constructor.name === "AsyncFunction";
         }
 
+        function getSelectionMode() {
+            return document.getElementById("selectionMode").value;
+        }
+
         async function transform(transformer, params) {
             if (typeof transformer != "function") {
                 console.warn("Transformer is not a function.");
                 return;
             }
 
-            var value = getValueElement().value;
-            if (document.getElementById("cbSelection").checked) {
-                value = value.substr(cursorPos.start, cursorPos.end - cursorPos.start);
+            let fullValue = getValueElement().value;
+            if (isSelectionMode()) {
+                fullValue = fullValue.substr(cursorPos.start, cursorPos.end - cursorPos.start);
+            }
+
+
+            let values = [fullValue];
+            if(getSelectionMode() === "lines") {
+                values = fullValue.split("\n");
             }
             
-            try {
-                let result;
+            
+            const finalResult = await Promise.all(values.map(async (value, index) => {
+                try {
+                    let result;
 
-                if(isAsync(transformer)) {
-                    result = await transformer(value, params);
-                } else {
-                    result = transformer(value, params);
-                }
-
-                if (typeof result != "string") {
-
-                    if (typeof result == "object" && typeof result.promise == "object" && typeof result.promise.then == "function") {
-                        // this has a promise
-
-                        result.promise.then((promiseResult) => {
-                            addToHistory();
-                            var b64result = auxiliary.arrayBufferToBase64(promiseResult);
-                            
-                            if(result.finalize) {
-                                displayResult(eval(result.finalize)(b64result));
-                            } else {
-                                displayResult(b64result);
-                            }
-                        });
-                        return;
+                    if(isAsync(transformer)) {
+                        result = await transformer(value, params);
+                    } else {
+                        result = transformer(value, params);
                     }
 
-                    console.warn("Transformer returned an invalid value.");
-                    return;
+                    if (typeof result != "string") {
+
+                        // TODO evaluate if this can be deprecated
+                        /*if (typeof result == "object" && typeof result.promise == "object" && typeof result.promise.then == "function") {
+                            // this has a promise
+
+                            result.promise.then((promiseResult) => {
+                                addToHistory();
+                                var b64result = auxiliary.arrayBufferToBase64(promiseResult);
+                                
+                                if(result.finalize) {
+                                    displayResult(eval(result.finalize)(b64result));
+                                } else {
+                                    displayResult(b64result);
+                                }
+                            });
+                            return;
+                        }*/
+
+                        console.warn("Transformer returned an invalid value" + (values.length > 1? " at line " + (index + 1): ""));
+                        return value;
+                    }
+
+                    //addToHistory();
+
+                    //displayResult(result);
+
+                    return result;
+                } catch(e) {
+                    error("An error occured: " + e, 4000);
+                    throw e;
                 }
+            }));
+            
+            addToHistory();
 
-                addToHistory();
-
-                displayResult(result);
-            } catch(e) {
-                error("An error occured: " + e, 4000);
-                throw e;
-            }
+            displayResult(finalResult.join("\n"));
+            
         }
 
         function generate(generator, params) {
@@ -574,7 +605,8 @@
         }
 
         function isSelectionMode() {
-            return document.getElementById("cbSelection").checked;
+            //return document.getElementById("cbSelection").checked;
+            return getSelectionMode() === "selection";
         }
 
         function isCopyMode() {
@@ -1504,7 +1536,8 @@
         }
 
         function getReplaceWith() {
-            return document.getElementById("replaceWith").value;
+            let replaceWith = document.getElementById("replaceWith").value;
+            return getReplaceEscaped()? trs.CTypeLang_StringUnescape(replaceWith) : replaceWith;
         }
 
         function getCompressAlgorithm() {
@@ -1517,6 +1550,10 @@
 
         function getReplaceCaseSensitive() {
             return document.getElementById("replaceCaseSensitive").checked;
+        }
+        
+        function getReplaceEscaped() {
+            return document.getElementById("replaceEscaped").checked;
         }
 
         function getCol(value, start) {
@@ -1626,7 +1663,14 @@
         }
 
         function setWrap() {
-            getValueElement().style.overflowWrap = document.getElementById("cbWrap").checked? 'inherit': 'anywhere';
+            const valueElement = getValueElement();
+            const wrap = !document.getElementById("cbWrap").checked;
+            
+            if (wrap) {
+                valueElement.classList.remove("nowrap");
+            } else {
+                valueElement.classList.add("nowrap");
+            }
         }
 
         function dropHandler(ev) {
@@ -1945,7 +1989,11 @@
             <label class="off-on">
                 <input id="replaceCaseSensitive" type="checkbox" checked />
                 <span class="off-on-slider round"></span>
-            </label><label for="replaceCaseSensitive">Case sensitive</label>
+            </label><label for="replaceCaseSensitive">Case sensitive</label><br/>
+            <label class="off-on">
+                <input id="replaceEscaped" type="checkbox" />
+                <span class="off-on-slider round"></span>
+            </label><label for="replaceEscaped">Replace escaped</label>
         </div>
     </div>
     <hr />
@@ -1955,14 +2003,24 @@
         <input type="checkbox" id="cbCopy">
         <span class="slider round slider-copy"></span>
     </label>
-    <label class="switch">
+    
+    <label class="switch" style="display: none;">
         <input type="checkbox" id="cbSelection">
         <span class="slider round slider-selection"></span>
     </label>
+    
     <label class="switch">
         <input type="checkbox" id="cbWrap" onchange="setWrap()">
         <span class="slider round slider-wrap"></span>
     </label>
+
+    <div class="buttonGroup">
+        <select id="selectionMode" class="button round">
+            <option value="allText">All Text</option>
+            <option value="selection">Selection</option>
+            <option value="lines">Lines</option>
+        </select>
+    </div>
 
     <div id="message"
         style="position: fixed; left: 10px;bottom: 10px;right: 10px;z-index: 1000;background: blanchedalmond;color: #909090;display: none;align-items: center;">
