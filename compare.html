@@ -123,6 +123,14 @@
             content: "Line-by-line";
         }
 
+        .slider-wrap:after {
+            content: "Wrap";
+        }
+
+        input:checked+.slider-wrap:after {
+            content: "No wrap";
+        }
+
         .slider:after {
             line-height: 30px;
         }
@@ -383,7 +391,8 @@
                 outputFormat: getOutputFormat(),
                 drawFileList: false,
                 matching: 'lines',
-                colorScheme: "dark",
+                colorScheme: 'dark',
+                diffStyle: 'char'
             };
             const targetElement = document.getElementById('compareResult');
             const diff2htmlUi = new Diff2HtmlUI(targetElement, differences, configuration);
@@ -472,8 +481,23 @@
             } while (char != '\n' && char != '\r' && index >= 0);
             return start - index - 1;
         }
+
+        function setWrap() {
+            const value1Element = getValue1Element();
+            const value2Element = getValue2Element();
+            const wrap = !document.getElementById("cbWrap").checked;
+            
+            if (wrap) {
+                value1Element.classList.remove("nowrap");
+                value2Element.classList.remove("nowrap");
+            } else {
+                value1Element.classList.add("nowrap");
+                value2Element.classList.add("nowrap");
+            }
+        }
     </script>
 
+    <!-- Libs -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/4.0.2/diff.min.js"></script>
 
     <!-- Stylesheet -->
@@ -481,7 +505,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" media="screen and (prefers-color-scheme: dark)"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/diff2html/bundles/css/diff2html.min.css" />
 
-    <!-- Javascripts -->
+    <!-- JS -->
+    <!-- https://github.com/rtfpessoa/diff2html#usage -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/diff2html/bundles/js/diff2html-ui.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/diff2html/bundles/js/diff2html-ui.min.js"></script>
 
@@ -496,6 +521,10 @@
                     <label class="switch">
                         <input type="checkbox" id="outputFormat">
                         <span class="slider round slider-format smaller-font"></span>
+                    </label>
+                    <label class="switch">
+                        <input type="checkbox" id="cbWrap" onchange="setWrap()" checked>
+                        <span class="slider round slider-wrap"></span>
                     </label>
                 </div>
                 <div style="float: right;position: relative;font-size: small; margin-top: 0.2rem">Line: <span id="line1"></span>
@@ -520,7 +549,6 @@
             </div>
         </div>
     </div>
-    
     
     <div id="compareResult" style="float: left;width: 100%;padding-top: 5px;"></div>
 </body>
