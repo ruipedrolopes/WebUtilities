@@ -526,7 +526,7 @@
             }
 
             try {
-                var result = generator(params);
+                const result = generator(params);
 
                 if (typeof result != "string") {
                     console.warn("Transformer returned an invalid value.");
@@ -614,22 +614,22 @@
         }
 
         function flashValue() {
-            var valueTextArea = getValueElement();
-            var color = valueTextArea.style.backgroundColor;
+            const valueTextArea = getValueElement();
+            const color = valueTextArea.style.backgroundColor;
             valueTextArea.style.backgroundColor = "gray";
-            setTimeout(function () { valueTextArea.style.backgroundColor = color; }, 150);
+            setTimeout(() => { valueTextArea.style.backgroundColor = color; }, 150);
         }
 
         function displayResult(result) {
-            var valueTextArea = getValueElement();
+            const valueTextArea = getValueElement();
             if (isCopyMode()) {
                 flashValue()
 
                 copyToClipboard(result);
             } else {
                 if (isSelectionMode()) {
-                    var currentValue = valueTextArea.value;
-                    var value = currentValue.substr(0, cursorPos.start) + result + currentValue.substr(cursorPos.end, currentValue.length - cursorPos.end);
+                    const currentValue = valueTextArea.value;
+                    let value = currentValue.substr(0, cursorPos.start) + result + currentValue.substr(cursorPos.end, currentValue.length - cursorPos.end);
 
                     valueTextArea.value = value;
 
@@ -718,7 +718,7 @@
         };
 
         //Generators
-        var gens = (function () {
+        const gens = (() => {
 
             //private functions
 
@@ -730,42 +730,42 @@
                 },
 
                 randomString: function (params) {
-                    var rndStringParams = params.loadParams();
-                    var length = rndStringParams.length;
+                    const rndStringParams = params.loadParams();
+                    const length = rndStringParams.length;
 
-                    var validTypes = [];
+                    let validTypes = [];
 
-                    if (rndStringParams.lower == true) {
-                        validTypes.push(function (r) { return String.fromCharCode(r % 26 + 97); })
+                    if (rndStringParams.lower === true) {
+                        validTypes.push((r) => { return String.fromCharCode(r % 26 + 97); });
                     }
 
-                    if (rndStringParams.upper == true) {
-                        validTypes.push(function (r) { return String.fromCharCode(r % 26 + 65); })
+                    if (rndStringParams.upper === true) {
+                        validTypes.push((r) => { return String.fromCharCode(r % 26 + 65); });
                     }
 
-                    if (rndStringParams.digits == true) {
-                        validTypes.push(function (r) { return String.fromCharCode(r % 10 + 48); })
+                    if (rndStringParams.digits === true) {
+                        validTypes.push((r) => { return String.fromCharCode(r % 10 + 48); });
                     }
 
-                    if (rndStringParams.special == true && rndStringParams.specialChars.length > 0) {
-                        validTypes.push(function (r) {
-                            var chars = rndStringParams.specialChars;
+                    if (rndStringParams.special === true && rndStringParams.specialChars.length > 0) {
+                        validTypes.push((r) => {
+                            const chars = rndStringParams.specialChars;
                             return chars[r % chars.length];
-                        })
+                        });
                     }
 
                     //[\]^_!"#$%&'()*+,-./`:;<=>?{|}~
                     // escaped: "[\\]^_!\"#$%&\'()*+,-./`:;<=>?{|}~"
                     // pattern: [\[\\\]\^_!"#\$%&'\(\)\*\+,-\.\/`:;<=>\?\{\|\}~]+
 
-                    var result = "";
+                    let result = "";
 
                     if (validTypes.length > 0) {
-                        var types = crypto.getRandomValues(new Uint8Array(length));
-                        var chars = crypto.getRandomValues(new Uint8Array(length));
+                        const types = crypto.getRandomValues(new Uint8Array(length));
+                        const chars = crypto.getRandomValues(new Uint8Array(length));
 
-                        for (var i = 0; i < length; i++) {
-                            var type = types[i] % validTypes.length;
+                        for (let i = 0; i < length; i++) {
+                            const type = types[i] % validTypes.length;
                             result += validTypes[type](chars[i]);
                         }
                     }
@@ -789,14 +789,13 @@
 
 
         //Transformers
-        var trs = (function () {
+        const trs = (() => {
 
             //private functions
-
             function escapeHtmlChar(original, xmlSafe) {
-                var found = true;
+                let found = true;
 
-                var thechar = original.charCodeAt(0);
+                let thechar = original.charCodeAt(0);
 
                 switch (thechar) {
                     case 60: return "&lt;"; break; //<
@@ -879,17 +878,16 @@
                 }
 
                 if (!found) {
-                    var hex = new Array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
+                    const hex = new Array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
                     if (thechar > 127) {
-                        var c = thechar;
-                        var a4 = c % 16;
+                        const c = thechar;
+                        const a4 = c % 16;
                         c = Math.floor(c / 16);
-                        var a3 = c % 16;
+                        const a3 = c % 16;
                         c = Math.floor(c / 16);
-                        var a2 = c % 16;
+                        const a2 = c % 16;
                         c = Math.floor(c / 16);
-                        var a1 = c % 16;
-                        //	alert(a1);
+                        const a1 = c % 16;
                         return "&#x" + hex[a1] + hex[a2] + hex[a3] + hex[a4] + ";";
                     }
                     else {
@@ -900,9 +898,9 @@
 
             function encodeChar(original, skipNewLine) {
                 if (skipNewLine && original == '\n') return;
-                var found = true;
-                var thecharchar = original.charAt(0);
-                var thechar = original.charCodeAt(0);
+                let found = true;
+                const thecharchar = original.charAt(0);
+                const thechar = original.charCodeAt(0);
                 switch (thecharchar) {
                     case '\n': return "\\n"; break; //newline
                     case '\r': return "\\r"; break; //Carriage return
@@ -918,18 +916,17 @@
                         break;
                 }
                 if (!found) {
-                    var hex = new Array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
+                    const hex = new Array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
 
                     if (thechar > 127) {
-                        var c = thechar;
-                        var a4 = c % 16;
+                        const c = thechar;
+                        const a4 = c % 16;
                         c = Math.floor(c / 16);
-                        var a3 = c % 16;
+                        const a3 = c % 16;
                         c = Math.floor(c / 16);
-                        var a2 = c % 16;
+                        const a2 = c % 16;
                         c = Math.floor(c / 16);
-                        var a1 = c % 16;
-                        //	alert(a1);
+                        const a1 = c % 16;
                         return "\\u" + hex[a1] + hex[a2] + hex[a3] + hex[a4] + "";
                     }
                     else {
@@ -941,18 +938,18 @@
             }
 
             function xslTransform(source, xslTransformer) {
-                var xmlDoc = new DOMParser().parseFromString(source, 'application/xml');
-                var xsltDoc = new DOMParser().parseFromString(xslTransformer, 'application/xml');
-                var xsltProcessor = new XSLTProcessor();    
+                const xmlDoc = new DOMParser().parseFromString(source, 'application/xml');
+                const xsltDoc = new DOMParser().parseFromString(xslTransformer, 'application/xml');
+                const xsltProcessor = new XSLTProcessor();    
                 xsltProcessor.importStylesheet(xsltDoc);
-                var resultDoc = xsltProcessor.transformToDocument(xmlDoc);
-                var result = new XMLSerializer().serializeToString(resultDoc);
+                let resultDoc = xsltProcessor.transformToDocument(xmlDoc);
+                const result = new XMLSerializer().serializeToString(resultDoc);
 
                 //check for errors
-                var resultParser = new DOMParser();
+                const resultParser = new DOMParser();
                 resultDoc = resultParser.parseFromString(result, "application/xml");
 
-                var errorElem = xmlDoc.getElementsByTagName("parsererror");
+                const errorElem = xmlDoc.getElementsByTagName("parsererror");
                 if(errorElem.length > 0) {
                     error("Error parsing value: " + errorElem[0].getElementsByTagName("div")[0].innerHTML, 5000);
                     return source;
@@ -960,9 +957,9 @@
                 return result;
             }
 
-            var prettifyXml = function(sourceXml, pretty, paddingChars) {
+            const prettifyXml = function(sourceXml, pretty, paddingChars) {
 
-                var resultXml = xslTransform(sourceXml, [
+                let resultXml = xslTransform(sourceXml, [
                     // describes how we want to modify the XML - indent everything
                     '<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform">',
                     '  <xsl:strip-space elements="*"/>',
@@ -1000,15 +997,15 @@
                     // use fallback code bellow in case of exception
                 }
 
-                var formatted = '';
-                var reg = /(>)(<)(\/*)/g;
-                var paddingStr = paddingChars;
+                let formatted = '';
+                const reg = /(>)(<)(\/*)/g;
+                const paddingStr = paddingChars;
                 xml = xml.replace(reg, '$1\r\n$2$3');
-                var pad = 0;
-                var lines = xml.split('\r\n');
+                let pad = 0;
+                const lines = xml.split('\r\n');
                 for (var index = 0; index < lines.length; index++) {
-                    var node = lines[index];
-                    var indent = 0;
+                    const node = lines[index];
+                    let indent = 0;
                     if (node.match(/.+<\/\w[^>]*>$/)) {
                         indent = 0;
                     } else if (node.match(/^<\/\w/)) {
@@ -1021,8 +1018,8 @@
                         indent = 0;
                     }
 
-                    var padding = '';
-                    for (var i = 0; i < pad; i++) {
+                    let padding = '';
+                    for (let i = 0; i < pad; i++) {
                         padding += paddingStr;
                     }
 
@@ -1033,16 +1030,16 @@
             }
 
             function encodeUrlToken(input) {
-                var ret = input.replace(/\+/g, "-").replace(/\//g, "_");
+                const ret = input.replace(/\+/g, "-").replace(/\//g, "_");
                 if (ret.length == 0)
                     return "";
-                var noPadding = ret.replace(/=+$/, "");
+                const noPadding = ret.replace(/=+$/, "");
                 return noPadding + (ret.length - noPadding.length).toString();
             }
 
             function decodeUrlToken(input) {
-                var ec = parseInt(input.substring(input.length - 1));
-                var temp = input.replace(/\-/g, "+").replace(/\_/g, "/");
+                const ec = parseInt(input.substring(input.length - 1));
+                let temp = input.replace(/\-/g, "+").replace(/\_/g, "/");
                 temp = temp.substring(0, temp.length - 1);
                 return temp + "===".substring(0, ec);
             }
@@ -1051,7 +1048,7 @@
                 if(typeof(found) == "undefined") { found = []; }
                 if(typeof(startingAt) == "undefined") { startingAt = 0; }
 
-                var idx = value.indexOf(toFind, startingAt);
+                const idx = value.indexOf(toFind, startingAt);
                 
                 if(idx == -1) { return found; }
 
@@ -1123,10 +1120,10 @@
                 },
 
                 htmlencode2: function (value, params) {
-                    var result = "";
-                    var xmlSafe = params.xmlSafe() == true;
+                    let result = "";
+                    const xmlSafe = params.xmlSafe() == true;
 
-                    for (var i = 0; i < value.length; i++) {
+                    for (let i = 0; i < value.length; i++) {
                         result += escapeHtmlChar(value[i], xmlSafe);
                     }
 
@@ -1134,7 +1131,8 @@
                 },
 
                 htmldecode: function (value) {
-                    var a = document.createElement('a'); a.innerHTML = value;
+                    const a = document.createElement('a');
+                    a.innerHTML = value;
                     return a.textContent;
                 },
 
@@ -1167,8 +1165,8 @@
                 },
 
                 hexencode: function (value) {
-                    var hex = "";
-                    for (var i = 0; i < value.length; i++) {
+                    let hex = "";
+                    for (let i = 0; i < value.length; i++) {
                         hex += '' + value.charCodeAt(i).toString(16);
                     }
 
@@ -1176,8 +1174,8 @@
                 },
 
                 hexdecode: function (value) {
-                    var hex = value;
-                    var str = "";
+                    const hex = value;
+                    let str = "";
                     for (var i = 0; i < hex.length; i += 2) {
                         str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
                     }
@@ -1186,11 +1184,10 @@
                 },
 
                 CTypeLang_StringEscape: function (value) {
-                    var preescape = "" + value;
-                    var escaped = "";
+                    const preescape = "" + value;
+                    let escaped = "";
 
-                    var i = 0;
-                    for (i = 0; i < preescape.length; i++) {
+                    for (let i = 0; i < preescape.length; i++) {
                         escaped = escaped + encodeChar(preescape.charAt(i), false);
                     }
 
@@ -1199,8 +1196,8 @@
 
                 CTypeLang_StringUnescape: function (value) {
                     try {
-                        var replacement = `##TEMP##${auxiliary.uuidv4()}##`;
-                        var temp = eval(`new String(\'${value.replaceAll("'", replacement)}\')`);
+                        const replacement = `##TEMP##${auxiliary.uuidv4()}##`;
+                        const temp = eval(`new String(\'${value.replaceAll("'", replacement)}\')`);
                         return temp.replaceAll(replacement, "'");
                     } catch (error) {
                         console.error(error);
@@ -1260,7 +1257,7 @@
                     
                     const placeholder = params.getReplicatePlaceholder();
 
-                    var result = "";
+                    let result = "";
                     if (mode === "range") {
                         let start = params.getReplicateRangeStart();
                         let end = params.getReplicateRangeEnd();
@@ -1297,9 +1294,9 @@
                 },
 
                 CTypeLang_Stringify: function(value) {
-                    var lines = value.split("\n");
-                    var result = "";
-                    for(var i = 0; i < lines.length; i++) {
+                    const lines = value.split("\n");
+                    let result = "";
+                    for(let i = 0; i < lines.length; i++) {
                         result += (i == 0? "": "+ ")
                         + "\"" + trs.CTypeLang_StringEscape(lines[i])
                         + (i == lines.length - 1? "\"": "\\n\"" + "\n");
@@ -1308,9 +1305,9 @@
                 },
 
                 CTypeLang_Unstringify: function(value) {
-                    var lines = value.split(/\s*\n\s*\+\s*/);
-                    var result = "";
-                    for(var i = 0; i < lines.length; i++) {
+                    const lines = value.split(/\s*\n\s*\+\s*/);
+                    let result = "";
+                    for(let i = 0; i < lines.length; i++) {
                         if(lines[i].match(/^".*"$/) == null) {
                             warn("Could not unstringify. Make sure you have valid C language type strings.", 5000);
                             return value;
@@ -1325,23 +1322,22 @@
                 },
 
                 replace: function(value, params) {
-                    var replaceValue = params.replaceValue();
-                    var replaceWith = params.replaceWith();
-                    var replaceAll = params.all();
-                    var caseSensitive = params.caseSensitive();
+                    const replaceValue = params.replaceValue();
+                    const replaceWith = params.replaceWith();
+                    const replaceAll = params.all();
+                    const caseSensitive = params.caseSensitive();
 
                     if(replaceValue == "") {
                         warn("Nothing to replace");
                         return -1;
                     }
 
-                    var result = value;
+                    let result = value;
 
                     if(params.isRegex()) {
-                        var regex = new RegExp();
+                        let regex = null;
                         try {
-                            regex = new RegExp(replaceValue,
-                            "m" + (caseSensitive == true? "": "i") + (replaceAll == true? "g": ""));
+                            regex = new RegExp(replaceValue, "m" + (caseSensitive == true? "": "i") + (replaceAll == true? "g": ""));
                         } catch(e) {
                             console.error(e);
                             error(e.message);
@@ -1366,16 +1362,16 @@
                             return result;
                         } else {
                             if(replaceAll == true) {
-                                var found = indexes(value.toLowerCase(), replaceValue.toLowerCase());
+                                let found = indexes(value.toLowerCase(), replaceValue.toLowerCase());
                                 if(found.length == 0) {
                                     info("'"+ replaceValue + "'" + " was not found.")
                                     return -1;
                                 }
-                                var result = value;
+                                let result = value;
                                 found.reverse().forEach(foundIndex => result = result.substr(0, foundIndex) + replaceWith + result.substr(foundIndex + replaceValue.length));
                                 return result;
                             } else {
-                                var foundIndex = value.toLowerCase().indexOf(replaceValue.toLowerCase());
+                                let foundIndex = value.toLowerCase().indexOf(replaceValue.toLowerCase());
                                 if(foundIndex == -1) {
                                     info("'"+ replaceValue + "'" + " was not found.")
                                     return -1;
@@ -1388,7 +1384,7 @@
                 },
 
                 compress: async function (text, params) {
-                    var algorithm = params.compressAlgorithm();
+                    const algorithm = params.compressAlgorithm();
                     const encoder = new TextEncoder();
                     const utf8Bytes = encoder.encode(text);
                     const compressedStream = new CompressionStream(algorithm);
@@ -1401,7 +1397,7 @@
                 },
 
                 decompress: async function (base64String, params) {
-                    var algorithm = params.compressAlgorithm();
+                    const algorithm = params.compressAlgorithm();
                     const compressedBytes = Uint8Array.from(atob(base64String), c => c.charCodeAt(0));
                     const decompressedStream = new DecompressionStream(algorithm);
                     const writer = decompressedStream.writable.getWriter();
@@ -1420,7 +1416,7 @@
 
 
         function copyToClipboard(value) {
-            var toCopy = document.createElement("textarea");
+            const toCopy = document.createElement("textarea");
             toCopy.style.width = 0;
             toCopy.style.height = 0;
             toCopy.value = value;
@@ -1439,25 +1435,25 @@
         }
 
         function clearValue() {
-            var valueTextArea = getValueElement();
+            const valueTextArea = getValueElement();
             valueTextArea.value = "";
             valueTextArea.focus();
         }
 
         function cropToSelection() {
-            var valueTextArea = getValueElement();
+            const valueTextArea = getValueElement();
             valueTextArea.value = valueTextArea.value.substr(cursorPos.start, cursorPos.end - cursorPos.start);
             valueTextArea.focus();
         }
 
         function saveToFile() {
-            var valueTextArea = getValueElement();
-            var value = isSelectionMode()? valueTextArea.value.substr(cursorPos.start, cursorPos.end - cursorPos.start): valueTextArea.value;
+            const valueTextArea = getValueElement();
+            const value = isSelectionMode()? valueTextArea.value.substr(cursorPos.start, cursorPos.end - cursorPos.start): valueTextArea.value;
             if(value.length == 0) {
                 info("Nothing to save.");
                 return;
             }
-            var a = document.createElement("a");
+            const a = document.createElement("a");
             a.href = window.URL.createObjectURL(new Blob([value], {type: "text/plain"}));
             a.download = "file.txt";
             a.click();
@@ -1479,7 +1475,7 @@
                 return cursorPos;
             }
             else if (input.createTextRange) {
-                var sel = document.selection.createRange();
+                const sel = document.selection.createRange();
                 if (sel.parentElement() === input) {
                     var rng = input.createTextRange();
                     rng.moveToBookmark(sel.getBookmark());
@@ -1557,8 +1553,8 @@
         }
 
         function getCol(value, start) {
-            var index = start;
-            var char = '\n';
+            let index = start;
+            let char = '\n';
             do {
                 char = value.value[-1 + index--];
             } while (char != '\n' && char != '\r' && index >= 0);
@@ -1567,8 +1563,8 @@
 
         function fetchData() {
             if(document.activeElement == getValueElement()) {
-                var valueTextArea = getValueElement();
-                var pos = getCursorPos(valueTextArea);
+                const valueTextArea = getValueElement();
+                const pos = getCursorPos(valueTextArea);
 
                 document.getElementById("start").innerHTML = pos.start;
                 document.getElementById("end").innerHTML = pos.end;
@@ -1593,9 +1589,9 @@
             if (event.keyCode < 32) {
                 return true;
             }
-            var pattern = new RegExp(event.target.pattern);
+            const pattern = new RegExp(event.target.pattern);
 
-            return pattern.test(event.key) == true;
+            return pattern.test(event.key);
         }
 
         function preventInvalidRndLength(event) {
@@ -1629,7 +1625,7 @@
 
             document.getElementById("message").style.display = "flex";
 
-            var id = auxiliary.uuidv4();
+            const id = auxiliary.uuidv4();
             messageId = id;
             window.setTimeout(function () { if (id != messageId) { return; } document.getElementById("message").style.display = "none"; }, typeof delay == "number" ? delay : 2000);
         }
@@ -1643,7 +1639,7 @@
 
             document.getElementById("message").style.display = "flex";
 
-            var id = auxiliary.uuidv4();
+            const id = auxiliary.uuidv4();
             messageId = id;
             window.setTimeout(function () { if (id != messageId) { return; } document.getElementById("message").style.display = "none"; }, typeof delay == "number" ? delay : 2000);
         }
@@ -1657,7 +1653,7 @@
 
             document.getElementById("message").style.display = "flex";
 
-            var id = auxiliary.uuidv4();
+            const id = auxiliary.uuidv4();
             messageId = id;
             window.setTimeout(function () { if (id != messageId) { return; } document.getElementById("message").style.display = "none"; }, typeof delay == "number" ? delay : 2000);
         }
