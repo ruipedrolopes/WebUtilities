@@ -605,7 +605,6 @@
         }
 
         function isSelectionMode() {
-            //return document.getElementById("cbSelection").checked;
             return getSelectionMode() === "selection";
         }
 
@@ -1167,7 +1166,7 @@
                 hexencode: function (value) {
                     let hex = "";
                     for (let i = 0; i < value.length; i++) {
-                        hex += '' + value.charCodeAt(i).toString(16);
+                        hex += '' + value.charCodeAt(i).toString(16).padStart(2, "0");
                     }
 
                     return hex;
@@ -1176,14 +1175,14 @@
                 hexdecode: function (value) {
                     const hex = value;
                     let str = "";
-                    for (var i = 0; i < hex.length; i += 2) {
+                    for (let i = 0; i < hex.length; i += 2) {
                         str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
                     }
 
                     return str;
                 },
 
-                CTypeLang_StringEscape: function (value) {
+                CLikeLang_StringEscape: function (value) {
                     const preescape = "" + value;
                     let escaped = "";
 
@@ -1194,7 +1193,7 @@
                     return escaped;
                 },
 
-                CTypeLang_StringUnescape: function (value) {
+                CLikeLang_StringUnescape: function (value) {
                     try {
                         const replacement = `##TEMP##${auxiliary.uuidv4()}##`;
                         const temp = eval(`new String(\'${value.replaceAll("'", replacement)}\')`);
@@ -1298,7 +1297,7 @@
                     let result = "";
                     for(let i = 0; i < lines.length; i++) {
                         result += (i == 0? "": "+ ")
-                        + "\"" + trs.CTypeLang_StringEscape(lines[i])
+                        + "\"" + trs.CLikeLang_StringEscape(lines[i])
                         + (i == lines.length - 1? "\"": "\\n\"" + "\n");
                     }
                     return result;
@@ -1312,7 +1311,7 @@
                             warn("Could not unstringify. Make sure you have valid C language type strings.", 5000);
                             return value;
                         }
-                        result += trs.CTypeLang_StringUnescape(lines[i].substr(1, lines[i].length - 2));
+                        result += trs.CLikeLang_StringUnescape(lines[i].substr(1, lines[i].length - 2));
                     }
                     return result;
                 },
@@ -1533,7 +1532,7 @@
 
         function getReplaceWith() {
             let replaceWith = document.getElementById("replaceWith").value;
-            return getReplaceEscaped()? trs.CTypeLang_StringUnescape(replaceWith) : replaceWith;
+            return getReplaceEscaped()? trs.CLikeLang_StringUnescape(replaceWith) : replaceWith;
         }
 
         function getCompressAlgorithm() {
@@ -1802,9 +1801,9 @@
 
         <div class="buttonGroup">
             <input type="button" class="button button-xsmall" value="String Escape"
-                onclick="transform(trs.CTypeLang_StringEscape);" /><br />
+                onclick="transform(trs.CLikeLang_StringEscape);" /><br />
             <input type="button" class="button button-xsmall" value="String Unescape"
-                onclick="transform(trs.CTypeLang_StringUnescape);" />
+                onclick="transform(trs.CLikeLang_StringUnescape);" />
             <hr/>
             <input type="button" class="button button-xsmall" value="Stringify"
                 onclick="transform(trs.CTypeLang_Stringify);" /><br />
