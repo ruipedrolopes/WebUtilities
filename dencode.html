@@ -1406,7 +1406,19 @@
                     const decoder = new TextDecoder();
                     const decompressedText = decoder.decode(decompressedBytes);
                     return decompressedText;
+                },
+
+                digest: async function (text, params) {
+                    const algorithm = params.digestAlgorithm();
+                    const msgUint8 = new TextEncoder().encode(text); // encode as (utf-8) Uint8Array
+                    const hashBuffer = await window.crypto.subtle.digest(algorithm, msgUint8); // hash the message
+                    const hashArray = Array.from(new Uint8Array(hashBuffer)); // convert buffer to byte array
+                    const hashHex = hashArray
+                        .map((b) => b.toString(16).padStart(2, "0"))
+                        .join(""); // convert bytes to hex string
+                    return hashHex;
                 }
+                
  
                 // TODO: add more transformers here
 
@@ -1537,6 +1549,10 @@
 
         function getCompressAlgorithm() {
             return document.getElementById("compressAlgorithm").value;
+        }
+
+        function getDigestAlgorithm() {
+            return document.getElementById("digestAlgorithm").value;
         }
 
         function getReplaceAll() {
@@ -1834,6 +1850,19 @@
             </label>
         </div>
         
+        <div class="buttonGroup">
+            <input type="button" class="button button-xsmall" value="Digest"
+                onclick="transform(trs.digest, {'digestAlgorithm': getDigestAlgorithm });" /><br />
+           
+            <hr/>
+            <select id="digestAlgorithm" class="button button-xsmall" style="text-align: left;">
+                <option selected value="SHA-256">SHA-256</option>
+                <option value="SHA-1">SHA-1</option>
+                <option value="SHA-384">SHA-384</option>
+                <option value="SHA-512">SHA-512</option>
+            </select>
+        </div>
+
         <div class="buttonGroup">
             <input type="button" class="button button-xsmall" value="Compress"
                 onclick="transform(trs.compress, {'compressAlgorithm': getCompressAlgorithm });" /><br />
