@@ -1,14 +1,61 @@
 <html>
 
-<head>
+    <head>
+        <title>Toolset index</title>
+        <meta charset="UTF-8"/>
+        <link rel="icon" type="image/svg+xml"
+            href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4OS44NjIzNThtbSIgaGVpZ2h0PSI4OS44MTE4NjdtbSIgdmlld0JveD0iMCAwIDg5Ljg2MjM1OCA4OS44MTE4NjciIHZlcnNpb249IjEuMSIgaWQ9InN2ZzEiPjxkZWZzIGlkPSJkZWZzMSIvPjxnIGlkPSJsYXllcjEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xMTUuMDA0MzgsLTg5Ljg2MjM3OCkiPjxyZWN0IHN0eWxlPSJvcGFjaXR5OjE7ZmlsbDojMDBkMGZmO2ZpbGwtb3BhY2l0eToxO3N0cm9rZTojODA3MjAwO3N0cm9rZS13aWR0aDowO3N0cm9rZS1saW5lY2FwOnJvdW5kO3N0cm9rZS1saW5lam9pbjptaXRlcjtzdHJva2UtZGFzaGFycmF5Om5vbmUiIGlkPSJyZWN0OSIgd2lkdGg9Ijg5Ljg2MjM2NiIgaGVpZ2h0PSIxNS43MzQwMjQiIHg9IjExNS4wMDQzOCIgeT0iODkuODYyMzczIi8+PHJlY3Qgc3R5bGU9Im9wYWNpdHk6MTtmaWxsOiMwMGZmZjE7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOiM4MDcyMDA7c3Ryb2tlLXdpZHRoOjA7c3Ryb2tlLWxpbmVjYXA6cm91bmQ7c3Ryb2tlLWRhc2hhcnJheTpub25lIiBpZD0icmVjdDExIiB3aWR0aD0iODkuODYyMzY2IiBoZWlnaHQ9IjE1LjczNDAyNCIgeD0iMTE1LjAwNDM4IiB5PSIxMTQuNTk0ODYiLz48cmVjdCBzdHlsZT0ib3BhY2l0eToxO2ZpbGw6I2ZmZTAwMDtmaWxsLW9wYWNpdHk6MTtzdHJva2U6IzgwNzIwMDtzdHJva2Utd2lkdGg6MDtzdHJva2UtbGluZWNhcDpyb3VuZDtzdHJva2UtZGFzaGFycmF5Om5vbmUiIGlkPSJyZWN0MTIiIHdpZHRoPSI4OS44NjIzNjYiIGhlaWdodD0iMTUuNzM0MDI0IiB4PSIxMTUuMDA0MzgiIHk9IjEzOC42MzYwMiIvPjxyZWN0IHN0eWxlPSJvcGFjaXR5OjE7ZmlsbDojZmZjYzAwO2ZpbGwtb3BhY2l0eToxO3N0cm9rZTojODA3MjAwO3N0cm9rZS13aWR0aDowO3N0cm9rZS1saW5lY2FwOnJvdW5kO3N0cm9rZS1kYXNoYXJyYXk6bm9uZSIgaWQ9InJlY3QxMyIgd2lkdGg9Ijg5Ljg2MjM2NiIgaGVpZ2h0PSIxNS43MzQwMjQiIHg9IjExNS4wMDQzOCIgeT0iMTYzLjk0MDIyIi8+PC9nPjwvc3ZnPg==">
+    
+        <style>
+            body {
+                margin: 20px;
+                font-family: sans-serif;
+                background-color: #353535;
+                color: silver;
+            }
 
-</head>
+            a, a:visited {
+                color: silver;
+            }
 
-<body>
-    <h1>Index</h1>
-    <p><a href="dencode.html">Dencoder</a></p>
-    <p><a href="compare.html">Comparer</a></p>
-    <p><a href="xhrgen.html">XhrGen</a></p>
-</body>
+            .items {
+                border-top: solid;
+                border-width: 0.1rem;
+                list-style-type: none;
+                padding-inline-start: 0rem;
+            }
+
+            .items > li {
+                border-bottom: solid;
+                border-width: 0.1rem;
+                padding: 0.6rem 0.6rem 0.6rem 0.6rem;
+            }
+
+            a.fixed-width {
+                display: inline-block;
+                min-width: 6rem;
+            }
+
+        </style>
+
+    </head>
+
+    <body>
+        <h1>Toolset</h1>
+        <ul class="items" style="margin-top: 3rem;">
+            <li>
+                <strong><a class="fixed-width" href="dencode.html">Dencoder</a></strong>
+                <cite>Encode/decode (URL, Base64, hex...) but also, prettify (JSON, XML), escape/unescape and other useful tools.</cite>
+            </li>
+            <li>
+                <strong><a class="fixed-width" href="compare.html">Comparer</a></strong>
+                <cite>Simple Github like text comparer.</cite>
+            </li>
+            <li>
+                <strong><a class="fixed-width" href="dencrypt.html">Dencryptor</a></strong>
+                <cite>Encrypt/decrypt text using common symetric and asymetric encryption algorithms such as AES and RSA.</cite>
+            </li>
+        </ul>
+    </body>
 
 </html>

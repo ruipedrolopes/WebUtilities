@@ -1,0 +1,1928 @@
+<html>
+
+    <head>
+        <title>DENCRYPT</title>
+        <link rel="icon" type="image/svg+xml"
+            href="data:image/svg+xml;base64,PHN2ZyB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNTMuNDczOTM4bW0iIGhlaWdodD0iNTMuNDczOTQ2bW0iIHZpZXdCb3g9IjAgMCA1My40NzM5MzggNTMuNDczOTQ2IiB2ZXJzaW9uPSIxLjEiIGlkPSJzdmcxIj48ZGVmcyBpZD0iZGVmczEiPjxsaW5lYXJHcmFkaWVudCBpZD0ibGluZWFyR3JhZGllbnQyNiI+PHN0b3Agc3R5bGU9InN0b3AtY29sb3I6I2ZmZTMwMDtzdG9wLW9wYWNpdHk6MTsiIG9mZnNldD0iMC41MDM0Mzg4MyIgaWQ9InN0b3AyNyIvPjxzdG9wIHN0eWxlPSJzdG9wLWNvbG9yOiMwMDkyZmY7c3RvcC1vcGFjaXR5OjE7IiBvZmZzZXQ9IjEiIGlkPSJzdG9wMjgiLz48L2xpbmVhckdyYWRpZW50PjxsaW5lYXJHcmFkaWVudCBpZD0ibGluZWFyR3JhZGllbnQyMSI+PHN0b3Agc3R5bGU9InN0b3AtY29sb3I6IzAwMDAwMDtzdG9wLW9wYWNpdHk6MTsiIG9mZnNldD0iMCIgaWQ9InN0b3AyMSIvPjxzdG9wIHN0eWxlPSJzdG9wLWNvbG9yOiMwMDAwMDA7c3RvcC1vcGFjaXR5OjA7IiBvZmZzZXQ9IjEiIGlkPSJzdG9wMjIiLz48L2xpbmVhckdyYWRpZW50PjxyYWRpYWxHcmFkaWVudCB4bGluazpocmVmPSIjbGluZWFyR3JhZGllbnQyNiIgaWQ9InJhZGlhbEdyYWRpZW50MjgiIGN4PSI2NC4xMDk0ODIiIGN5PSI1NS42NzEwMjgiIGZ4PSI2NC4xMDk0ODIiIGZ5PSI1NS42NzEwMjgiIHI9IjI0LjM0MDUwMiIgZ3JhZGllbnRUcmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwwLjkwODI5Nzk3LDAsNS4xMDUxNDYxKSIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiLz48ZmlsdGVyIHN0eWxlPSJjb2xvci1pbnRlcnBvbGF0aW9uLWZpbHRlcnM6c1JHQiIgaWQ9ImZpbHRlcjUxIiB4PSItMC4xMjIwMTAyOCIgeT0iLTAuMTM1MzQ3OCIgd2lkdGg9IjEuMjg3ODExOCIgaGVpZ2h0PSIxLjMxOTIzMTIiPjxmZUZsb29kIHJlc3VsdD0iZmxvb2QiIGluPSJTb3VyY2VHcmFwaGljIiBmbG9vZC1vcGFjaXR5PSIwLjczMzMzMyIgZmxvb2QtY29sb3I9InJnYigwLDAsMCkiIGlkPSJmZUZsb29kNTAiLz48ZmVHYXVzc2lhbkJsdXIgcmVzdWx0PSJibHVyIiBpbj0iU291cmNlR3JhcGhpYyIgc3RkRGV2aWF0aW9uPSIxLjI4MjA1MSIgaWQ9ImZlR2F1c3NpYW5CbHVyNTAiLz48ZmVPZmZzZXQgcmVzdWx0PSJvZmZzZXQiIGluPSJibHVyIiBkeD0iMi4wMDAwMDAiIGR5PSIyLjAwMDAwMCIgaWQ9ImZlT2Zmc2V0NTAiLz48ZmVDb21wb3NpdGUgcmVzdWx0PSJjb21wMSIgb3BlcmF0b3I9ImluIiBpbj0iZmxvb2QiIGluMj0ib2Zmc2V0IiBpZD0iZmVDb21wb3NpdGU1MCIvPjxmZUNvbXBvc2l0ZSByZXN1bHQ9ImNvbXAyIiBvcGVyYXRvcj0ib3ZlciIgaW49IlNvdXJjZUdyYXBoaWMiIGluMj0iY29tcDEiIGlkPSJmZUNvbXBvc2l0ZTUxIi8+PC9maWx0ZXI+PGNsaXBQYXRoIGNsaXBQYXRoVW5pdHM9InVzZXJTcGFjZU9uVXNlIiBpZD0iY2xpcFBhdGg1NiI+PHJlY3Qgc3R5bGU9ImZpbGw6I2U1YjMwMDtmaWxsLW9wYWNpdHk6MDtzdHJva2U6IzgwNzIwMDtzdHJva2Utd2lkdGg6MC4xMTMzODU7c3Ryb2tlLWxpbmVjYXA6cm91bmQ7c3Ryb2tlLWRhc2hhcnJheTpub25lIiBpZD0icmVjdDU2IiB3aWR0aD0iNTMuNDczOTQyIiBoZWlnaHQ9IjUzLjQ3Mzk0MiIgeD0iLTMuMjc1NjMyMSIgeT0iLTExMi4wNTgzMyIgdHJhbnNmb3JtPSJyb3RhdGUoMTE1LjU2OTY2KSIvPjwvY2xpcFBhdGg+PC9kZWZzPjxwYXRoIHN0eWxlPSJmaWxsOm5vbmU7ZmlsbC1ydWxlOmV2ZW5vZGQ7c3Ryb2tlOnVybCgjcmFkaWFsR3JhZGllbnQyOCk7c3Ryb2tlLXdpZHRoOjU7c3Ryb2tlLWxpbmVjYXA6cm91bmQ7c3Ryb2tlLWRhc2hhcnJheTpub25lO2ZpbHRlcjp1cmwoI2ZpbHRlcjUxKSIgaWQ9InBhdGgyMSIgZD0ibSA2NS4wMTIyOTgsNTYuNzU3NjA1IGMgLTMuMDA1NDM5LDAuMTA4MDk3IC00Ljg0ODc3LC0zLjA0NjM2MSAtNC41NDUxNjEsLTUuNzUyODY2IDAuNDc4OTM3LC00LjI2OTQ1NiA0Ljk1MTU0OSwtNi43MjMwNDMgOC45NDMxMDgsLTUuOTk3NzIxIDUuNTI3NjM2LDEuMDA0NDUgOC42MTk5MDYsNi44NjY5MDEgNy40NTAyOCwxMi4xMzMzNTEgLTEuNTA3Mjg4LDYuNzg2ODM0IC04Ljc4NjE1MywxMC41MjcxODkgLTE1LjMyMzU5Myw4LjkwMjgzOSAtOC4wNDcyODksLTEuOTk5NSAtMTIuNDQwMTQzLC0xMC43MDczNzggLTEwLjM1NTM5OCwtMTguNTEzODM1IDIuNDg1OTIxLC05LjMwODY5IDEyLjYyOTc2NywtMTQuMzU2NTIgMjEuNzA0MDc3LC0xMS44MDc5NTggMTAuNTcwNzY5LDIuOTY4ODUgMTYuMjc1MTIsMTQuNTUyOTA5IDEzLjI2MDUxNywyNC44OTQzMiBDIDgyLjY5NjYxNyw3Mi40NDkwNzMgNjkuNjY5NTU4LDc4LjgxMDk3OCA1OC4wNjE1NjYsNzUuMzI4ODEyIDQ5LjQ2MzEyNyw3Mi43NDk0NTEgNDIuOTc3MTI4LDY1LjMzNzA4MSA0MS4yNDAzNzEsNTYuNTcyMDYxIiB0cmFuc2Zvcm09InJvdGF0ZSgtMTE1LjU2OTY2LDM2Ljk0MTk4NCw1NC45OTcxNjkpIiBjbGlwLXBhdGg9InVybCgjY2xpcFBhdGg1NikiLz48L3N2Zz4=">
+        <meta charset="UTF-8"/>
+        <!-- General -->
+        <style>
+            body {
+                margin: 20px;
+                font-family: sans-serif;
+                background-color: #353535;
+                color: silver;
+            }
+
+            input {
+                background-color: darkgray;
+                border-radius: 4pt
+            }
+
+            textarea {
+                width: 100%;
+                height: 25%;
+                max-width: 100%;
+                background-color: rgb(36, 36, 36);
+                color: silver;
+                caret-color: orange;
+            }
+
+            textarea::selection {
+                color: #101010;
+                background-color: darkgray;
+            }
+
+            .buttonGroup,
+            .checkAlign {
+                display: inline-block;
+                vertical-align: top;
+            }
+
+            .settingsGroup {
+                padding-left: 5px;
+            }
+            
+            .settingsGroup>label {
+                line-height: 30px;
+            }
+
+            .buttonGroup>label {
+                user-select: none;
+            }
+
+            input[type=checkbox] {
+                margin: revert;
+            }
+
+            input[type=text], input[type=number], input[type=password] {
+                font-family: monospace;
+                background-color: rgb(36, 36, 36);
+                color: silver;
+                margin: revert;
+            }
+
+            input[type=range] {
+                margin: revert;
+            }
+
+            .historyItem {
+                height: 100px;
+                font-size: small;
+                border-bottom: solid 3px;
+                overflow: hidden;
+                white-space: nowrap;
+                background-color: #242424;
+                color: #ccc;
+                font-family: monospace;
+                user-select: none;
+                padding: 2px;
+            }
+
+            .sidebar {
+                position: absolute; top: 0px; bottom: 0px; right: 0px;
+            }
+
+            .sidebarExpanded {
+                right: 203px;
+            }
+
+            .sidebarExpanded .sidebarBody {
+                display: block !important;
+            }
+
+            .sidebar .sidebarBody {
+                position: absolute;
+                top: 0px;
+                left: 20px;
+                width: 200px;
+                background-color: #ccc;
+                bottom: 0px;
+                border-left: solid 3px;
+                overflow-y: auto;
+                display: none;
+            }
+
+            hr {
+                margin-top: 0.2rem;
+                margin-bottom: 0.2rem;
+            }
+
+            .nowrap {
+                overflow-wrap: anywhere;
+                white-space: nowrap;
+            }
+
+            .blur { filter: blur(4px); } 
+            .hideText { content: "Hide"; }
+
+
+        </style>
+        <!-- Controls -->
+        <style>
+            .switch {
+                color: black;
+                position: relative;
+                display: inline-block;
+                width: 120px;
+                height: 30px;
+                font-size: 14px;
+                font-weight: 500;
+            }
+
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+                margin-top: 16px;
+            }
+
+            .slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #ccc;
+                -webkit-transition: .4s;
+                transition: .4s;
+                text-align: center;
+            }
+
+            .slider-copy:after {
+                content: "Transform";
+            }
+
+            input:checked+.slider-copy:after {
+                content: "Copy";
+            }
+
+            .slider-padding:after {
+                content: "Spaces";
+            }
+
+            input:checked+.slider-padding:after {
+                content: "Tabs";
+            }
+
+            .slider-selection:after {
+                content: "All text";
+            }
+
+            input:checked+.slider-selection:after {
+                content: "Selection";
+            }
+            
+            .slider-sort:after {
+                content: "Asc.";
+            }
+
+            input:checked+.slider-sort:after {
+                content: "Desc.";
+            }
+
+            .slider-wrap:after {
+                content: "Wrap";
+            }
+
+            input:checked+.slider-wrap:after {
+                content: "No wrap";
+            }
+
+            .slider-algo:after {
+                content: "AES";
+            }
+
+            input:checked+.slider-algo:after {
+                content: "RSA";
+            }
+
+            .slider-mode:after {
+                content: "Encrypt";
+            }
+
+            input:checked+.slider-mode:after {
+                content: "Decrypt";
+            }
+
+            .slider:after {
+                line-height: 30px;
+            }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 22px;
+                width: 22px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                -webkit-transition: .4s;
+                transition: .4s;
+                box-shadow: 2px 2px 8px 1px #434343ba
+            }
+
+            input:checked+.slider {
+                background-color: #2196F3;
+            }
+
+            input:focus+.slider {
+                box-shadow: 0 0 1px #2196F3;
+            }
+
+            input:checked+.slider:before {
+                -webkit-transform: translateX(90px);
+                -ms-transform: translateX(90px);
+                transform: translateX(90px);
+            }
+
+            /* Rounded sliders */
+            .slider.round {
+                border-radius: 30px;
+            }
+
+            .slider.round:before {
+                border-radius: 50%;
+            }
+
+            .button, .select {
+                background-color: #ccc;
+                border: 2px solid #7c7c7c;
+                color: #000000;
+                padding: 6px 22px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                transition-duration: 0.4s;
+                cursor: pointer;
+                border-radius: 8px;
+                width: 100%;
+            }
+
+            .select {
+                margin-top: 0;
+                padding: 5px 15px;
+                font-size: 14px;
+                text-align: left;
+            }
+
+            .button:hover {
+                background-color: #4d4d4d;
+                border: 2px solid #c5c5c5;
+                color: white;
+            }
+
+            .button:active {
+                background-color: #2196F3;
+                border: 2px solid #7c7c7c;
+                color: #000000;
+            }
+
+            .button-xsmall {
+                padding: 2px 6px;
+                font-size: 14px;
+            }
+
+            select:active {
+                background-color: unset !important;
+            }
+
+            select:hover {
+                background-color: #ccc !important;
+                color: #000000 !important;
+            }
+
+            .off-on {
+                width: 40px;
+                height: 20px;
+                position: relative;
+                display: inline-block;
+                margin: 5px 0;
+            }
+
+            .off-on-slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #ccc;
+                -webkit-transition: .4s;
+                transition: .4s;
+            }
+
+            .off-on input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+                margin-top: 16px;
+            }
+
+            .off-on-slider:after {
+                line-height: 20px;
+            }
+
+            .off-on-slider:before {
+                position: absolute;
+                content: "";
+                height: 14px;
+                width: 14px;
+                left: 3px;
+                bottom: 3px;
+                background-color: white;
+                -webkit-transition: .4s;
+                transition: .4s;
+                box-shadow: 1px 1px 3px 1px #434343ba
+            }
+
+            input:checked+.off-on-slider {
+                background-color: #2196F3;
+            }
+
+            input:focus+.off-on-slider {
+                box-shadow: 0 0 1px #2196F3;
+            }
+
+            input:checked+.off-on-slider:before {
+                -webkit-transform: translateX(20px);
+                -ms-transform: translateX(20px);
+                transform: translateX(20px);
+            }
+
+            .off-on-slider.round {
+                border-radius: 10px;
+            }
+
+            .off-on-slider.round:before {
+                border-radius: 50%;
+            }
+
+            .off-on+label {
+                cursor: pointer;
+                user-select: none;
+            }
+
+            .off-on+label:before {
+                content: " ";
+            }
+
+            input[type="range"] {
+                -webkit-appearance: none;
+                appearance: none;
+                height: 7px;
+                background: rgba(255, 255, 255, 0.6);
+                border-radius: 5px;
+                background-image: linear-gradient(#2196F3, #2196F3);
+                background-repeat: no-repeat;
+            }
+
+            input[type="range"]::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                height: 15px;
+                width: 15px;
+                border-radius: 50%;
+                background: #2196F3;
+                cursor: ew-resize;
+                box-shadow: 0 0 3px 0 #555;
+                transition: background .3s ease-in-out;
+            }
+
+            input[type="range"]::-moz-range-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                height: 15px;
+                width: 15px;
+                border-radius: 50%;
+                background: #2196F3;
+                cursor: ew-resize;
+                box-shadow: 0 0 3px 0 #555;
+                transition: background .3s ease-in-out;
+            }
+
+            input[type="range"]::-ms-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                height: 15px;
+                width: 15px;
+                border-radius: 50%;
+                background: #2196F3;
+                cursor: ew-resize;
+                box-shadow: 0 0 3px 0 #555;
+                transition: background .3s ease-in-out;
+            }
+
+            input[type=range]::-webkit-slider-runnable-track {
+                -webkit-appearance: none;
+                box-shadow: none;
+                border: none;
+                background: transparent;
+            }
+
+            input[type=range]::-moz-range-track {
+                -webkit-appearance: none;
+                appearance: none;
+                box-shadow: none;
+                border: none;
+                background: transparent;
+            }
+
+            input[type=range]::-ms-track {
+                -webkit-appearance: none;
+                appearance: none;
+                box-shadow: none;
+                border: none;
+                background: transparent;
+            }
+        </style>
+        <script type="text/javascript">
+
+            window.onload = function () {
+                const valueTextArea = getValueElement();
+                valueTextArea.onmouseup =
+                valueTextArea.onkeyup =
+                valueTextArea.ontouchend =
+                valueTextArea.onselect =
+                valueTextArea.onselectionchange =
+                valueTextArea.oninput =
+                valueTextArea.onmouseleave = fetchData;
+            }
+
+            async function transform(transformer, params) {
+                if (typeof transformer != "function") {
+                    console.warn("Transformer is not a function.");
+                    return;
+                }
+
+                let value = getValueElement().value;
+                
+                
+                try {
+                    let result = await transformer(value, params);
+
+                    if (typeof result != "string") {
+
+                        if (typeof result == "object" && typeof result.promise == "object" && typeof result.promise.then == "function") {
+                            // this has a promise
+
+                            result.promise.then((promiseResult) => {
+                                let b64result = auxiliary.arrayBufferToBase64(promiseResult);
+                                
+                                if(result.finalize) {
+                                    displayResult(eval(result.finalize)(b64result));
+                                } else {
+                                    displayResult(b64result);
+                                }
+                            });
+                            return;
+                        }
+
+                        console.warn("Transformer returned an invalid value.");
+                        return;
+                    }
+
+                    displayResult(result);
+                } catch(e) {
+                    error("An error occured: " + e, 4000);
+                    throw e;
+                }
+            }
+
+            async function generate(generator, params) {
+                if (typeof generator != "function") {
+                    console.warn("generator is not a function.");
+                    return;
+                }
+
+                try {
+                    let result = generator(params);
+
+                    if (typeof result != "string") {
+                        console.warn("Transformer returned an invalid value.");
+                        return;
+                    }
+
+
+                    displayResult(result);
+                } catch(e) {
+                    error("An error occured: " + e, 4000);
+                    throw e;
+                }
+            }
+
+            function getValueElement() {
+                return document.getElementById("value");
+            }
+
+            function flashValue() {
+                const valueTextArea = getValueElement();
+                const color = valueTextArea.style.backgroundColor;
+                valueTextArea.style.backgroundColor = "gray";
+                setTimeout(function () { valueTextArea.style.backgroundColor = color; }, 150);
+            }
+
+            function displayResult(result) {
+                const valueTextArea = getValueElement();
+                valueTextArea.value = result;
+            }
+
+            const auxiliary = {
+
+                BEGIN_PUBLIC_KEY:  "-----BEGIN PUBLIC KEY-----",
+                END_PUBLIC_KEY:    "-----END PUBLIC KEY-----",
+                BEGIN_PRIVATE_KEY: "-----BEGIN PRIVATE KEY-----",
+                END_PRIVATE_KEY:   "-----END PRIVATE KEY-----",
+
+                uuidv4: function () {
+                    try {
+                        return crypto.randomUUID();
+                    } catch (e) {
+                        //fallback in case of insecure context being used or unavailable
+                        console.error(e);
+                        return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+                            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+                        );
+                    }
+                },
+
+                arrayBufferToBase64: function (buffer) {
+                    let binary = '';
+                    const bytes = new Uint8Array(buffer);
+                    const len = bytes.byteLength;
+                    for (let i = 0; i < len; i++) {
+                        binary += String.fromCharCode(bytes[i]);
+                    }
+                    return auxiliary.bytesToBase64(new TextEncoder().encode(binary));
+                },
+
+                base64ToArrayBuffer: function (base64) {
+                    let binary_string = new TextDecoder().decode(auxiliary.base64ToBytes(base64));
+                    const len = binary_string.length;
+                    let bytes = new Uint8Array(len);
+                    for (let i = 0; i < len; i++)        {
+                        bytes[i] = binary_string.charCodeAt(i);
+                    }
+                    return bytes.buffer;
+                },
+
+                base64ToBytes: function (base64) {
+                    const binString = atob(base64);
+                    return Uint8Array.from(binString, (m) => m.codePointAt(0));
+                },
+
+                bytesToBase64: function (bytes) {
+                    const binString = String.fromCodePoint(...bytes);
+                    return btoa(binString);
+                },
+
+                ab2str: function(buf) {
+                    return String.fromCharCode.apply(null, new Uint8Array(buf));
+                },
+
+                str2ab: function(str) {
+                    const buf = new ArrayBuffer(str.length);
+                    const bufView = new Uint8Array(buf);
+                    for (let i = 0, strLen = str.length; i < strLen; i++) {
+                        bufView[i] = str.charCodeAt(i);
+                    }
+                    return buf;
+                },
+
+                importRsaPrivateKey: function (pem) {
+
+                    const hashAlgorithm = document.getElementById("rsaHashAlgorithm").value;
+
+                    // fetch the part of the PEM string between header and footer
+                    const pemContents = pem.substring(
+                        auxiliary.BEGIN_PRIVATE_KEY.length,
+                        pem.length - auxiliary.END_PRIVATE_KEY.length - 1,
+                    );
+                    // base64 decode the string to get the binary data
+                    const binaryDerString = window.atob(pemContents);
+                    // convert from a binary string to an ArrayBuffer
+                    const binaryDer = auxiliary.str2ab(binaryDerString);
+
+                    return window.crypto.subtle.importKey(
+                        "pkcs8",
+                        binaryDer,
+                        {
+                        name: "RSA-OAEP",
+                        hash: hashAlgorithm,
+                        },
+                        true,
+                        ["decrypt"],
+                    );
+                },
+
+                importRsaPublicKey: function(pem) {
+
+                    const hashAlgorithm = document.getElementById("rsaHashAlgorithm").value;
+
+                    // fetch the part of the PEM string between header and footer
+                    const pemContents = pem.substring(
+                        auxiliary.BEGIN_PUBLIC_KEY.length,
+                        pem.length - auxiliary.END_PUBLIC_KEY.length - 1,
+                    );
+                    // base64 decode the string to get the binary data
+                    const binaryDerString = window.atob(pemContents);
+                    // convert from a binary string to an ArrayBuffer
+                    const binaryDer = auxiliary.str2ab(binaryDerString);
+
+                    return window.crypto.subtle.importKey(
+                        "spki",
+                        binaryDer,
+                        {
+                        name: "RSA-OAEP",
+                        hash: hashAlgorithm,
+                        },
+                        true,
+                        ["encrypt"],
+                    );
+                },
+
+                importJwkPrivateKey: function(jwk) {
+                    return window.crypto.subtle.importKey(
+                        "jwk",
+                        jwk,
+                        {
+                        name: "ECDSA",
+                        namedCurve: "P-384",
+                        },
+                        true,
+                        ["decrypt"]
+                    );
+                }
+
+
+            };
+
+            //Generators
+            const gens = (function () {
+
+                //private functions
+
+
+                //public functions
+                return {
+                    generateGuid: function () {
+                        return auxiliary.uuidv4();
+                    },
+
+                    randomString: function () {
+                        const length = 24;
+
+                        let validTypes = [];
+
+                        //lowercase
+                        validTypes.push(function (r) { return String.fromCharCode(r % 26 + 97); });
+                        //uppercase
+                        validTypes.push(function (r) { return String.fromCharCode(r % 26 + 65); });
+                        //digits
+                        validTypes.push(function (r) { return String.fromCharCode(r % 10 + 48); });
+                        
+                        validTypes.push(function (r) {
+                            const chars = "[]^_!#$%&()*+,-./:;<=>?{|}~";
+                            return chars[r % chars.length];
+                        });
+
+                        let result = "";
+
+                        if (validTypes.length > 0) {
+                            const types = crypto.getRandomValues(new Uint8Array(length));
+                            const chars = crypto.getRandomValues(new Uint8Array(length));
+
+                            for (let i = 0; i < length; i++) {
+                                let type = types[i] % validTypes.length;
+                                result += validTypes[type](chars[i]);
+                            }
+                        }
+
+                        return result;
+                    },
+                    
+                    //Add more generators here.
+
+                }
+
+            })();
+
+
+            //Transformers
+            const trs = (function () {
+
+                //private functions
+
+                function escapeHtmlChar(original, xmlSafe) {
+                    let found = true;
+
+                    let thechar = original.charCodeAt(0);
+
+                    switch (thechar) {
+                        case 60: return "&lt;"; break; //<
+                        case 62: return "&gt;"; break; //>
+                        case 34: return "&quot;"; break; //"
+
+                        case 38: return "&amp;"; break; //&
+                        default: found = false; break;
+                    }
+
+                    if (!xmlSafe) {
+                        switch (thechar) {
+                            case 198: return "&AElig;"; break;
+                            case 193: return "&Aacute;"; break;
+                            case 194: return "&Acirc;"; break;
+                            case 192: return "&Agrave;"; break;
+                            case 197: return "&Aring;"; break;
+                            case 195: return "&Atilde;"; break;
+                            case 196: return "&Auml;"; break;
+                            case 199: return "&Ccedil;"; break;
+                            case 208: return "&ETH;"; break;
+                            case 201: return "&Eacute;"; break;
+                            case 202: return "&Ecirc;"; break;
+                            case 200: return "&Egrave;"; break;
+                            case 203: return "&Euml;"; break;
+                            case 205: return "&Iacute;"; break;
+                            case 206: return "&Icirc;"; break;
+                            case 204: return "&Igrave;"; break;
+                            case 207: return "&Iuml;"; break;
+                            case 209: return "&Ntilde;"; break;
+                            case 211: return "&Oacute;"; break;
+                            case 212: return "&Ocirc;"; break;
+                            case 210: return "&Ograve;"; break;
+                            case 216: return "&Oslash;"; break;
+                            case 213: return "&Otilde;"; break;
+                            case 214: return "&Ouml;"; break;
+                            case 222: return "&THORN;"; break;
+                            case 218: return "&Uacute;"; break;
+                            case 219: return "&Ucirc;"; break;
+                            case 217: return "&Ugrave;"; break;
+                            case 220: return "&Uuml;"; break;
+                            case 221: return "&Yacute;"; break;
+                            case 225: return "&aacute;"; break;
+                            case 226: return "&acirc;"; break;
+                            case 230: return "&aelig;"; break;
+                            case 224: return "&agrave;"; break;
+                            case 229: return "&aring;"; break;
+                            case 227: return "&atilde;"; break;
+                            case 228: return "&auml;"; break;
+                            case 231: return "&ccedil;"; break;
+                            case 233: return "&eacute;"; break;
+                            case 234: return "&ecirc;"; break;
+                            case 232: return "&egrave;"; break;
+                            case 240: return "&eth;"; break;
+                            case 235: return "&euml;"; break;
+                            case 237: return "&iacute;"; break;
+                            case 238: return "&icirc;"; break;
+                            case 236: return "&igrave;"; break;
+                            case 239: return "&iuml;"; break;
+                            case 241: return "&ntilde;"; break;
+                            case 243: return "&oacute;"; break;
+                            case 244: return "&ocirc;"; break;
+                            case 242: return "&ograve;"; break;
+                            case 248: return "&oslash;"; break;
+                            case 245: return "&otilde;"; break;
+                            case 246: return "&ouml;"; break;
+                            case 223: return "&szlig;"; break;
+                            case 254: return "&thorn;"; break;
+                            case 250: return "&uacute;"; break;
+                            case 251: return "&ucirc;"; break;
+                            case 249: return "&ugrave;"; break;
+                            case 252: return "&uuml;"; break;
+                            case 253: return "&yacute;"; break;
+                            case 255: return "&yuml;"; break;
+                            case 162: return "&cent;"; break;
+                            default:
+                                found = false;
+                                break;
+                        }
+                    }
+
+                    if (!found) {
+                        const hex = new Array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
+                        if (thechar > 127) {
+                            let c = thechar;
+                            let a4 = c % 16;
+                            c = Math.floor(c / 16);
+                            let a3 = c % 16;
+                            c = Math.floor(c / 16);
+                            let a2 = c % 16;
+                            c = Math.floor(c / 16);
+                            let a1 = c % 16;
+                            //	alert(a1);
+                            return "&#x" + hex[a1] + hex[a2] + hex[a3] + hex[a4] + ";";
+                        }
+                        else {
+                            return original;
+                        }
+                    }
+                }
+
+                function encodeChar(original, skipNewLine) {
+                    if (skipNewLine && original == '\n') return;
+                    let found = true;
+                    let thecharchar = original.charAt(0);
+                    let thechar = original.charCodeAt(0);
+                    switch (thecharchar) {
+                        case '\n': return "\\n"; break; //newline
+                        case '\r': return "\\r"; break; //Carriage return
+                        case '\'': return "\\'"; break;
+                        case '"': return "\\\""; break;
+                        case '\\': return "\\\\"; break;
+                        case '\t': return "\\t"; break;
+                        case '\b': return "\\b"; break;
+                        case '\f': return "\\f"; break;
+
+                        default:
+                            found = false;
+                            break;
+                    }
+                    if (!found) {
+                        const hex = new Array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
+
+                        if (thechar > 127) {
+                            let c = thechar;
+                            let a4 = c % 16;
+                            c = Math.floor(c / 16);
+                            let a3 = c % 16;
+                            c = Math.floor(c / 16);
+                            let a2 = c % 16;
+                            c = Math.floor(c / 16);
+                            let a1 = c % 16;
+                            //	alert(a1);
+                            return "\\u" + hex[a1] + hex[a2] + hex[a3] + hex[a4] + "";
+                        }
+                        else {
+                            return original;
+                        }
+                    }
+
+
+                }
+
+                function xslTransform(source, xslTransformer) {
+                    const xmlDoc = new DOMParser().parseFromString(source, 'application/xml');
+                    const xsltDoc = new DOMParser().parseFromString(xslTransformer, 'application/xml');
+                    const xsltProcessor = new XSLTProcessor();    
+                    xsltProcessor.importStylesheet(xsltDoc);
+                    let resultDoc = xsltProcessor.transformToDocument(xmlDoc);
+                    let result = new XMLSerializer().serializeToString(resultDoc);
+
+                    //check for errors
+                    const resultParser = new DOMParser();
+                    resultDoc = resultParser.parseFromString(result, "application/xml");
+
+                    const errorElem = xmlDoc.getElementsByTagName("parsererror");
+                    if(errorElem.length > 0) {
+                        error("Error parsing value: " + errorElem[0].getElementsByTagName("div")[0].innerHTML, 5000);
+                        return source;
+                    }
+                    return result;
+                }
+
+                const prettifyXml = function(sourceXml, pretty, paddingChars) {
+
+                    let resultXml = xslTransform(sourceXml, [
+                        // describes how we want to modify the XML - indent everything
+                        '<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform">',
+                        '  <xsl:strip-space elements="*"/>',
+                        '  <xsl:template match="para[content-style][not(text())]">', // change to just text() to strip space in text nodes
+                        '    <xsl:value-of select="normalize-space(.)"/>',
+                        '  </xsl:template>',
+                        '  <xsl:template match="node()|@*">',
+                        '    <xsl:copy><xsl:apply-templates select="node()|@*"/></xsl:copy>',
+                        '  </xsl:template>',
+                        '  <xsl:output indent="' + (pretty? 'yes': 'no') + '"/>',
+                        '</xsl:stylesheet>',
+                    ].join('\n'));
+
+                    if(pretty == true) {
+                        // Replace indentation 2 spaces with padding chars
+
+                        if(paddingChars !== "  ") {
+
+                            function replacer(match, p1, offset, string) {
+                                return match.replaceAll("  ", paddingChars);
+                            }
+                            resultXml = resultXml.replace(/>\n(\s\s)+</g, replacer);
+                        }
+                    }
+
+                    return resultXml;
+                };
+
+                function formatXml(xml, pretty, paddingChars) {
+
+                    try {
+                        return prettifyXml(xml, pretty, paddingChars)
+                    } catch (e) {
+                        console.warn(e);
+                        // use fallback code bellow in case of exception
+                    }
+
+                    let formatted = '';
+                    const reg = /(>)(<)(\/*)/g;
+                    let paddingStr = paddingChars;
+                    xml = xml.replace(reg, '$1\r\n$2$3');
+                    let pad = 0;
+                    const lines = xml.split('\r\n');
+                    for (let index = 0; index < lines.length; index++) {
+                        const node = lines[index];
+                        let indent = 0;
+                        if (node.match(/.+<\/\w[^>]*>$/)) {
+                            indent = 0;
+                        } else if (node.match(/^<\/\w/)) {
+                            if (pad != 0) {
+                                pad -= 1;
+                            }
+                        } else if (node.match(/^<\w[^>]*[^\/]>.*$/)) {
+                            indent = 1;
+                        } else {
+                            indent = 0;
+                        }
+
+                        let padding = '';
+                        for (let i = 0; i < pad; i++) {
+                            padding += paddingStr;
+                        }
+
+                        formatted += padding + node + '\r\n';
+                        pad += indent;
+                    }
+                    return formatted;
+                }
+
+                function encodeUrlToken(input) {
+                    const ret = input.replace(/\+/g, "-").replace(/\//g, "_");
+                    if (ret.length == 0)
+                        return "";
+                    const noPadding = ret.replace(/=+$/, "");
+                    return noPadding + (ret.length - noPadding.length).toString();
+                }
+
+                function decodeUrlToken(input) {
+                    const ec = parseInt(input.substring(input.length - 1));
+                    let temp = input.replace(/\-/g, "+").replace(/\_/g, "/");
+                    temp = temp.substring(0, temp.length - 1);
+                    return temp + "===".substring(0, ec);
+                }
+
+                function indexes(value, toFind, startingAt, found) {
+                    if(typeof(found) == "undefined") { found = []; }
+                    if(typeof(startingAt) == "undefined") { startingAt = 0; }
+
+                    const idx = value.indexOf(toFind, startingAt);
+                    
+                    if(idx == -1) { return found; }
+
+                    found.push(idx);
+                    return indexes(value, toFind, idx + toFind.length, found);
+                }
+
+
+                function getMessageEncoding(value) {
+                    let enc = new TextEncoder();
+                    return enc.encode(value);
+                }
+
+                async function importPublicKey(spkiPem) {
+                    const hashAlgorithm = document.getElementById("rsaHashAlgorithm").value;
+
+                    return await window.crypto.subtle.importKey(
+                        "spki",
+                        getSpkiDer(spkiPem),
+                        {
+                            name: "RSA-OAEP",
+                            hash: hashAlgorithm,
+                        },
+                        true,
+                        ["encrypt"]
+                    );
+                }
+
+                function compressArrayBuffer(input, algorithm) {
+                    const stream = new Response(input).body
+                        .pipeThrough(new CompressionStream(algorithm));
+                    return new Response(stream).arrayBuffer();
+                }
+
+                function decompressArrayBuffer(input, algorithm) {
+                    const stream = new Response(input).body
+                        .pipeThrough(new DecompressionStream(algorithm));
+                    return new Response(stream).arrayBuffer();
+                }
+
+
+                function sortObject(unordered, sortArrays = false, reverse = false) {
+                    if (!unordered || typeof unordered !== 'object') {
+                        return unordered;
+                    }
+
+                    if (Array.isArray(unordered)) {
+                        const newArr = unordered.map((item) => sortObject(item, sortArrays, reverse));
+                        if (sortArrays) {
+                            newArr.sort();
+                            if(reverse === true) {
+                                newArr.reverse();
+                            }
+                        }
+                        return newArr;
+                    }
+
+                    const ordered = {};
+                    const keys = Object.keys(unordered).sort();
+                    if(reverse === true) {
+                        keys.reverse();
+                    }
+
+                    keys.forEach((key) => {
+                        ordered[key] = sortObject(unordered[key], sortArrays, reverse);
+                    });
+                    return ordered;
+                }
+
+
+                const fromHexString = (hexString) =>
+                    Uint8Array.from(hexString.match(/.{1,2}/g).map((byte) => parseInt(byte, 16)));
+
+
+                // public functions
+                return {
+                    
+                    base64encode: function (value) {
+                        try {
+                            return auxiliary.bytesToBase64(new TextEncoder().encode(value))
+                        } catch(e) {
+                            console.error(e);
+                            console.error("Falling back to legacy btoa.");
+                            return window.btoa(value);
+                        }
+                    },
+
+                    base64decode: function (value) {
+                        try {
+                            return new TextDecoder().decode(auxiliary.base64ToBytes(value));
+                        } catch(e) {
+                            console.error(e);
+                            console.error("Falling back to legacy atob.");
+                            try {
+                                return window.atob(value);
+                            }
+                            catch (e) {
+                                console.error(e);
+                                warn("Invalid base64 text");
+                                return -1;
+                            }
+                        }
+                        
+                    },
+
+                    hexencode: function (value) {
+                        let hex = "";
+                        for (let i = 0; i < value.length; i++) {
+                            hex += '' + value.charCodeAt(i).toString(16);
+                        }
+
+                        return hex;
+                    },
+
+                    hexdecode: function (value) {
+                        const hex = value;
+                        let str = "";
+                        for (let i = 0; i < hex.length; i += 2) {
+                            str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+                        }
+
+                        return str;
+                    },
+
+                    compress: function(value, params) {
+                        const algorithm = params.compressAlgorithm();
+                        return { promise: compressArrayBuffer(value, algorithm), finalize: null };
+                    },
+
+                    decompress: function(value, params) {
+                        const algorithm = params.compressAlgorithm();
+                        const arrayBufferValue = auxiliary.base64ToArrayBuffer(value);
+
+                        return { promise: decompressArrayBuffer(arrayBufferValue, algorithm),
+                            finalize: (v) => {return new TextDecoder().decode(auxiliary.base64ToBytes(v));} };
+                    },
+
+                    encrypt: function(value, params) {
+                        // fetch params according to user selections
+
+                        const algorithm = document.getElementById("cbAlgo").checked === true? "RSA": "AES";
+                        
+                        if(algorithm === "AES") {
+                            const password = document.getElementById("password").value;
+                            const saltString = document.getElementById("salt").value;
+                            const ivString = document.getElementById("iv").value;
+
+                            const aesParams = {
+                                key: () => password,
+                                salt: () => fromHexString(saltString.replaceAll('-','')),
+                                iv: () => fromHexString(ivString.replaceAll('-',''))
+                            };
+
+                            const implementation = document.getElementById("aesAlgoImpl").value;
+
+                            let encryptFunction = null;
+                            switch(implementation) {
+                                case "AES-CTR":
+                                    encryptFunction = trs.encryptAES_CTR;
+                                    break;
+                                case "AES-CBC":
+                                    encryptFunction = trs.encryptAES_CBC;
+                                    break;
+                                case "AES-GCM":
+                                    encryptFunction = trs.encryptAES_GCM;
+                                    break;
+                            }
+                            
+                            return encryptFunction(value, aesParams);
+                        } else { // RSA
+                            const publicKeyString = document.getElementById("publicKey").value;
+                            // TODO get other params
+
+                            return trs.encryptRSA_OAEP(value);
+                        }
+                    },
+
+                    decrypt: function(value, params) {
+                        // fetch params according to user selections
+
+                        const algorithm = document.getElementById("cbAlgo").checked === true? "RSA": "AES";
+
+                        if(algorithm === "AES") {
+                            const password = document.getElementById("password").value;
+                            const saltString = document.getElementById("salt").value;
+                            const ivString = document.getElementById("iv").value;
+
+                            const aesParams = {
+                                key: () => password,
+                                salt: () => fromHexString(saltString.replaceAll('-','')),
+                                iv: () => fromHexString(ivString.replaceAll('-',''))
+                            };
+
+                            const implementation = document.getElementById("aesAlgoImpl").value;
+
+                            let decryptFunction = null;
+                            switch(implementation) {
+                                case "AES-CTR":
+                                    decryptFunction = trs.decryptAES_CTR;
+                                    break;
+                                case "AES-CBC":
+                                    decryptFunction = trs.decryptAES_CBC;
+                                    break;
+                                case "AES-GCM":
+                                    decryptFunction = trs.decryptAES_GCM;
+                                    break;
+                            }
+                            
+                            return decryptFunction(value, aesParams);
+
+                        } else { // RSA
+                            const privateKeyString = document.getElementById("privateKey").value;
+                            // TODO get other params
+
+                            return trs.decryptRSA_OAEP(value);
+                        }
+                    },
+                    
+                    decryptRSA_OAEP: async function(value) {
+                        let data = auxiliary.base64ToArrayBuffer(value);
+
+                        const privateKeyString = document.getElementById("privateKey").value;
+
+                        const privateKey = await auxiliary.importRsaPrivateKey(privateKeyString);
+
+                        return { promise: (() => {
+
+                            debugger;
+                            return window.crypto.subtle.decrypt(
+                                {
+                                    name: "RSA-OAEP"
+                                },
+                                privateKey,
+                                data);
+                        })(), finalize: (v) => {return new TextDecoder().decode(auxiliary.base64ToBytes(v));} };
+                    },
+
+                    encryptRSA_OAEP: async function(value) {
+                        let data = new TextEncoder().encode(value);
+
+                        const publicKeyString = document.getElementById("publicKey").value;
+
+                        const publicKey = await auxiliary.importRsaPublicKey(publicKeyString);
+
+                        return { promise: (() => {
+                            return window.crypto.subtle.encrypt(
+                                {
+                                    name: "RSA-OAEP"
+                                },
+                                publicKey,
+                                data);
+                        })()};
+                    },
+                    
+                    encryptAES_CTR: async function(value, params) {
+                        const iv = params.iv(); //Uint8Array.from([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]); //window.crypto.getRandomValues(new Uint8Array(16));
+                        const salt = params.salt() //Uint8Array.from([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);//window.crypto.getRandomValues(new Uint8Array(16));
+                        const password = params.key() //window.crypto.getRandomValues(new Uint8Array(16));
+                        
+                        const data = new TextEncoder().encode(value);
+                        
+                        const key = await window.crypto.subtle.importKey(
+                            'raw',
+                            getMessageEncoding(password),
+                            { name: 'PBKDF2' },
+                            false,
+                            ['deriveKey']
+                        );
+
+                        const derivedKey = await window.crypto.subtle.deriveKey(
+                            {
+                                name: 'PBKDF2',
+                                salt: salt,
+                                iterations: 100000,
+                                hash: 'SHA-256',
+                            },
+                            key,
+                            { name: 'AES-CTR', length: 256 },
+                            true,
+                            ['encrypt', 'decrypt']
+                        );
+
+                        return { promise: (() => {
+                            return window.crypto.subtle.encrypt(
+                                {
+                                    name: "AES-CTR",
+                                    counter: iv,
+                                    length: 128,
+                                },
+                                derivedKey,
+                                data);
+                        })()};
+                    },
+
+                    encryptAES_CBC: async function(value, params) {
+                        const iv = params.iv(); //Uint8Array.from([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]); //window.crypto.getRandomValues(new Uint8Array(16));
+                        const salt = params.salt() //Uint8Array.from([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);//window.crypto.getRandomValues(new Uint8Array(16));
+                        const password = params.key() //window.crypto.getRandomValues(new Uint8Array(16));
+                        
+                        const data = new TextEncoder().encode(value);
+                        
+                        const key = await window.crypto.subtle.importKey(
+                            'raw',
+                            getMessageEncoding(password),
+                            { name: 'PBKDF2' },
+                            false,
+                            ['deriveKey']
+                        );
+
+                        const derivedKey = await window.crypto.subtle.deriveKey(
+                            {
+                                name: 'PBKDF2',
+                                salt: salt,
+                                iterations: 100000,
+                                hash: 'SHA-256',
+                            },
+                            key,
+                            { name: 'AES-CBC', length: 256 },
+                            true,
+                            ['encrypt', 'decrypt']
+                        );
+
+                        return { promise: (() => {
+                            return window.crypto.subtle.encrypt(
+                                {
+                                    name: "AES-CBC",
+                                    iv: iv,
+                                    length: 128,
+                                },
+                                derivedKey,
+                                data);
+                        })()};
+                    },
+
+                    encryptAES_GCM: async function(value, params) {
+                        const iv = params.iv(); //Uint8Array.from([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]); //window.crypto.getRandomValues(new Uint8Array(16));
+                        const salt = params.salt() //Uint8Array.from([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);//window.crypto.getRandomValues(new Uint8Array(16));
+                        const password = params.key() //window.crypto.getRandomValues(new Uint8Array(16));
+                        
+                        const data = new TextEncoder().encode(value);
+                        
+                        const key = await window.crypto.subtle.importKey(
+                            'raw',
+                            getMessageEncoding(password),
+                            { name: 'PBKDF2' },
+                            false,
+                            ['deriveKey']
+                        );
+
+                        const derivedKey = await window.crypto.subtle.deriveKey(
+                            {
+                                name: 'PBKDF2',
+                                salt: salt,
+                                iterations: 100000,
+                                hash: 'SHA-256',
+                            },
+                            key,
+                            { name: 'AES-GCM', length: 256 },
+                            true,
+                            ['encrypt', 'decrypt']
+                        );
+
+                        return { promise: (() => {
+                            return window.crypto.subtle.encrypt(
+                                {
+                                    name: "AES-GCM",
+                                    iv: iv,
+                                    length: 128,
+                                },
+                                derivedKey,
+                                data);
+                        })()};
+                    },
+
+                    decryptAES_CTR: async function(value, params) {
+                        const iv = params.iv(); //Uint8Array.from([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]); //window.crypto.getRandomValues(new Uint8Array(16));
+                        const salt = params.salt() //Uint8Array.from([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);//window.crypto.getRandomValues(new Uint8Array(16));
+                        const password = params.key() //window.crypto.getRandomValues(new Uint8Array(16));
+                        
+                        let data = auxiliary.base64ToArrayBuffer(value);
+
+                        const key = await window.crypto.subtle.importKey(
+                            'raw',
+                            getMessageEncoding(password),
+                            { name: 'PBKDF2' },
+                            false,
+                            ['deriveKey']
+                        );
+
+                        const derivedKey = await window.crypto.subtle.deriveKey(
+                            {
+                                name: 'PBKDF2',
+                                salt: salt,
+                                iterations: 100000,
+                                hash: 'SHA-256',
+                            },
+                            key,
+                            { name: 'AES-CTR', length: 256 },
+                            true,
+                            ['encrypt', 'decrypt']
+                        );
+
+                        return { promise: (() => {
+                            return window.crypto.subtle.decrypt(
+                                {
+                                    name: "AES-CTR",
+                                    counter: iv,
+                                    length: 128,
+                                },
+                                derivedKey,
+                                data);
+                        })(), finalize: (v) => {return new TextDecoder().decode(auxiliary.base64ToBytes(v));} };
+                        
+                    },
+
+                    decryptAES_CBC: async function(value, params) {
+                        const iv = params.iv(); //Uint8Array.from([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]); //window.crypto.getRandomValues(new Uint8Array(16));
+                        const salt = params.salt() //Uint8Array.from([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);//window.crypto.getRandomValues(new Uint8Array(16));
+                        const password = params.key() //window.crypto.getRandomValues(new Uint8Array(16));
+                        
+                        let data = auxiliary.base64ToArrayBuffer(value);
+
+                        const key = await window.crypto.subtle.importKey(
+                            'raw',
+                            getMessageEncoding(password),
+                            { name: 'PBKDF2' },
+                            false,
+                            ['deriveKey']
+                        );
+
+                        const derivedKey = await window.crypto.subtle.deriveKey(
+                            {
+                                name: 'PBKDF2',
+                                salt: salt,
+                                iterations: 100000,
+                                hash: 'SHA-256',
+                            },
+                            key,
+                            { name: 'AES-CBC', length: 256 },
+                            true,
+                            ['encrypt', 'decrypt']
+                        );
+
+                        return { promise: (() => {
+                            return window.crypto.subtle.decrypt(
+                                {
+                                    name: "AES-CBC",
+                                    iv: iv,
+                                    length: 128,
+                                },
+                                derivedKey,
+                                data);
+                        })(), finalize: (v) => {return new TextDecoder().decode(auxiliary.base64ToBytes(v));} };
+                        
+                    },
+
+                    decryptAES_GCM: async function(value, params) {
+                        const iv = params.iv(); //Uint8Array.from([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]); //window.crypto.getRandomValues(new Uint8Array(16));
+                        const salt = params.salt() //Uint8Array.from([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);//window.crypto.getRandomValues(new Uint8Array(16));
+                        const password = params.key() //window.crypto.getRandomValues(new Uint8Array(16));
+                        
+                        let data = auxiliary.base64ToArrayBuffer(value);
+
+                        const key = await window.crypto.subtle.importKey(
+                            'raw',
+                            getMessageEncoding(password),
+                            { name: 'PBKDF2' },
+                            false,
+                            ['deriveKey']
+                        );
+
+                        const derivedKey = await window.crypto.subtle.deriveKey(
+                            {
+                                name: 'PBKDF2',
+                                salt: salt,
+                                iterations: 100000,
+                                hash: 'SHA-256',
+                            },
+                            key,
+                            { name: 'AES-GCM', length: 256 },
+                            true,
+                            ['encrypt', 'decrypt']
+                        );
+
+                        return { promise: (() => {
+                            return window.crypto.subtle.decrypt(
+                                {
+                                    name: "AES-GCM",
+                                    iv: iv,
+                                    length: 128,
+                                },
+                                derivedKey,
+                                data);
+                        })(), finalize: (v) => {return new TextDecoder().decode(auxiliary.base64ToBytes(v));} };
+                        
+                    }
+
+
+                    // TODO: add more transformers here
+
+                };
+            })();
+
+
+            function getKey() {
+                return document.getElementById("key").value;
+            }
+
+            function copyToClipboard(value) {
+                const toCopy = document.createElement("textarea");
+                toCopy.style.width = 0;
+                toCopy.style.height = 0;
+                toCopy.value = value;
+                document.body.appendChild(toCopy);
+
+                /* Select the text field */
+                toCopy.select();
+                toCopy.setSelectionRange(0, value.length + 1); /*For mobile devices*/
+
+                /* Copy the text inside the text field */
+                document.execCommand("copy");
+
+                document.body.removeChild(toCopy);
+
+                info("Copied to clipboard!");
+            }
+
+            function clearValue() {
+                const valueTextArea = getValueElement();
+                valueTextArea.value = "";
+                valueTextArea.focus();
+            }
+
+
+            let cursorPos = {
+                start: -1,
+                end: -1,
+                line: -1,
+                column: -1
+            };
+            
+            function getCursorPos(input) {
+                if ("selectionStart" in input && document.activeElement == input) {
+                    cursorPos.start = input.selectionStart;
+                    cursorPos.end = input.selectionEnd;
+                    cursorPos.line = input.value.substr(0, input.selectionStart).split(/\r?\n|\r/).length;
+                    cursorPos.column = getCol(input, input.selectionStart);
+                    return cursorPos;
+                }
+                else if (input.createTextRange) {
+                    const sel = document.selection.createRange();
+                    if (sel.parentElement() === input) {
+                        let rng = input.createTextRange();
+                        rng.moveToBookmark(sel.getBookmark());
+                        for (let len = 0;
+                            rng.compareEndPoints("EndToStart", rng) > 0;
+                            rng.moveEnd("character", -1)) {
+                            len++;
+                        }
+                        rng.setEndPoint("StartToStart", input.createTextRange());
+                        for (let pos = { start: 0, end: len };
+                            rng.compareEndPoints("EndToStart", rng) > 0;
+                            rng.moveEnd("character", -1)) {
+                            pos.start++;
+                            pos.end++;
+                        }
+
+                        pos.line = input.value.substr(0, input.selectionStart).split(/\r?\n|\r/).length;
+                        pos.column = getCol(input, input.selectionStart);
+                        cursorPos = pos;
+                        return cursorPos;
+                    }
+                }
+                cursorPos = {
+                    start: -1,
+                    end: -1,
+                    line: -1,
+                    column: -1
+                };
+                return cursorPos;
+            }
+
+            function formatWhitepacePadding() {
+                return (document.getElementById("useTabs").checked == true) ? '\t' : '  ';
+            }
+
+            function getFormattingLang() {
+                return document.getElementById("formattingLang").value;
+            }
+
+            function sortIsAscending() {
+                return !document.getElementById("sortDescending").checked;
+            }
+
+            function getCompressAlgorithm() {
+                return document.getElementById("compressAlgorithm").value;
+            }
+
+            function getCol(value, start) {
+                let index = start;
+                let char = '\n';
+                do {
+                    char = value.value[-1 + index--];
+                } while (char != '\n' && char != '\r' && index >= 0);
+                return start - index - 1;
+            }
+
+            function fetchData() {
+                if(document.activeElement == getValueElement()) {
+                    const valueTextArea = getValueElement();
+                    const pos = getCursorPos(valueTextArea);
+
+                    document.getElementById("start").innerHTML = pos.start;
+                    document.getElementById("end").innerHTML = pos.end;
+                    document.getElementById("length").innerHTML = valueTextArea.value.length;
+
+                    document.getElementById("line").innerHTML = pos.line;
+                    document.getElementById("col").innerHTML = pos.column;
+                }
+            }
+
+            function rndSpecialChanged(event) {
+                if (event.target.checked == false) {
+                    document.getElementById('rndSpecialChars').setAttribute("disabled", "");
+                } else {
+                    document.getElementById('rndSpecialChars').removeAttribute("disabled");
+                }
+            }
+
+            let stopRndChangeEvent = false;
+
+            function preventInvalidSpecialChars(event) {
+                if (event.keyCode < 32) {
+                    return true;
+                }
+                const pattern = new RegExp(event.target.pattern);
+
+                return pattern.test(event.key) == true;
+            }
+
+            function preventInvalidRndLength(event) {
+                if(parseInt(this.value) > parseInt(this.max) || parseInt(this.value) < parseInt(this.min)) {
+                    this.value = this.max;
+                }
+            }
+
+            function adjustRndStringSlider(slider) {
+                slider.style.backgroundSize = (slider.value - slider.min) * 100 / (slider.max - slider.min) + '% 100%';
+            }
+
+            function getRandomStringParams() {
+                return {
+                    length: document.getElementById("rndStringLength").value,
+                    lower: document.getElementById("rndLower").checked,
+                    upper: document.getElementById("rndUpper").checked,
+                    digits: document.getElementById("rndDigits").checked,
+                    special: document.getElementById("rndSpecial").checked,
+                    specialChars: document.getElementById("rndSpecial").checked == true ? document.getElementById("rndSpecialChars").value : ""
+                };
+            }
+
+            function changeMode(e) {
+                const cbMode = e.target.closest("input");
+                const encryptButton = document.getElementById("encrypt");
+                const decryptButton = document.getElementById("decrypt");
+                if(cbMode.checked === true) {
+                    // Decrypt
+                    encryptButton.style.display = "none";
+                    decryptButton.style.display = "inherit";
+                } else {
+                    // Encrypt
+                    encryptButton.style.display = "inherit";
+                    decryptButton.style.display = "none";
+                }
+            }
+
+            function changeAlgorithm(e) {
+                const cbAlgo = e.target.closest("input");
+                const aesParams = document.getElementById("aesParams");
+                const rsaParams = document.getElementById("rsaParams");
+
+                const aesAlgoImplContainer = document.getElementById("aesAlgoImpl").parentElement;
+
+                if(cbAlgo.checked === true) {
+                    // RSA
+                    aesParams.style.display = "none";
+                    aesAlgoImplContainer.style.display = "none";
+                    rsaParams.style.display = "inherit";
+                } else {
+                    // AES
+                    aesParams.style.display = "inherit";
+                    aesAlgoImplContainer.style.display = "inline-block";
+                    rsaParams.style.display = "none";
+                }
+            }
+
+            function blurPrivateKeyToggle(event) {
+                const privateKeyTextArea = document.getElementById("privateKey");
+                privateKeyTextArea.classList.toggle("blur");
+
+                event.target.closest("button").innerText =
+                    privateKeyTextArea.classList.contains("blur") ? "Show" : "Hide";
+            }
+
+            function showPassword(e) {
+                const showPassword = e.target.closest("input");
+                const passwordInput = document.getElementById("password");
+
+                if(showPassword.checked === true) {
+                    passwordInput.type = "text";
+                } else {
+                    passwordInput.type = "password";
+                }
+            }
+
+            function generateUUID(targetId) {
+                const target = document.getElementById(targetId);
+                target.value = auxiliary.uuidv4();
+            }
+
+            function generatePassword() {
+                const passwordInput = document.getElementById("password");
+                passwordInput.value = gens.randomString();
+            }
+
+            function generateEncryptionKeyPair() {
+
+                const hashAlgorithm = document.getElementById("rsaHashAlgorithm").value;
+                const modulusLength = document.getElementById("rsaKeyLength").value;
+
+                window.crypto.subtle.generateKey(
+                    {
+                        name: "RSA-OAEP",
+                        modulusLength: modulusLength, // 2048 or 4096
+                        publicExponent: new Uint8Array([1, 0, 1]), // https://developer.mozilla.org/en-US/docs/Web/API/RsaHashedKeyGenParams#publicexponent
+                        hash: hashAlgorithm, // SHA-256, SHA-384, or SHA-512
+                    },
+                    true,
+                    ["encrypt", "decrypt"]
+                ).then(async (keyPair) => {
+                    const exportedPublicKey = await window.crypto.subtle.exportKey("spki", keyPair.publicKey);
+                    const exportedPublicKeyAsString = auxiliary.ab2str(exportedPublicKey);
+                    const exportedPublicKeyAsBase64 = window.btoa(exportedPublicKeyAsString);
+                    const exportedPublicKeyPem =
+                        `${auxiliary.BEGIN_PUBLIC_KEY}\n${exportedPublicKeyAsBase64}\n${auxiliary.END_PUBLIC_KEY}`;
+                    const publicKeyText = document.getElementById("publicKey");
+                    publicKeyText.value = exportedPublicKeyPem;
+
+                    const exportedPrivateKey = await window.crypto.subtle.exportKey("pkcs8", keyPair.privateKey);
+                    const exportedPrivateKeyAsString = auxiliary.ab2str(exportedPrivateKey);
+                    const exportedPrivateKeyAsBase64 = window.btoa(exportedPrivateKeyAsString);
+                    const exportedPrivateKeyPem =
+                        `${auxiliary.BEGIN_PRIVATE_KEY}\n${exportedPrivateKeyAsBase64}\n${auxiliary.END_PRIVATE_KEY}`;
+
+                    const privateKeyText = document.getElementById("privateKey");
+                    privateKeyText.value = exportedPrivateKeyPem;
+                });
+            }
+            
+
+            let messageId = null;
+            function info(text, delay) {
+                document.getElementById("messageType").innerHTML = "&#8505;&nbsp;Info";
+                document.getElementById("messageText").innerText = text;
+
+                document.getElementById("message").style.background = "aliceblue";
+                document.getElementById("message").style.color = "#7070A0";
+
+                document.getElementById("message").style.display = "flex";
+
+                let id = auxiliary.uuidv4();
+                messageId = id;
+                window.setTimeout(() => { if (id != messageId) { return; } document.getElementById("message").style.display = "none"; }, typeof delay == "number" ? delay : 2000);
+            }
+
+            function warn(text, delay) {
+                document.getElementById("messageType").innerHTML = "&#9888;&nbsp;Warning";
+                document.getElementById("messageText").innerText = text;
+
+                document.getElementById("message").style.background = "blanchedalmond";
+                document.getElementById("message").style.color = "#806640";
+
+                document.getElementById("message").style.display = "flex";
+
+                let id = auxiliary.uuidv4();
+                messageId = id;
+                window.setTimeout(() => { if (id != messageId) { return; } document.getElementById("message").style.display = "none"; }, typeof delay == "number" ? delay : 2000);
+            }
+
+            function error(text, delay) {
+                document.getElementById("messageType").innerHTML = "&#9888;&nbsp;Error";
+                document.getElementById("messageText").innerText = text;
+
+                document.getElementById("message").style.background = "coral";
+                document.getElementById("message").style.color = "#905050";
+
+                document.getElementById("message").style.display = "flex";
+
+                let id = auxiliary.uuidv4();
+                messageId = id;
+                window.setTimeout(() => { if (id != messageId) { return; } document.getElementById("message").style.display = "none"; }, typeof delay == "number" ? delay : 2000);
+            }
+
+            function setWrap() {
+                const wrap = !document.getElementById("cbWrap").checked;
+                Array.from(document.getElementsByTagName("textarea")).forEach((element) => {
+                    if (wrap) {
+                        element.classList.remove("nowrap");
+                    } else {
+                        element.classList.add("nowrap");
+                    }
+                });
+            }
+
+        </script>
+    </head>
+
+    <body>
+        <div>
+            <div style="margin-bottom: 0.3rem; float: left;">
+                <label class="switch">
+                    <input type="checkbox" id="cbMode" onchange="changeMode(event)">
+                    <span class="slider round slider-mode"></span>
+                </label>
+                <label class="switch" title="Algorithm">
+                    <input type="checkbox" id="cbAlgo" onchange="changeAlgorithm(event)">
+                    <span class="slider round slider-algo"></span>
+                </label>
+                <div class="buttonGroup" style="display: inline-block;">
+                    <select id="aesAlgoImpl" class="select" title="Select AES implementation">
+                        <option value="AES-CTR">AES-CTR</option>
+                        <option value="AES-CBC">AES-CBC</option>
+                        <option value="AES-GCM">AES-GCM</option>
+                    </select>
+                </div>    
+            </div>
+            <div style="float: right;">
+                <label class="switch">
+                    <input type="checkbox" id="cbWrap" onchange="setWrap()">
+                    <span class="slider round slider-wrap"></span>
+                </label>
+            </div>
+
+            <div id="rsaParams" style="clear: both; margin-bottom: 0.3rem; display: none;">
+                <div id="privateKeyDiv" style="width: 50%; float: left;">
+                    <label for="privateKey">Private Key 🗝️</label>
+                    <textarea id="privateKey" placeholder="Private Key goes here..." class="blur" spellcheck="false"></textarea>
+                    
+                    <div class="buttonGroup">
+                        <button class="button button-xsmall" onclick="generateEncryptionKeyPair()">Generate Key Pair</button>
+                    </div>
+
+                    <div class="buttonGroup">
+                        <select id="rsaKeyLength" class="button button-xsmall">
+                            <option selected value="2048">2048 Bits</option>
+                            <option value="4096">4096 Bits</option>
+                        </select>
+                    </div>
+
+                    <div class="buttonGroup">
+                        <select id="rsaHashAlgorithm" class="button button-xsmall">
+                            <option selected value="SHA-256">SHA-256</option>
+                            <option value="SHA-384">SHA-384</option>
+                            <option value="SHA-512">SHA-512</option>
+                        </select>
+                    </div>
+                    
+                    <div class="buttonGroup">
+                        <button class="button button-xsmall" onclick="copyToClipboard(document.getElementById('privateKey').value)">Copy</button>
+                    </div>
+                    
+                    <div class="buttonGroup">
+                        <button class="button button-xsmall" onclick="blurPrivateKeyToggle(event)">Show</button>
+                    </div>
+                
+                </div>
+
+                <div id="publicKeyDiv" style="width: 50%; float: right;">
+                    <label for="publicKey">Public Key 🗝️</label>
+                    <textarea id="publicKey" placeholder="Public Key goes here..." spellcheck="false"></textarea>
+                    
+                    <div class="buttonGroup">
+                        <button class="button button-xsmall" onclick="copyToClipboard(document.getElementById('publicKey').value)">Copy</button>
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div id="aesParams" style="clear: both; margin-bottom: 0.3rem;">
+            <div id="passwordDiv" style="margin-bottom: 0.3rem;">
+                <label for="password">Password</label>
+                <br>
+                <input id="password" type="password" style="width: 17.3rem;" spellcheck="false"></input>
+                <label class="off-on">
+                    <input id="showPassword" type="checkbox" onchange="showPassword(event)"/><span class="off-on-slider round"></span>
+                </label>
+                <label for="showPassword" class="off-on">Show</label>
+                <button class="button button-xsmall" style="width: auto;" onclick="generatePassword()">Generate</button>
+            </div>
+            <div id="saltDiv" style="margin-bottom: 0.3rem;">
+                <label for="salt">Salt 🧂 (128 bit UUID/GUID)</label>
+                <br>
+                <input id="salt" type="text" placeholder="00000000-0000-0000-0000-000000000000" minlength="32" maxlength="36" style="width: 17.3rem;" spellcheck="false"></input>
+                <button class="button button-xsmall" style="width: auto;" onclick="generateUUID('salt')">Generate</button>
+            </div>
+
+            <div id="ivDiv">
+                <label for="iv">IV 🌶 (128 bit UUID/GUID)</label>
+                <br>
+                <input id="iv" type="text" placeholder="00000000-0000-0000-0000-000000000000" minlength="32" maxlength="36" style="width: 17.3rem;" spellcheck="false"></input>
+                <button class="button button-xsmall" style="width: auto;" onclick="generateUUID('iv')">Generate</button>
+            </div>
+        </div>
+
+        </div>
+        
+        <div>
+            <div style="clear: left;">
+                <label for="value">Value</label>
+                <textarea id="value" value="" placeholder="Text goes here..." autofocus ></textarea>    
+            </div>
+            
+            <div style="float: right;position: relative;font-size: small; margin-top: 0.2rem">
+                Line: <span id="line"></span><span style="margin-left: 10px;">Column: </span><span id="col"></span>
+            </div>
+            <div style="float: right;clear: right;position: relative;font-size: small;">
+                Start: <span id="start"></span><span style="margin-left: 10px;">End: </span><span id="end"></span>
+                <span style="margin-left: 10px;">Length: </span><span id="length"></span>
+            </div>
+
+        </div>
+
+        <div style="clear: left; display: inline-block;">
+            <button id="encrypt" class="button" onclick="transform(trs.encrypt)">Encrypt</button>
+            <button id="decrypt" class="button" onclick="transform(trs.decrypt)" style="display: none;">Decrypt</button>
+        </div>
+
+        <div style="float: right;">
+            <div class="buttonGroup">
+                <button class="button button-xsmall" onclick="copyToClipboard(document.getElementById('value').value)">Copy</button>
+            </div>
+        </div>
+
+        <div id="message"
+            style="position: fixed; left: 10px;bottom: 10px;right: 10px;z-index: 1000;background: blanchedalmond;color: #909090;display: none;align-items: center;">
+            <strong id="messageType" style="padding: 10px;float: left;">Info</strong>
+            <span id="messageText" style="padding: 3px;">.</span>
+        </div>
+    </body>
+
+</html>

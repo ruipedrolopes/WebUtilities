@@ -4,6 +4,7 @@
     <title>DENCODER</title>
     <link rel="icon" type="image/svg+xml"
         href="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyB2aWV3Qm94PSIxMjQuODkyIDE0NC43MDcgMjAwLjMxIDEwNi4wMDkiIHdpZHRoPSIyMDAuMzEiIGhlaWdodD0iMTA2LjAwOSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczpieD0iaHR0cHM6Ly9ydWlwZWRyb2xvcGVzLmdpdGh1Yi5pbyI+CiAgPGcgc3R5bGU9IiIgdHJhbnNmb3JtPSJtYXRyaXgoMC44NDMxMDksIC0wLjAzNzU3MywgMCwgMS4yMTgwNjgsIDE5LjU5NDQyNSwgLTQzLjUzMTk1NikiPgogICAgPGcgc3R5bGU9IiIgdHJhbnNmb3JtPSJtYXRyaXgoMSwgMCwgMCwgMS4zMjE2NzUsIC05NC4zMzU1MjYsIDc2LjA0NDU3MSkiPgogICAgICA8cmVjdCB4PSIyNDguNzkxIiB5PSI5NC43MTEiIHdpZHRoPSIxNTAuODUyIiBoZWlnaHQ9IjEwLjI3IiBzdHlsZT0ic3Ryb2tlOiByZ2IoMCwgMCwgMCk7IHN0cm9rZS13aWR0aDogMHB4OyBmaWxsOiByZ2IoMjU1LCAyNTUsIDApOyIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTk5OSwgLTAuMDA0NDc5LCAtMC40MzQzOTMsIDEuMDAxOTU2LCAxNi4wNDIxMTIsIDEwLjQ0OTM0MykiLz4KICAgICAgPHBhdGggZD0iTSAzNjYuMzYzIDM4LjIyNSBMIDM5My4wNTUgMTIwLjA0OSBMIDM2Ni4zNjMgMTIwLjA0OSBMIDM2Ni4zNjMgMzguMjI1IFoiIHN0eWxlPSJzdHJva2U6IHJnYigwLCAwLCAwKTsgc3Ryb2tlLXdpZHRoOiAwcHg7IGZpbGw6IHJnYigyNTUsIDI1NSwgMCk7IiB0cmFuc2Zvcm09Im1hdHJpeCgtMC4zODM5MjYsIDAuOTIzMzY0LCAtMS4wOTI5NjksIDAuMDIzOTg0LCA2MzIuODk0MTA0LCAtMjM3LjY1ODk2NikiIGJ4OnNoYXBlPSJ0cmlhbmdsZSAzNjYuMzYzIDM4LjIyNSAyNi42OTIgODEuODI0IDAgMCAxQDhhMzNkY2U1Ii8+CiAgICA8L2c+CiAgICA8ZyBzdHlsZT0iIiB0cmFuc2Zvcm09Im1hdHJpeCgtMSwgMCwgMCwgLTEuMzIxNjc4LCA1ODEuNzA0NTI5LCAzMzUuMDk3MDQ2KSI+CiAgICAgIDxyZWN0IHg9IjI0OC43OTEiIHk9Ijk0LjcxMSIgd2lkdGg9IjE1MC44NTIiIGhlaWdodD0iMTAuMjciIHN0eWxlPSJzdHJva2U6IHJnYigwLCAwLCAwKTsgc3Ryb2tlLXdpZHRoOiAwcHg7IGZpbGw6IHJnYigwLCAxNzQsIDI1NSk7IiB0cmFuc2Zvcm09Im1hdHJpeCgwLjk5OTk5LCAtMC4wMDQ0NzksIC0wLjQzNDM5MywgMS4wMDE5NTYsIDE2LjA0MjExMiwgMTAuNDQ5MzQzKSIvPgogICAgICA8cGF0aCBkPSJNIDM2Ni4zNjMgMzguMjI1IEwgMzkzLjA1NSAxMjAuMDQ5IEwgMzY2LjM2MyAxMjAuMDQ5IEwgMzY2LjM2MyAzOC4yMjUgWiIgc3R5bGU9InN0cm9rZTogcmdiKDAsIDAsIDApOyBzdHJva2Utd2lkdGg6IDBweDsgZmlsbDogcmdiKDAsIDE3NCwgMjU1KTsiIHRyYW5zZm9ybT0ibWF0cml4KC0wLjM4MzkyNiwgMC45MjMzNjQsIC0xLjA5Mjk2OSwgMC4wMjM5ODQsIDYzMi44OTQxMDQsIC0yMzcuNjU4OTY2KSIgYng6c2hhcGU9InRyaWFuZ2xlIDM2Ni4zNjMgMzguMjI1IDI2LjY5MiA4MS44MjQgMCAwIDFAOGEzM2RjZTUiLz4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPg==">
+    <meta charset="UTF-8"/>
     <!-- General -->
     <style>
         body {
@@ -1410,13 +1411,19 @@
 
                 digest: async function (text, params) {
                     const algorithm = params.digestAlgorithm();
+                    const outputFormat = params.digestOutputFormat();
+                    
                     const msgUint8 = new TextEncoder().encode(text); // encode as (utf-8) Uint8Array
                     const hashBuffer = await window.crypto.subtle.digest(algorithm, msgUint8); // hash the message
                     const hashArray = Array.from(new Uint8Array(hashBuffer)); // convert buffer to byte array
-                    const hashHex = hashArray
+
+                    if(outputFormat === "hex") {
+                        return hashArray
                         .map((b) => b.toString(16).padStart(2, "0"))
                         .join(""); // convert bytes to hex string
-                    return hashHex;
+                    } else if (outputFormat === "base64") {
+                        return btoa(String.fromCharCode(...hashArray));
+                    }
                 }
                 
  
@@ -1553,6 +1560,10 @@
 
         function getDigestAlgorithm() {
             return document.getElementById("digestAlgorithm").value;
+        }
+        
+        function getDigestOutputFormat() {
+            return document.getElementById("digestOutputFormat").value;
         }
 
         function getReplaceAll() {
@@ -1852,7 +1863,7 @@
         
         <div class="buttonGroup">
             <input type="button" class="button button-xsmall" value="Digest"
-                onclick="transform(trs.digest, {'digestAlgorithm': getDigestAlgorithm });" /><br />
+                onclick="transform(trs.digest, {'digestAlgorithm': getDigestAlgorithm, 'digestOutputFormat': getDigestOutputFormat });" /><br />
            
             <hr/>
             <select id="digestAlgorithm" class="button button-xsmall" style="text-align: left;">
@@ -1860,6 +1871,11 @@
                 <option value="SHA-1">SHA-1</option>
                 <option value="SHA-384">SHA-384</option>
                 <option value="SHA-512">SHA-512</option>
+            </select>
+            <br/>
+            <select id="digestOutputFormat" class="button button-xsmall" style="text-align: left;">
+                <option selected value="hex">To HEX</option>
+                <option value="base64">To Base64</option>
             </select>
         </div>
 
